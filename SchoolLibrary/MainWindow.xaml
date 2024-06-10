@@ -1,0 +1,69 @@
+﻿<Window x:Class="SchoolLibrary.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SchoolLibrary"
+        mc:Ignorable="d"
+        Title="MainWindow" 
+        WindowState="Maximized" d:DesignHeight="600" d:DesignWidth="800">
+
+
+
+    <!--6.Создание базовой разметки главного окна-->
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Margin" Value="5,2"/>
+        </Style>
+    </Window.Resources>
+    <DockPanel>
+        <!-- Меню -->
+        <Menu DockPanel.Dock="Top">
+            <!-- Книги -->
+            <MenuItem Header="Книги">
+                <MenuItem Header="Все книги" Click="btnListBooks"/>
+                <MenuItem Header="Поиск" Click="btnSearchBooks_Click"/>
+                <MenuItem Header="Добавить" Click="btnAddBook_Click"/>
+                <MenuItem Header="Удалить" Click="btnDeleteBook_Click"/>
+                <MenuItem Header="Выход"></MenuItem>
+            </MenuItem>
+            <!-- Читатели -->
+            <MenuItem Header="Читатели">
+                <MenuItem Header="Все читатели" Click="btnListStudents_Click"/>
+                <MenuItem Header="Поиск" Click="btnSearchStudents_Click"/>
+                <MenuItem Header="Добавить" Click="btnAddStudent_Click"/>
+                <MenuItem Header="Удалить" Click="btnDeleteStudent_Click"/>
+            </MenuItem>
+            <!-- Движение -->
+            <MenuItem Header="Движение книг">
+                <MenuItem Header="Отчет по книгам" Click="btnBookReport_Click"/>
+                <MenuItem Header="Движение по книге" Click="btnMovementByBook_Click"/>
+                <MenuItem Header="Движение по читателю" Click="btnMovementByStudent_Click"/>
+            </MenuItem>
+            <!-- Справка -->
+            <MenuItem Header="Справка" Click="btnHelp_Click"/>
+        </Menu>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.07*"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel x:Name="stackButtons" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                <Button x:Name="btnAdd" Click="btnAdd_Click">Добавить извещение</Button>
+                <Button x:Name="btnDelete" Click="btnDelete_Click">Удалить извещение</Button>
+                <Button x:Name="btnEdit" Click="btnEdit_Click">Редактировать извещение</Button>
+                <Button x:Name="btnStudents" Click="btnListStudents">Показать читателей</Button>
+                <Button x:Name="btnCategories" Click="btnListCategories">Показать категории книг</Button>
+                <Button x:Name="btnBooks" Click="btnListBooks">Показать все книги библиотеки</Button>
+                <Button x:Name="btnLoans" Click="btnBookReport_Click">Показать все книги библиотеки</Button>
+            </StackPanel>
+            <DataGrid x:Name="dGrid" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" LoadingRow="dGrid_LoadingRow" 
+                  AutoGenerateColumns="False" RowHeaderWidth="50">
+            </DataGrid>
+        </Grid>
+    </DockPanel>
+</Window>
