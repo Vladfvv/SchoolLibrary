@@ -130,7 +130,7 @@ namespace SchoolLibrary
             Category literature = new Category { CategoryName = "Литература" };
             Category biology = new Category { CategoryName = "Биология" };
 
-            
+
             context.Categories.AddRange(new Category[] { informatics, english, belarusian, mathematics, russian, geografy, physics, chemistry, history, literature, biology });
 
 
@@ -342,14 +342,15 @@ namespace SchoolLibrary
                 bookMath9Class, bookMath10Class, bookMath11Class
             });
 
-
+            /*
             context.Loans.AddRange(new Loan[]
                {
 
-                    new Loan { BookID = 1, StudentID = 1, LoanDate = DateTime.Now.AddDays(-10), DueDate = DateTime.Now.AddDays(10), ReturnDate = null, Returned = false },
-                    
-                   
-                   
+           // Loan loan1 = new Loan { Book = bookBel10Class, Student = ivanIvanov, LoanDate = DateTime.Now.AddDays(-10), DueDate = DateTime.Now.AddDays(10), ReturnDate = null, Returned = false };
+
+
+
+
                    new Loan { BookID = 1, StudentID = 1, LoanDate = DateTime.Now.AddDays(-10), DueDate = DateTime.Now.AddDays(10), ReturnDate = null, Returned = false },
                     new Loan { BookID = 2, StudentID = 2, LoanDate = DateTime.Now.AddDays(-8), DueDate = DateTime.Now.AddDays(12), ReturnDate = DateTime.Now.AddDays(-1), Returned = true },
                     new Loan { BookID = 3, StudentID = 3, LoanDate = DateTime.Now.AddDays(-15), DueDate = DateTime.Now.AddDays(5), ReturnDate = null, Returned = false },
@@ -410,7 +411,45 @@ namespace SchoolLibrary
                     new Loan { BookID = 58, StudentID = 58, LoanDate = DateTime.Now.AddDays(-40), DueDate = DateTime.Now.AddDays(30), ReturnDate = null, Returned = false },
                     new Loan { BookID = 59, StudentID = 59, LoanDate = DateTime.Now.AddDays(-45), DueDate = DateTime.Now.AddDays(35), ReturnDate = DateTime.Now.AddDays(-10), Returned = true },
                     new Loan { BookID = 60, StudentID = 60, LoanDate = DateTime.Now.AddDays(-50), DueDate = DateTime.Now.AddDays(40), ReturnDate = null, Returned = false },
-                });
+                });*/
+
+
+            Loan loan1 = new Loan { Book = bookBel10Class, Student = ivanIvanov, LoanDate = DateTime.Now.AddDays(-10), DueDate = DateTime.Now.AddDays(10).Date, ReturnDate = null, Returned = false };
+            Loan loan2 = new Loan { Book = bookBel9Class, Student = mariyaPetrova, LoanDate = DateTime.Now.AddDays(-9), DueDate = DateTime.Now.AddDays(11).Date, ReturnDate = null, Returned = false };
+            Loan loan3 = new Loan { Book = bookBel8Class, Student = alexeySmirnov, LoanDate = DateTime.Now.AddDays(-8), DueDate = DateTime.Now.AddDays(12).Date, ReturnDate = null, Returned = false };
+            Loan loan4 = new Loan { Book = bookBel7Class, Student = ekaterinaKozlova, LoanDate = DateTime.Now.AddDays(-7), DueDate = DateTime.Now.AddDays(13).Date, ReturnDate = null, Returned = false };
+            Loan loan5 = new Loan { Book = bookBel6Class, Student = artemFedorov, LoanDate = DateTime.Now.AddDays(-6), DueDate = DateTime.Now.AddDays(14).Date, ReturnDate = null, Returned = false };            
+            Loan loan6 = new Loan { Book = bookBel10Class, Student = ivanIvanov, LoanDate = DateTime.Now.AddDays(-5), DueDate = DateTime.Now.AddDays(15).Date, ReturnDate = null, Returned = false };
+            Loan loan7 = new Loan { Book = bookBel9Class, Student = mariyaPetrova, LoanDate = DateTime.Now.AddDays(-4), DueDate = DateTime.Now.AddDays(16).Date, ReturnDate = null, Returned = false };
+            Loan loan8 = new Loan { Book = bookBel8Class, Student = alexeySmirnov, LoanDate = DateTime.Now.AddDays(-3), DueDate = DateTime.Now.AddDays(17).Date, ReturnDate = null, Returned = false };
+            Loan loan9 = new Loan { Book = bookBel7Class, Student = ekaterinaKozlova, LoanDate = DateTime.Now.AddDays(-2), DueDate = DateTime.Now.AddDays(18).Date, ReturnDate = null, Returned = false };
+            Loan loan10 = new Loan { Book = bookBel6Class, Student = artemFedorov, LoanDate = DateTime.Now.AddDays(-1), DueDate = DateTime.Now.AddDays(19).Date, ReturnDate = null, Returned = false };
+            Loan loan11 = new Loan { Book = bookBel10Class, Student = ivanIvanov, LoanDate = DateTime.Now, DueDate = DateTime.Now.AddDays(20).Date, ReturnDate = null, Returned = false };
+            Loan loan12 = new Loan { Book = bookBel9Class, Student = mariyaPetrova, LoanDate = DateTime.Now.AddDays(1), DueDate = DateTime.Now.AddDays(21).Date, ReturnDate = null, Returned = false };
+            Loan loan13 = new Loan { Book = bookBel8Class, Student = alexeySmirnov, LoanDate = DateTime.Now.AddDays(2), DueDate = DateTime.Now.AddDays(22).Date, ReturnDate = null, Returned = false };
+            Loan loan14 = new Loan { Book = bookBel7Class, Student = ekaterinaKozlova, LoanDate = DateTime.Now.AddDays(3), DueDate = DateTime.Now.AddDays(23).Date, ReturnDate = null, Returned = false };
+            Loan loan15 = new Loan { Book = bookBel6Class, Student = artemFedorov, LoanDate = DateTime.Now.AddDays(4), DueDate = DateTime.Now.AddDays(24).Date, ReturnDate = null, Returned = false };
+            Loan loan16 = new Loan { Book = bookBel10Class, Student = ivanIvanov, LoanDate = DateTime.Now.AddDays(5), DueDate = DateTime.Now.AddDays(25).Date, ReturnDate = null, Returned = false };
+            Loan loan17 = new Loan { Book = bookBel9Class, Student = mariyaPetrova, LoanDate = DateTime.Now.AddDays(6), DueDate = DateTime.Now.AddDays(26).Date, ReturnDate = null, Returned = false };
+            Loan loan18 = new Loan { Book = bookBel8Class, Student = alexeySmirnov, LoanDate = DateTime.Now.AddDays(7), DueDate = DateTime.Now.AddDays(27).Date, ReturnDate = null, Returned = false };
+            Loan loan19 = new Loan { Book = bookBel7Class, Student = ekaterinaKozlova, LoanDate = DateTime.Now.AddDays(8), DueDate = DateTime.Now.AddDays(28).Date, ReturnDate = null, Returned = false };
+            Loan loan20 = new Loan { Book = bookBel6Class, Student = artemFedorov, LoanDate = DateTime.Now.AddDays(9), DueDate = DateTime.Now.AddDays(29).Date, ReturnDate = null, Returned = false };
+            Loan loan51 = new Loan { Book = bookMath11Class, Student = ekaterinaKozlova, LoanDate = DateTime.Now.AddDays(-10), DueDate = DateTime.Now.AddDays(10).Date, ReturnDate = null, Returned = false };
+            Loan loan52 = new Loan { Book = bookMath10Class, Student = ivanIvanov, LoanDate = DateTime.Now.AddDays(-8), DueDate = DateTime.Now.AddDays(12).Date, ReturnDate = DateTime.Now.AddDays(-1).Date, Returned = true };
+            Loan loan53 = new Loan { Book = bookMath10Class, Student = artemFedorov, LoanDate = DateTime.Now.AddDays(-15), DueDate = DateTime.Now.AddDays(5).Date, ReturnDate = null, Returned = false };
+            Loan loan54 = new Loan { Book = bookMath9Class, Student = mariyaPetrova, LoanDate = DateTime.Now.AddDays(-20), DueDate = DateTime.Now.AddDays(0).Date, ReturnDate = DateTime.Now.AddDays(-5).Date, Returned = true };
+            Loan loan55 = new Loan { Book = bookMath10Class, Student = alexeySmirnov, LoanDate = DateTime.Now.AddDays(-25), DueDate = DateTime.Now.AddDays(15).Date, ReturnDate = null, Returned = false };
+            Loan loan56 = new Loan { Book = bookMath11Class, Student = nadezhdaIvanova, LoanDate = DateTime.Now.AddDays(-30), DueDate = DateTime.Now.AddDays(20).Date, ReturnDate = null, Returned = false };
+            Loan loan57 = new Loan { Book = bookMath10Class, Student = elizavetaFedorova, LoanDate = DateTime.Now.AddDays(-35), DueDate = DateTime.Now.AddDays(25).Date, ReturnDate = null, Returned = false };
+            Loan loan58 = new Loan { Book = bookMath8Class, Student = anastasiaIvanova, LoanDate = DateTime.Now.AddDays(-40), DueDate = DateTime.Now.AddDays(30).Date, ReturnDate = null, Returned = false };
+            Loan loan59 = new Loan { Book = bookMath11Class, Student = anastasiaMikhaylova, LoanDate = DateTime.Now.AddDays(-45), DueDate = DateTime.Now.AddDays(35).Date, ReturnDate = DateTime.Now.AddDays(-10).Date, Returned = true };
+            Loan loan60 = new Loan { Book = bookMath10Class, Student = nikitaKuznetsov, LoanDate = DateTime.Now.AddDays(-50), DueDate = DateTime.Now.AddDays(40).Date, ReturnDate = null, Returned = false }; 
+            // Добавление переменных Loan в контекст
+            context.Loans.AddRange(new Loan[] { loan1, loan2, loan3, loan4, loan5, loan6, loan7, loan8, loan9, loan10, loan11, loan12, loan13, loan14, loan15, loan16, loan17, loan18, loan19, loan20, loan51, loan52, loan53, loan54, loan55, loan56, loan57, loan58, loan59, loan60 });
+
+
+
+
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace SchoolLibrary.Models
 {
@@ -16,10 +17,13 @@ namespace SchoolLibrary.Models
         public string YearPublished { get; set; }
         public string ISBN { get; set; }
         public int CategoryID { get; set; }
-
+       
+        public int Quantity { get; set; }
         // Навигационное свойство для связи с категорией
         public virtual Category Category { get; set; }
-        public int Quantity { get; set; }
+
+
+
 
     }
 }

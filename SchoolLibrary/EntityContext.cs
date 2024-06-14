@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SchoolLibrary
 {//2.Создайте класс контекста данных:
-    class EntityContext : DbContext
+    public class EntityContext : DbContext
     {
         public EntityContext(string v) : base("SchoolLibrary")
         {

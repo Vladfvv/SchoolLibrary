@@ -1,0 +1,52 @@
+﻿<Window x:Class="SchoolLibrary.AddBookDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SchoolLibrary"
+        mc:Ignorable="d"
+         Title="Add Book" Height="450" Width="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Content="Title:"/>
+        <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtTitle" Text="Напиши название книги"/>
+
+        <Label Grid.Row="1" Grid.Column="0" Content="Author:"/>
+        <TextBox Grid.Row="1" Grid.Column="1" x:Name="txtAuthor" Text="Напиши автора книги"/>
+
+        <Label Grid.Row="2" Grid.Column="0" Content="Publisher:"/>
+        <TextBox Grid.Row="2" Grid.Column="1" x:Name="txtPublisher" Text="Напиши издателя книги"/>
+
+        <Label Grid.Row="3" Grid.Column="0" Content="Year Published:"/>
+        <TextBox Grid.Row="3" Grid.Column="1" x:Name="txtYear" Text="Напиши год издания"/>
+
+        <Label Grid.Row="4" Grid.Column="0" Content="ISBN:"/>
+        <TextBox Grid.Row="4" Grid.Column="1" x:Name="txtISBN" Text="Напиши ISBN книги" />
+
+        <Label Grid.Row="5" Grid.Column="0" Content="Category:"/>
+        <ComboBox Grid.Row="5" Grid.Column="1" x:Name="cmbCategory"
+                  DisplayMemberPath="CategoryName"/>
+
+        <Label Grid.Row="6" Grid.Column="0" Content="Quantity:"/>
+        <TextBox Grid.Row="6" Grid.Column="1" x:Name="txtQuantity" Text="1"/>
+
+        <Button Grid.Row="7" Grid.ColumnSpan="2" HorizontalAlignment="Center" Content="Add Book" Click="btnAdd_Click"/>
+    </Grid>
+</Window>

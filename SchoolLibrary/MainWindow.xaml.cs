@@ -277,8 +277,9 @@ namespace SchoolLibrary
         private void ConfigureLoansColumns()
         {
             dGrid.Columns.Clear();
-            dGrid.Columns.Add(new DataGridTextColumn { Header = "BookID", Binding = new Binding("Books.Title"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
-            dGrid.Columns.Add(new DataGridTextColumn { Header = "StudentID", Binding = new Binding("StudentID"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
+            dGrid.Columns.Add(new DataGridTextColumn { Header = "BookID", Binding = new Binding("Book.Title"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
+            dGrid.Columns.Add(new DataGridTextColumn { Header = "Имя", Binding = new Binding("Student.FirstName"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
+            dGrid.Columns.Add(new DataGridTextColumn { Header = "Фамилия", Binding = new Binding("Student.LastName"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Когда взяли", Binding = new Binding("LoanDate"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Когда должны вернуть", Binding = new Binding("DueDate"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Когда вернули", Binding = new Binding("ReturnDate"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
@@ -443,6 +444,13 @@ namespace SchoolLibrary
         #region
         private void btnAddBook_Click(object sender, RoutedEventArgs e)
         {
+
+            AddBookDialog dialog = new AddBookDialog(context);
+            dialog.ShowDialog();
+            // Обновление данных в DataGrid после добавления новой книги
+            dGrid.DataContext = null;
+            dGrid.DataContext = context.Books.ToList();
+
             // Add functionality to add a new book here
             /* dGrid.ItemsSource = null;
              context.Books.Load();
@@ -505,6 +513,16 @@ namespace SchoolLibrary
                 MessageBox.Show(ex.Message);
             }
         }
+
+        /*
+        private void btnAddBook_Click(object sender, RoutedEventArgs e)
+        {
+            AddBookDialog dialog = new AddBookDialog(context);
+            dialog.ShowDialog();
+            // Обновление данных в DataGrid после добавления новой книги
+            dGrid.DataContext = null;
+            dGrid.DataContext = context.Books.ToList();
+        }*/
     }
 }
 

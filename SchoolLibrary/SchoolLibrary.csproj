@@ -71,6 +71,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddBookDialog.xaml.cs">
+      <DependentUpon>AddBookDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EntityContext.cs" />
     <Compile Include="SearchBooksWindow.xaml.cs">
       <DependentUpon>SearchBooksWindow.xaml</DependentUpon>
@@ -78,6 +81,10 @@
     <Compile Include="SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
+    <Page Include="AddBookDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="AddBookWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

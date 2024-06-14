@@ -23,6 +23,15 @@ namespace SchoolLibrary.Models
         public int Age { get; set; }
         public string Class { get; set; }
 
+        /*
+        public int? LoanId { get; set; }
+        public Loan Loan { get; set; }
+
+        */
+
+
+
+
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
