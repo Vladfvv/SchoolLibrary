@@ -16,6 +16,7 @@ namespace SchoolLibrary.Models
         public string YearPublished { get; set; }
         public string ISBN { get; set; }
         public int CategoryID { get; set; }
+        public Category Category { get; set; }
         public int Quantity { get; set; }
 
     }

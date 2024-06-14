@@ -36,13 +36,13 @@
             <ColumnDefinition  Width="0.2*"/>
             <ColumnDefinition  Width="*"/>
         </Grid.ColumnDefinitions>
-        <Label Content="Дата" Margin="5" Grid.Row="0" Height="30"/>
-        <Label Content="Номер счета" Margin="5" Grid.Row="1" Height="30" />
-        <Label Content="Клиент" Margin="5" Grid.Row="2" Height="30" />
-        <Label Content="Сумма" Margin="5" Grid.Row="3" Height="30"/>
-        <TextBox x:Name="textTitle" Grid.Column="1" Grid.Row="0" Text="{Binding Path=Title, ValidatesOnExceptions=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{StaticResource ErrorTempl}" Height="20" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+        <Label Content="Имя" Margin="5" Grid.Row="0" Height="30"/>
+        <Label Content="Фамилия" Margin="5" Grid.Row="1" Height="30" />
+        <Label Content="Возраст" Margin="5" Grid.Row="2" Height="30" />
+        <Label Content="Класс" Margin="5" Grid.Row="3" Height="30"/>
+        <TextBox x:Name="textTitle" Grid.Column="1" Grid.Row="0" Text="{Binding Path=FirstName, ValidatesOnExceptions=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{StaticResource ErrorTempl}" Height="20" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
         <TextBox x:Name="textBox2" Grid.Column="1" Grid.Row="1" Text="{Binding Path=LastName, ValidatesOnExceptions=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{StaticResource ErrorTempl}" Height="20" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
-        <TextBox x:Name="textBox3" Grid.Column="1" Grid.Row="2" Text="{Binding Path =Age, ValidatesOnExceptions=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{StaticResource ErrorTempl}" Height="20" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+        <TextBox x:Name="textBox3" Grid.Column="1" Grid.Row="2" Text="{Binding Path=Age, ValidatesOnExceptions=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{StaticResource ErrorTempl}" Height="20" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
         <TextBox x:Name="textBox4" Grid.Column="1" Grid.Row="3" Text="{Binding Path=Class, ValidatesOnExceptions=True , Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Validation.ErrorTemplate="{StaticResource ErrorTempl}" Height="20" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
         <StackPanel Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0" Grid.Row="4" Orientation="Horizontal">
             <Button x:Name="button1" Margin="10" Content="ОК" Width="50" Height="30" IsDefault="True" Click="btnOK_Click" />

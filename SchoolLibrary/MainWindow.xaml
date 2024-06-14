@@ -59,7 +59,7 @@
                 <Button x:Name="btnStudents" Click="btnListStudents">Показать читателей</Button>
                 <Button x:Name="btnCategories" Click="btnListCategories">Показать категории книг</Button>
                 <Button x:Name="btnBooks" Click="btnListBooks">Показать все книги библиотеки</Button>
-                <Button x:Name="btnLoans" Click="btnBookReport_Click">Показать все книги библиотеки</Button>
+                <Button x:Name="btnLoans" Click="btnBookReport_Click">Показать книги в </Button>
             </StackPanel>
             <DataGrid x:Name="dGrid" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" LoadingRow="dGrid_LoadingRow" 
                   AutoGenerateColumns="False" RowHeaderWidth="50">

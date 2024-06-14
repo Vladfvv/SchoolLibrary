@@ -20,7 +20,8 @@ namespace SchoolLibrary
     /// </summary>
     public partial class EditWindow : Window
     {
-        Student student;
+        public Student Student { get; private set; }
+
         public EditWindow()
         {
             InitializeComponent();
@@ -28,17 +29,18 @@ namespace SchoolLibrary
 
         public EditWindow(Student student) : this()
         {
-            this.student = student;
-            grid.DataContext = student;
+            Student = student;
+            grid.DataContext = Student;
         }
-        //9.Обработка событий нажатия кнопок может выглядеть так
+
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = true;
         }
+
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            this.DialogResult = false;
         }
 
 
