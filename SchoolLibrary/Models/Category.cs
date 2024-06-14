@@ -11,5 +11,18 @@ namespace SchoolLibrary.Models
     {
         public int CategoryID { get; set; }
         public string CategoryName { get; set; }
+
+        // свойство для связи с книгами
+        public virtual ICollection<Book> Books { get; set; }
+
+        // Конструктор по умолчанию
+        public Category()
+        {
+        }
+        // Конструктор
+        public Category(string categoryName)
+        {
+            CategoryName = categoryName;
+        }
     }
 }

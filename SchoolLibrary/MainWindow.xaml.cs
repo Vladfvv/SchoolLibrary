@@ -263,20 +263,21 @@ namespace SchoolLibrary
         private void ConfigureBooksColumns()
         {
             dGrid.Columns.Clear();
-            dGrid.Columns.Add(new DataGridTextColumn { Header = "Название книги", Binding = new Binding("Title"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
+            dGrid.Columns.Add(new DataGridTextColumn { Header = "ID", Binding = new Binding("BookID"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
+            dGrid.Columns.Add(new DataGridTextColumn { Header = "Название", Binding = new Binding("Title"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Автор", Binding = new Binding("Author"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Издательство", Binding = new Binding("Publisher"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
-            dGrid.Columns.Add(new DataGridTextColumn { Header = "Год издания", Binding = new Binding("YearPublished"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
+            dGrid.Columns.Add(new DataGridTextColumn { Header = "Год", Binding = new Binding("YearPublished"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
             dGrid.Columns.Add(new DataGridTextColumn { Header = "ISBN", Binding = new Binding("ISBN"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
-            dGrid.Columns.Add(new DataGridTextColumn { Header = "ID категории", Binding = new Binding("CategoryID"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Количество", Binding = new Binding("Quantity"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
+            dGrid.Columns.Add(new DataGridTextColumn { Header = "Категория", Binding = new Binding("Category.CategoryName"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
         }
 
 
         private void ConfigureLoansColumns()
         {
             dGrid.Columns.Clear();
-            dGrid.Columns.Add(new DataGridTextColumn { Header = "BookID", Binding = new Binding("BookID"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
+            dGrid.Columns.Add(new DataGridTextColumn { Header = "BookID", Binding = new Binding("Books.Title"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
             dGrid.Columns.Add(new DataGridTextColumn { Header = "StudentID", Binding = new Binding("StudentID"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Когда взяли", Binding = new Binding("LoanDate"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Когда должны вернуть", Binding = new Binding("DueDate"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
@@ -317,16 +318,58 @@ namespace SchoolLibrary
             }
         }
 
+        /* private void btnEdit_Click(object sender, RoutedEventArgs e)
+         {
+             Student student = dGrid.SelectedItem as Student;
+
+             EditWindow ew = new EditWindow(student);
+             var result = ew.ShowDialog();
+             if (result == true)
+             {
+                 context.SaveChanges();
+                 ew.Close();
+             }
+             else
+             {
+                 context.Entry(student).Reload();
+                 dGrid.DataContext = null;
+                 dGrid.DataContext = context.Students.Local;
+             }
+         }*/
+
+
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
+            // Проверяем, есть ли выбранный элемент
+            if (dGrid.SelectedItem == null)
+            {
+                MessageBox.Show("Пожалуйста, выберите студента для редактирования.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // Преобразуем выбранный элемент в тип Student
             Student student = dGrid.SelectedItem as Student;
 
+            // Проверяем, удалось ли преобразование
+            if (student == null)
+            {
+                MessageBox.Show("Не удалось получить данные выбранного студента.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // Создаем и показываем окно редактирования
             EditWindow ew = new EditWindow(student);
             var result = ew.ShowDialog();
+
+            // Обрабатываем результат работы окна редактирования
             if (result == true)
             {
                 context.SaveChanges();
-                ew.Close();
+                // Reload the updated data from the database
+                context.Entry(student).Reload();
+                // Update the DataGrid's DataContext
+                dGrid.ItemsSource = null;
+                dGrid.ItemsSource = context.Students.Local;
             }
             else
             {
@@ -334,7 +377,11 @@ namespace SchoolLibrary
                 dGrid.DataContext = null;
                 dGrid.DataContext = context.Students.Local;
             }
+
+            // Закрываем окно редактирования
+            ew.Close();
         }
+
 
         private void dGrid_LoadingRow(object sender, DataGridRowEventArgs e)
         {
@@ -448,7 +495,15 @@ namespace SchoolLibrary
         #endregion
         private void btnBookReport_Click(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                dGrid.ItemsSource = null;
+                InitLoansList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
