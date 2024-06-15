@@ -143,10 +143,24 @@ namespace SchoolLibrary
             new Category { CategoryName = "Физика"},
             new Category { CategoryName = "Химия"}
             });
+<<<<<<< HEAD
             */
+=======
+            Category english = new Category("Английский язык");
+>>>>>>> e7df47228f9744bf27b7531522afb52de91a54d8
 
+            context.Categories.Add(english);
 
+<<<<<<< HEAD
 
+=======
+            context.Books.AddRange(new Book[] { new Book { Title = "Математика 5 класс", Author = "Щурок В.Ф.", Publisher = "Аверсев", YearPublished = "2000", ISBN = "973-8-25-352", Category = english, Quantity = 10 },
+            new Book { Title = "Математика 1 класс", Author = "Иванов И.И.", Publisher = "Аверсев", YearPublished = "2001", ISBN = "978-1-23-456", CategoryID = 1, Quantity = 10 },
+            new Book { Title = "Русский язык 1 класс", Author = "Петров П.П.", Publisher = "Просвещение", YearPublished = "2001", ISBN = "978-2-34-567", CategoryID = 2, Quantity = 10 },
+            new Book { Title = "Литература 1 класс", Author = "Сидоров С.С.", Publisher = "Наука", YearPublished = "2001", ISBN = "978-3-45-678", CategoryID = 3, Quantity = 10 },
+            new Book { Title = "История 1 класс", Author = "Щурок В.Ф.", Publisher = "Феникс", YearPublished = "2001", ISBN = "978-4-56-789", CategoryID = 4, Quantity = 10 },
+            new Book { Title = "География 1 класс", Author = "Васильев В.В.", Publisher = "Экзамен", YearPublished = "2001", ISBN = "978-5-67-890", CategoryID = 5, Quantity = 10 },
+>>>>>>> e7df47228f9744bf27b7531522afb52de91a54d8
 
             /* context.Books.AddRange(new Book[] {
              new Book { Title = "Математика 1 класс", Author = "Иванов И.И.", Publisher = "Аверсев", YearPublished = "2001", ISBN = "978-1-23-456", Category = mathematics, Quantity = 10 },
@@ -349,9 +363,15 @@ namespace SchoolLibrary
            // Loan loan1 = new Loan { Book = bookBel10Class, Student = ivanIvanov, LoanDate = DateTime.Now.AddDays(-10), DueDate = DateTime.Now.AddDays(10), ReturnDate = null, Returned = false };
 
 
+<<<<<<< HEAD
 
 
                    new Loan { BookID = 1, StudentID = 1, LoanDate = DateTime.Now.AddDays(-10), DueDate = DateTime.Now.AddDays(10), ReturnDate = null, Returned = false },
+=======
+            context.Loans.AddRange(new Loan[]
+               {
+                                        new Loan { BookID = 1, StudentID = 1, LoanDate = DateTime.Now.AddDays(-10), DueDate = DateTime.Now.AddDays(10), ReturnDate = null, Returned = false },
+>>>>>>> e7df47228f9744bf27b7531522afb52de91a54d8
                     new Loan { BookID = 2, StudentID = 2, LoanDate = DateTime.Now.AddDays(-8), DueDate = DateTime.Now.AddDays(12), ReturnDate = DateTime.Now.AddDays(-1), Returned = true },
                     new Loan { BookID = 3, StudentID = 3, LoanDate = DateTime.Now.AddDays(-15), DueDate = DateTime.Now.AddDays(5), ReturnDate = null, Returned = false },
                     new Loan { BookID = 4, StudentID = 4, LoanDate = DateTime.Now.AddDays(-20), DueDate = DateTime.Now.AddDays(0), ReturnDate = DateTime.Now.AddDays(-5), Returned = true },
@@ -411,6 +431,7 @@ namespace SchoolLibrary
                     new Loan { BookID = 58, StudentID = 58, LoanDate = DateTime.Now.AddDays(-40), DueDate = DateTime.Now.AddDays(30), ReturnDate = null, Returned = false },
                     new Loan { BookID = 59, StudentID = 59, LoanDate = DateTime.Now.AddDays(-45), DueDate = DateTime.Now.AddDays(35), ReturnDate = DateTime.Now.AddDays(-10), Returned = true },
                     new Loan { BookID = 60, StudentID = 60, LoanDate = DateTime.Now.AddDays(-50), DueDate = DateTime.Now.AddDays(40), ReturnDate = null, Returned = false },
+<<<<<<< HEAD
                 });*/
 
 
@@ -452,4 +473,8 @@ namespace SchoolLibrary
 
         }
     }
+=======
+                });
+        }
+>>>>>>> e7df47228f9744bf27b7531522afb52de91a54d8
 }

@@ -17,7 +17,11 @@ namespace SchoolLibrary.Models
         public string YearPublished { get; set; }
         public string ISBN { get; set; }
         public int CategoryID { get; set; }
+<<<<<<< HEAD
        
+=======
+        public Category Category { get; set; }
+>>>>>>> e7df47228f9744bf27b7531522afb52de91a54d8
         public int Quantity { get; set; }
         // Навигационное свойство для связи с категорией
         public virtual Category Category { get; set; }
