@@ -1,0 +1,26 @@
+﻿<Window x:Class="SchoolLibrary.AuthWindows.RegisterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SchoolLibrary.AuthWindows"
+        mc:Ignorable="d"
+        Title="Регистрация"  WindowState="Maximized" Height="600" Width="800" Style="{StaticResource {x:Type Window}}" >
+    <Grid>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Text="Логин:"  HorizontalAlignment="Center"/>
+            <TextBox Name="UsernameTextBox" Width="200" Margin="10"/>
+            <TextBlock Text="Пароль:"  HorizontalAlignment="Center"/>
+            <PasswordBox Name="PasswordBox" Width="200" Margin="10"/>
+            <TextBlock Text="Тип пользователя:"  HorizontalAlignment="Center"/>
+            <ComboBox Name="RoleComboBox" Width="200" Margin="10">
+                <ComboBoxItem Content="Администратор"/>
+                <ComboBoxItem Content="Библиотекарь"/>
+                <ComboBoxItem Content="Читатель"/>
+            </ComboBox>
+            <Button Content="Зарегистрироваться" Width="180" Margin="10" Click="RegisterButton_Click" Style="{StaticResource RoundedButtonStyle}"/>
+            <TextBlock Text="У меня уже есть аккаунт:"  HorizontalAlignment="Center"/>
+            <Button Content="Войти" Width="100" Margin="10" Click="LoginButton_Click" Style="{StaticResource RoundedButtonStyle}"/>
+        </StackPanel>
+    </Grid>
+</Window>

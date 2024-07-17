@@ -1,23 +1,45 @@
-﻿using System;
+﻿using SchoolLibrary.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SchoolLibrary.Models
+public class Book
 {
-    //модель данных Book, представляющая таблицу Book в базе данных
-    public class Book
-    {
-        public int BookID { get; set; }
-        public string Title { get; set; }
-        public string Author { get; set; }
-        public string Publisher { get; set; }
-        public string YearPublished { get; set; }
-        public string ISBN { get; set; }
-        public int CategoryID { get; set; }
-        public Category Category { get; set; }
-        public int Quantity { get; set; }
+    public int BookID { get; set; }
+    public int Class { get; set; }
+    public string Description { get; set; }
+    public int CategoryID { get; set; }
+    public int Quantity { get; set; }
+    public int QuantityLeft { get; set; }
+    public virtual Category Category { get; set; }
+    public virtual ICollection<InventoryBook> InventoryBooks { get; set; }
+    public virtual ICollection<BookPhoto> BookPhotos { get; set; }
 
+    public Book()
+    {
+        InventoryBooks = new HashSet<InventoryBook>();
+        BookPhotos = new HashSet<BookPhoto>();
+    }
+
+    //public void UpdateQuantities()
+    //{
+    //    Quantity = InventoryBooks.Count;
+    //    QuantityLeft = Quantity - InventoryBooks.SelectMany(ib => ib.Loans)
+    //                                            .Count(loan => !loan.Returned);
+    //}
+    public void UpdateQuantities()
+    {
+        Quantity = InventoryBooks.Count;
+        QuantityLeft = InventoryBooks.Count(ib => !ib.Loans.Any(loan => !loan.Returned));
+    }
+    public void AddInventoryBook(InventoryBook inventoryBook)
+    {
+        InventoryBooks.Add(inventoryBook);
+        UpdateQuantities();
+    }
+
+    public void RemoveInventoryBook(InventoryBook inventoryBook)
+    {
+        InventoryBooks.Remove(inventoryBook);
+        UpdateQuantities();
     }
 }

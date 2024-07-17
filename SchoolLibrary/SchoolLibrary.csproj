@@ -71,18 +71,174 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="EntityContext.cs" />
-    <Compile Include="SearchBooksWindow.xaml.cs">
-      <DependentUpon>SearchBooksWindow.xaml</DependentUpon>
+    <Compile Include="AuthWindows\AuthService.cs" />
+    <Compile Include="AuthWindows\LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AuthWindows\MainWindowAdmin.xaml.cs">
+      <DependentUpon>MainWindowAdmin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AuthWindows\MainWindowLibrarian.xaml.cs">
+      <DependentUpon>MainWindowLibrarian.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AuthWindows\MainWindowUser.xaml.cs">
+      <DependentUpon>MainWindowUser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AuthWindows\PasswordHelper.cs" />
+    <Compile Include="AuthWindows\RegisterWindow.xaml.cs">
+      <DependentUpon>RegisterWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AuthWindows\StartWindow.xaml.cs">
+      <DependentUpon>StartWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AuthWindows\WelcomeWindow.xaml.cs">
+      <DependentUpon>WelcomeWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\DateToTodayComparisonConverter .cs" />
+    <Compile Include="DialogWindows\BookWindows\AddBookDialog.xaml.cs">
+      <DependentUpon>AddBookDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\BookWindows\EditBookDialog.xaml.cs">
+      <DependentUpon>EditBookDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\BookWindows\SearchBooksDialog.xaml.cs">
+      <DependentUpon>SearchBooksDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\CategoryWindows\AddCategoryDialog.xaml.cs">
+      <DependentUpon>AddCategoryDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\CategoryWindows\DeleteCategoryDialog.xaml.cs">
+      <DependentUpon>DeleteCategoryDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\CategoryWindows\EditCategoryDialog.xaml.cs">
+      <DependentUpon>EditCategoryDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\DateToTodayComparisonConverter.cs" />
+    <Compile Include="DialogWindows\LoanWindows\LoanDialog.xaml.cs">
+      <DependentUpon>LoanDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\LoanWindows\ReturnBookDialog.xaml.cs">
+      <DependentUpon>ReturnBookDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\LoanWindows\SearchLoanedBooksDialog.xaml.cs">
+      <DependentUpon>SearchLoanedBooksDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\LoanWindows\StudentDetailsWindow.xaml.cs">
+      <DependentUpon>StudentDetailsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\Operations\ConfirmExitWindow.xaml.cs">
+      <DependentUpon>ConfirmExitWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\StudentWindows\AddStudentDialog.xaml.cs">
+      <DependentUpon>AddStudentDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\StudentWindows\DeleteStudentDialog.xaml.cs">
+      <DependentUpon>DeleteStudentDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\StudentWindows\EditStudentDialog.xaml.cs">
+      <DependentUpon>EditStudentDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\StudentWindows\SearchStudentDialog.xaml.cs">
+      <DependentUpon>SearchStudentDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EntityContext.cs" />
+    <Compile Include="Models\AvailableBook.cs" />
+    <Compile Include="Models\BookInventoryViewModel.cs" />
+    <Compile Include="Models\BookPhoto.cs" />
+    <Compile Include="Models\IDeletable.cs" />
+    <Compile Include="Models\InventoryBook.cs" />
+    <Compile Include="Models\InventoryBookStorage.cs" />
+    <Compile Include="Models\LoanStorage.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
-    <Page Include="AddBookWindow.xaml">
+    <Compile Include="ViewModels\LoanBookStudentViewModel.cs" />
+    <Page Include="AuthWindows\LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EditWindow.xaml">
+    <Page Include="AuthWindows\MainWindowAdmin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AuthWindows\MainWindowLibrarian.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AuthWindows\MainWindowUser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AuthWindows\RegisterWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AuthWindows\StartWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AuthWindows\WelcomeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\BookWindows\AddBookDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\BookWindows\EditBookDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\BookWindows\SearchBooksDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\CategoryWindows\AddCategoryDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\CategoryWindows\DeleteCategoryDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\CategoryWindows\EditCategoryDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\LoanWindows\LoanDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\LoanWindows\ReturnBookDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\LoanWindows\SearchLoanedBooksDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\LoanWindows\StudentDetailsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\Operations\ConfirmExitWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\StudentWindows\AddStudentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\StudentWindows\DeleteStudentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\StudentWindows\EditStudentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\StudentWindows\SearchStudentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -90,25 +246,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="AddBookWindow.xaml.cs">
-      <DependentUpon>AddBookWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataBaseInitializer.cs" />
-    <Compile Include="EditWindow.xaml.cs">
-      <DependentUpon>EditWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="SearchBooksWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="SplashScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -119,7 +265,6 @@
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Loan.cs" />
     <Compile Include="Models\Student.cs" />
-    <Compile Include="Notice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -150,6 +295,51 @@
     <DesignData Include="gif2.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </DesignData>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\gif2.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Add reader.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Add book.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Delete book.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Find book.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Find reader.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Edit book.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Delete reader.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Edit reader.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\22412.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\25554.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\26061.jpg" />
+    <Resource Include="Resources\3.png" />
+    <Resource Include="Resources\4.png" />
+    <Resource Include="Resources\5.png" />
+    <Resource Include="Resources\7.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

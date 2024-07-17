@@ -5,43 +5,70 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolLibrary"
         mc:Ignorable="d"
-        Title="MainWindow" 
-        WindowState="Maximized" d:DesignHeight="600" d:DesignWidth="800">
-
+        Title="Программное средство для организации учета книг в школьной библиотеке" 
+        WindowState="Maximized" d:DesignHeight="600" d:DesignWidth="800" Style="{StaticResource {x:Type Window}}" 
+       
+        Closing="Window_Closing">
+    
+    <Window.CommandBindings>
+        <!--привязка для команды Help, которая используется для выполнения команды help-->
+        <CommandBinding Command="Help" Executed="WindowBinding_Executed" />
+    </Window.CommandBindings>
 
 
     <!--6.Создание базовой разметки главного окна-->
     <Window.Resources>
         <Style TargetType="{x:Type Button}">
             <Setter Property="Margin" Value="5,2"/>
+            <Setter Property="Padding" Value="0, 0, 0, 0"/>
         </Style>
+        <!--<Style TargetType="ToolTip">
+            <Setter Property="ToolTipService.InitialShowDelay" Value="1"/>
+            <Setter Property="ToolTipService.ShowDuration" Value="1000"/>
+        </Style>-->
+
     </Window.Resources>
-    <DockPanel>
-        <!-- Меню -->
-        <Menu DockPanel.Dock="Top">
-            <!-- Книги -->
+    
+    <DockPanel>       
+        <Menu DockPanel.Dock="Top" >           
             <MenuItem Header="Книги">
                 <MenuItem Header="Все книги" Click="btnListBooks"/>
-                <MenuItem Header="Поиск" Click="btnSearchBooks_Click"/>
+                <MenuItem Header="Доступные книги" Click="btnShowAvailableBooksButton_Click"/>
+                <MenuItem Header="Поиск книг по параметрам" Click="btnSearchBooks_Click"/>               
                 <MenuItem Header="Добавить" Click="btnAddBook_Click"/>
+                <MenuItem Header="Редактировать" Click="btnEditBook_Click"/>
                 <MenuItem Header="Удалить" Click="btnDeleteBook_Click"/>
-                <MenuItem Header="Выход"></MenuItem>
-            </MenuItem>
-            <!-- Читатели -->
+                <MenuItem Header="Выход" Command=""></MenuItem>       
+
+            </MenuItem>            
             <MenuItem Header="Читатели">
-                <MenuItem Header="Все читатели" Click="btnListStudents_Click"/>
+                <MenuItem Header="Все читатели" Click="btnListStudents"/>
                 <MenuItem Header="Поиск" Click="btnSearchStudents_Click"/>
                 <MenuItem Header="Добавить" Click="btnAddStudent_Click"/>
+                <MenuItem Header="Редактировать" Click="btnEditStudent_Click"/>
                 <MenuItem Header="Удалить" Click="btnDeleteStudent_Click"/>
             </MenuItem>
-            <!-- Движение -->
-            <MenuItem Header="Движение книг">
-                <MenuItem Header="Отчет по книгам" Click="btnBookReport_Click"/>
-                <MenuItem Header="Движение по книге" Click="btnMovementByBook_Click"/>
-                <MenuItem Header="Движение по читателю" Click="btnMovementByStudent_Click"/>
+            <MenuItem Header="Категории книг">
+                <MenuItem Header="Все категории"/>
+                <MenuItem Header="Поиск категории"/>
+                <MenuItem Header="Добавить категорию" Click="btnAddCategory_Click"/>
+                <MenuItem Header="Редактировать категорию" Click="btnEditCategory_Click"/>
+                <MenuItem Header="Удалить категорию" Click="btnDeleteCategory_Click"/>
             </MenuItem>
-            <!-- Справка -->
-            <MenuItem Header="Справка" Click="btnHelp_Click"/>
+            <MenuItem Header="Выдача книг">
+                <MenuItem Header="Оформить книгу на читателя" Click="LoanBookButton_Click"/>
+                <MenuItem Header="Оформить возврат книги" Click="ReturnBookButton_Click"/>
+                <MenuItem Header="Отчет по книгам" Click="btnBookReport_Click"/>
+                <MenuItem Header="Поиск по книгам" Click="btnSearchLoanedBooks_Click"/>
+                <!--<MenuItem Header="Движение по книге" Click="btnMovementByBook_Click"/>
+                <MenuItem Header="Движение по читателю" Click="btnMovementByStudent_Click"/>-->
+            </MenuItem>
+            <MenuItem Header="Инвентаризация">
+                <MenuItem Header="Фонд книг"/>
+                <MenuItem Header="Приход книги"/>
+                <MenuItem Header="Расход книги"/>                
+            </MenuItem>
+            <MenuItem Header="Справка" Command="ApplicationCommands.Help"/>
         </Menu>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -49,17 +76,64 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.07*"></RowDefinition>
+                <RowDefinition Height="45"></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <StackPanel x:Name="stackButtons" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
-                <Button x:Name="btnAdd" Click="btnAdd_Click">Добавить извещение</Button>
-                <Button x:Name="btnDelete" Click="btnDelete_Click">Удалить извещение</Button>
-                <Button x:Name="btnEdit" Click="btnEdit_Click">Редактировать извещение</Button>
+                <Button x:Name="btnFindBook" Click="btnSearchBooks_Click">
+                    <Button.ToolTip>
+                        <ToolTip>Найти книгу</ToolTip>
+                    </Button.ToolTip>
+                    <Image Source="Resources/Find book.png" Width="40" Height="40"/>
+                </Button>
+                <Button x:Name="btnAdd" Click="btnAddBook_Click">
+                    <Button.ToolTip>
+                        <ToolTip>Добавить книгу</ToolTip>
+                    </Button.ToolTip>
+                    <Image Source="Resources/Add book.png" Width="40" Height="40"/>
+                </Button>
+                <Button x:Name="btnEdit" Click="btnEditBook_Click">
+                    <Button.ToolTip>
+                        <ToolTip>Редактировать книгу</ToolTip>
+                    </Button.ToolTip>
+                    <Image Source="Resources/Edit book.png" Width="40" Height="40"/>
+                </Button>
+                <Button x:Name="btnDelete" Click="btnDeleteBook_Click">
+                    <Button.ToolTip>
+                        <ToolTip>Удалить книгу</ToolTip>
+                    </Button.ToolTip>
+                    <Image Source="Resources/Delete book.png" Width="40" Height="40"/>
+                </Button>
+                <Button x:Name="btnFindStudent" Click="btnSearchStudents_Click">
+                    <Button.ToolTip>
+                        <ToolTip>Найти читателя</ToolTip>
+                    </Button.ToolTip>
+                    <Image Source="Resources/Find reader.png" Width="40" Height="40"/>
+                </Button>
+                <Button x:Name="btnAddStudent" Click="btnAddStudent_Click">
+                    <Button.ToolTip>
+                        <ToolTip>Добавить читателя</ToolTip>
+                    </Button.ToolTip>
+                    <Image Source="Resources/Add reader.png" Width="40" Height="40"/>
+                </Button>
+                <Button x:Name="btnEditStudent" Click="btnEditStudent_Click">
+                    <Button.ToolTip>
+                        <ToolTip>Редактировать читателя</ToolTip>
+                    </Button.ToolTip>
+                    <Image Source="Resources/Edit reader.png" Width="40" Height="40"/>
+                </Button>
+                <!--<Button x:Name="btnDeleteStudent" Click="btnDeleteStudent_Click">-->
+                <Button x:Name="btnDeleteStudent" Click="btnDelete_Click">
+                    <Button.ToolTip>
+                        <ToolTip>Удалить читателя</ToolTip>
+                    </Button.ToolTip>
+                    <Image Source="Resources/Delete reader.png" Width="40" Height="40"/>
+                </Button>
                 <Button x:Name="btnStudents" Click="btnListStudents">Показать читателей</Button>
                 <Button x:Name="btnCategories" Click="btnListCategories">Показать категории книг</Button>
                 <Button x:Name="btnBooks" Click="btnListBooks">Показать все книги библиотеки</Button>
-                <Button x:Name="btnLoans" Click="btnBookReport_Click">Показать книги в </Button>
+                <Button x:Name="btnLoans" Click="btnBookReport_Click">Выдача книг</Button>
+                <Button x:Name="btnInventoryBooks" Click="btnListInventoryBook">Инвентарный журнал</Button>
             </StackPanel>
             <DataGrid x:Name="dGrid" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" LoadingRow="dGrid_LoadingRow" 
                   AutoGenerateColumns="False" RowHeaderWidth="50">

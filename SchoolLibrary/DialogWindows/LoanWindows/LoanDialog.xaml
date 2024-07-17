@@ -1,0 +1,64 @@
+﻿<Window x:Class="SchoolLibrary.DialogWindows.LoanWindows.LoanDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SchoolLibrary.DialogWindows.LoanWindows"
+        mc:Ignorable="d"
+        Title="Выдача книги" Height="640" Width="800" Style="{StaticResource {x:Type Window}}"
+        MouseDown="Window_MouseDown"
+        WindowStyle="SingleBorderWindow"
+        ResizeMode="CanResize">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Content="Книга:" VerticalAlignment="Center"/>
+        <DataGrid x:Name="BooksDataGrid" Grid.Row="0" Grid.ColumnSpan="2" AutoGenerateColumns="False" SelectionMode="Single" SelectionChanged="BooksDataGrid_SelectionChanged" Margin="5" Height="200">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="№п/п" Binding="{Binding BookID}" />
+                <DataGridTextColumn Header="Название" Binding="{Binding Title}" />
+                <DataGridTextColumn Header="Автор" Binding="{Binding Author}" />
+                <DataGridTextColumn Header="Издатель" Binding="{Binding Publisher}" />
+                <DataGridTextColumn Header="Год издания" Binding="{Binding YearPublished}" />
+                <DataGridTextColumn Header="Количество" Binding="{Binding Quantity}" />
+                <DataGridTextColumn Header="Остаток" Binding="{Binding QuantityLeft}" />
+                <DataGridTextColumn Header="Категория" Binding="{Binding CategoryName}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+
+        <Label Grid.Row="1" Grid.Column="0" Content="Студенты:" VerticalAlignment="Center"/>
+        <DataGrid x:Name="StudentsDataGrid" Grid.Row="1" Grid.ColumnSpan="2" AutoGenerateColumns="False" SelectionMode="Single" SelectionChanged="StudentsDataGrid_SelectionChanged" Margin="5" Height="200">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="№п/п" Binding="{Binding StudentID}" />
+                <DataGridTextColumn Header="Имя" Binding="{Binding FirstName}" />
+                <DataGridTextColumn Header="Фамилия" Binding="{Binding LastName}" />
+                <DataGridTextColumn Header="Возраст" Binding="{Binding Age}" />
+                <DataGridTextColumn Header="Класс" Binding="{Binding Class}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Label Grid.Row="2" Grid.Column="0" Content="Дата выдачи:" VerticalAlignment="Center"/>
+        <DatePicker Grid.Row="2" Grid.Column="1" Name="LoanDatePicker" Margin="5"/>
+
+        <Label Grid.Row="3" Grid.Column="0" Content="Дата возврата:" VerticalAlignment="Center"/>
+        <DatePicker Grid.Row="3" Grid.Column="1" Name="DueDatePicker" Margin="5"/>
+
+        <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
+            <Button Content="Выдать книгу" Width="100" Margin="5" Click="LoanButton_Click"/>
+            <Button Content="Отмена" Width="75" Margin="5" Click="CancelButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -39,6 +39,13 @@ CREATE TABLE Loans (
 );
 
 
+CREATE TABLE Users (
+    Id INT PRIMARY KEY IDENTITY,
+    Username NVARCHAR(50) NOT NULL,
+    PasswordHash VARBINARY(64) NOT NULL,
+    Salt VARBINARY(32) NOT NULL,
+    Role NVARCHAR(20) NOT NULL
+);
 
 
 
@@ -68,3 +75,5 @@ IF OBJECT_ID('dbo.Categories', 'U') IS NOT NULL
 -- Удаление таблицы Students
 IF OBJECT_ID('dbo.Students', 'U') IS NOT NULL
     DROP TABLE dbo.Students;
+
+Delete From USERS;
