@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SchoolLibrary.Models;
+using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
 namespace SchoolLibrary.AuthWindows
@@ -20,12 +11,40 @@ namespace SchoolLibrary.AuthWindows
     /// </summary>
     public partial class WelcomeWindow : Window
     {
-        //автоматически закрывать приветственное окно через 3 секунды и открывать соответствующее окно в зависимости от роли пользователя
         public WelcomeWindow()
         {
             InitializeComponent();
-            DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(3);
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Начальные размеры окна
+            this.Width = 200;
+            this.Height = 150;
+
+            // Анимация увеличения окна
+            DoubleAnimation widthAnimation = new DoubleAnimation
+            {
+                From = 200,
+                To = 600,
+                Duration = TimeSpan.FromSeconds(1)
+            };
+            DoubleAnimation heightAnimation = new DoubleAnimation
+            {
+                From = 150,
+                To = 400,
+                Duration = TimeSpan.FromSeconds(1)
+            };
+
+            // Запуск анимации
+            this.BeginAnimation(Window.WidthProperty, widthAnimation);
+            this.BeginAnimation(Window.HeightProperty, heightAnimation);
+
+            // Таймер для автоматического закрытия окна через 5 секунд
+            DispatcherTimer timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(7)
+            };
             timer.Tick += Timer_Tick;
             timer.Start();
         }
@@ -38,32 +57,27 @@ namespace SchoolLibrary.AuthWindows
 
         private void OpenRoleBasedWindow()
         {
-            // Проверка роли пользователя и открытие соответствующего окна
-            string role = GetUserRole(); //  метод для получения роли пользователя
-
-            switch (role)
+            // Открытие соответствующего окна в зависимости от роли
+            switch (UserSession.Role)
             {
-                case "Administrator":
-                    new MainWindowAdmin().Show();
+                case "Администратор":
+                    MainWindowAdmin mainWindowAdmin = new MainWindowAdmin();
+                    mainWindowAdmin.Show();
                     break;
-                case "Librarian":
-                    new MainWindowLibrarian().Show();
+                case "Библиотекарь":
+                    MainWindowLibrarian mainWindowLibrarian = new MainWindowLibrarian();
+                    mainWindowLibrarian.Show();
                     break;
-                case "User":
-                    new MainWindowUser().Show();
+                case "Читатель":
+                    MainWindowUser mainWindowUser = new MainWindowUser();
+                    mainWindowUser.Show();
                     break;
                 default:
-                    MessageBox.Show("Неизвестная роль пользователя.");
+                    MessageBox.Show("Неизвестная роль пользователя.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                     break;
             }
 
             this.Close();
-        }
-
-        private string GetUserRole()
-        {
-            // Здесь нужно реализовать логику для получения роли пользователя, например, из базы данных
-            return "User"; // Для примера возвращаем роль User
         }
     }
 }

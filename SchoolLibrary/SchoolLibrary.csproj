@@ -150,6 +150,7 @@
     <Compile Include="Models\InventoryBookStorage.cs" />
     <Compile Include="Models\LoanStorage.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserSession.cs" />
     <Compile Include="SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>

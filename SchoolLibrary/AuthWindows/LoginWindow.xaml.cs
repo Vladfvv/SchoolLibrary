@@ -135,29 +135,37 @@ namespace SchoolLibrary.AuthWindows
                 return;
             }
 
-            // Получение роли пользователя
-            string role = GetUserRole(user);
+            // Сохранение информации о пользователе в сессии
+            UserSession.UserId = user.Id;
+            UserSession.Username = user.Username;
+            UserSession.Role = user.Role;
 
-            // Открытие соответствующего окна в зависимости от роли
-            switch (role)
-            {
-                case "Администратор":
-                    MainWindowAdmin mainWindowAdmin = new MainWindowAdmin();
-                    mainWindowAdmin.Show();
-                    break;
-                case "Библиотекарь":
-                    MainWindowLibrarian mainWindowLibrarian = new MainWindowLibrarian();
-                    mainWindowLibrarian.Show();
-                    break;
-                case "Читатель":
-                    MainWindowUser mainWindowUser = new MainWindowUser();
-                    mainWindowUser.Show();
-                    break;
-                default:
-                    MessageBox.Show("Неизвестная роль пользователя.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                    break;
-            }
 
+            //// Получение роли пользователя
+            //string role = GetUserRole(user);
+
+            //// Открытие соответствующего окна в зависимости от роли
+            //switch (role)
+            //{
+            //    case "Администратор":
+            //        MainWindowAdmin mainWindowAdmin = new MainWindowAdmin();
+            //        mainWindowAdmin.Show();
+            //        break;
+            //    case "Библиотекарь":
+            //        MainWindowLibrarian mainWindowLibrarian = new MainWindowLibrarian();
+            //        mainWindowLibrarian.Show();
+            //        break;
+            //    case "Читатель":
+            //        MainWindowUser mainWindowUser = new MainWindowUser();
+            //        mainWindowUser.Show();
+            //        break;
+            //    default:
+            //        MessageBox.Show("Неизвестная роль пользователя.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            //        break;
+            //}
+
+            WelcomeWindow welcomeWindow = new WelcomeWindow();  
+            welcomeWindow.Show();
             this.Close();
         }
 

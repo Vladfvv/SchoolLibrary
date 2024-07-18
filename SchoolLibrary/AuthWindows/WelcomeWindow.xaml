@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolLibrary.AuthWindows"
         mc:Ignorable="d"
-         Title="Welcome" Height="200" Width="400">
+        Title="Welcome" Height="200" Width="400"
+        WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded">
     <Grid>
         <TextBlock Text="Добро пожаловать в SchoolLibrary!" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
     </Grid>
