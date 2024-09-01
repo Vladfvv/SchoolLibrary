@@ -273,14 +273,8 @@
     <Compile Include="Views\StartLibrarianWindow.xaml.cs">
       <DependentUpon>StartLibrarianWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StartLibrarianWindow2.xaml.cs">
-      <DependentUpon>StartLibrarianWindow2.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\StartUserWindow.xaml.cs">
       <DependentUpon>StartUserWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\StartUserWindow2.xaml.cs">
-      <DependentUpon>StartUserWindow2.xaml</DependentUpon>
     </Compile>
     <Page Include="AuthWindows\LoginWindow.xaml">
       <SubType>Designer</SubType>
@@ -451,15 +445,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StartLibrarianWindow2.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\StartUserWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\StartUserWindow2.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
