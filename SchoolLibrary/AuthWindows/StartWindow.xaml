@@ -6,25 +6,7 @@
         xmlns:local="clr-namespace:SchoolLibrary.AuthWindows"
         mc:Ignorable="d"
         Title="Выберите войти или зарегистрироваться" Height="450" Width="800"
-        WindowState="Maximized" Style="{StaticResource {x:Type Window}}">
-    <Window.Resources>
-        <Style x:Key="RoundedButtonStyle" TargetType="Button">
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="Background" Value="LightGray"/>
-            <Setter Property="BorderBrush" Value="Gray"/>
-            <Setter Property="BorderThickness" Value="2"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="10" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Window.Resources>
+        WindowState="Maximized" Style="{StaticResource {x:Type Window}}"> 
     <Grid>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
             <Button Content="Войти" Width="120" Margin="12" Click="LoginButton_Click"  Style="{StaticResource RoundedButtonStyle}"/>

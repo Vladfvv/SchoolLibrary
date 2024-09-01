@@ -19,9 +19,9 @@ namespace SchoolLibrary.Models
         public double Price { get; set; }
         public DateTime DateOfReceipt { get; set; }
         public string IncomingInvoice { get; set; }
-        public DateTime? DateOfDisposal { get; set; }
-        public string OutgoingInvoice { get; set; }
-        public string ReasonForDisposal { get; set; }
+      //  public DateTime? DateOfDisposal { get; set; }
+     //   public string OutgoingInvoice { get; set; }
+     //   public string ReasonForDisposal { get; set; }
         public int? BookID { get; set; }
         public virtual Book Book { get; set; }
         public virtual ICollection<Loan> Loans { get; set; }
@@ -33,7 +33,7 @@ namespace SchoolLibrary.Models
 
         public override string ToString()
         {
-            return $"InventoryBookID: {InventoryBookID}, Inventory Number: {InventoryNumber}, ISBN: {ISBN}, Title: {Title}, Author: {Author}, Year Published: {YearPublished}, Price: {Price}, Date of Receipt: {DateOfReceipt}, Incoming Invoice: {IncomingInvoice}, Date of Disposal: {DateOfDisposal}, Outgoing Invoice: {OutgoingInvoice}, Reason for Disposal: {ReasonForDisposal}";
+            return $"InventoryBookID: {InventoryBookID}, Inventory Number: {InventoryNumber}, ISBN: {ISBN}, Title: {Title}, Author: {Author}, Year Published: {YearPublished}, Price: {Price}, Date of Receipt: {DateOfReceipt}, Incoming Invoice: {IncomingInvoice}";
         }
     }
 }

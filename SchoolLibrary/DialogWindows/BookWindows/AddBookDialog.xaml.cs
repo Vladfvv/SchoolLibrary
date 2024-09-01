@@ -9,6 +9,7 @@ using System.Windows.Markup;
 using System.IO;
 using System.Windows.Media.Imaging;
 using System.Text.RegularExpressions;
+using System.Windows.Controls;
 
 
 namespace SchoolLibrary.DialogWindows
@@ -20,22 +21,50 @@ namespace SchoolLibrary.DialogWindows
         public AddBookDialog(EntityContext dbContext)
         {
             InitializeComponent();
+            // Центрирование окна на экране
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             this.context = dbContext;
             this.Loaded += AddBookDialog_Loaded; // Add Loaded event handler
             dpDateOfReceipt.Language = XmlLanguage.GetLanguage("ru-RU");
-            LoadCategories();
+            dpDateOfReceipt.FirstDayOfWeek = DayOfWeek.Monday;            
+            LoadGenres();
         }
-        private void LoadCategories()
+        
+        private void LoadGenres()
         {
             try
             {
-                var categories = context.Categories.ToList();
-                cmbCategory.ItemsSource = categories;
-                cmbCategory.DisplayMemberPath = "CategoryName";
+                var genres = context.Genres.ToList();
+                cmbGenre.ItemsSource = genres;
+                cmbGenre.DisplayMemberPath = "GenreName";
+                cmbGenre.SelectedItem = null;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading categories: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Ошибка загрузки жанров: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+        private void LoadSubjects(int genreId)
+        {
+            try
+            {
+                var subjects = context.Subjects.Where(s => s.GenreID == genreId).ToList();
+                cmbSubject.ItemsSource = subjects;
+                cmbSubject.DisplayMemberPath = "SubjectName";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки предметов: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void cmbGenre_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cmbGenre.SelectedItem is Genre selectedGenre)
+            {
+                LoadSubjects(selectedGenre.GenreID);
             }
         }
 
@@ -43,7 +72,7 @@ namespace SchoolLibrary.DialogWindows
         {
             InitializeInventoryNumber();
         }
-            
+
 
         private void InitializeInventoryNumber()
         {
@@ -66,9 +95,8 @@ namespace SchoolLibrary.DialogWindows
             {
                 txtInventoryNumber.Text = "1";
             }
-
         }
-             
+
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -83,22 +111,14 @@ namespace SchoolLibrary.DialogWindows
                     errorMessage += "Пожалуйста, введите издателя книги.\n";
                 if (!int.TryParse(txtYear.Text, out int year) || year < 1900 || year > DateTime.Now.Year)
                     errorMessage += "Пожалуйста, введите корректный год издания книги (от 1900 до текущего года).\n";
-                if (string.IsNullOrWhiteSpace(txtISBN.Text))
-                    errorMessage += "Пожалуйста, введите ISBN книги(13 цифр).\n";
-                if (!long.TryParse(txtISBN.Text, out long isbn))
-                    errorMessage += "Пожалуйста, введите корректный ISBN книги(13 цифр).\n";
-                if (txtISBN.Text.Length > 13)
-                    errorMessage += "Пожалуйста, введите корректный ISBN книги(не более 13 цифр).\n";
-                if (!double.TryParse(txtPrice.Text, out double price) || price <= 0.0 )
-                    errorMessage += "Пожалуйста, введите корректную цену книги (через точку например 5.5).\n";
-                if (!Regex.IsMatch(txtPrice.Text, @"^\d+(\.\d{1,2})?$"))
-                    errorMessage += "Пожалуйста, введите корректную цену книги (число после точки - только 2 цифры).\n";
-                if (string.IsNullOrWhiteSpace(txtInventoryNumber.Text))
-                    errorMessage += "Пожалуйста, введите инвентарный номер книги(целое число).\n";
-                if (!int.TryParse(txtInventoryNumber.Text, out int invetoryNumber))
-                    errorMessage += "Пожалуйста, введите корректный инвентарный номер книги(целое число).\n";
+                if (string.IsNullOrWhiteSpace(txtISBN.Text) || txtISBN.Text.Length != 13 || !long.TryParse(txtISBN.Text, out long isbn))
+                    errorMessage += "Пожалуйста, введите корректный ISBN книги (13 цифр).\n";
+                if (!double.TryParse(txtPrice.Text, out double price) || price <= 0.0 || !Regex.IsMatch(txtPrice.Text, @"^\d+(\.\d{1,2})?$"))
+                    errorMessage += "Пожалуйста, введите корректную цену книги (через точку например 5.5, не более 2 цифр после точки).\n";
+                if (string.IsNullOrWhiteSpace(txtInventoryNumber.Text) || !int.TryParse(txtInventoryNumber.Text, out int inventoryNumber))
+                    errorMessage += "Пожалуйста, введите корректный инвентарный номер книги (целое число).\n";
                 if (!int.TryParse(txtClass.Text, out int bookClass) || bookClass < 1 || bookClass > 11)
-                    errorMessage += "Пожалуйста, введите правильный класс к которому относится книга (число от 1 до 11).\n";
+                    errorMessage += "Пожалуйста, введите правильный класс, к которому относится книга (число от 1 до 11).\n";
                 if (string.IsNullOrWhiteSpace(txtIncomingInvoice.Text))
                     errorMessage += "Пожалуйста, введите номер входящей накладной.\n";
                 if (!int.TryParse(txtQuantity.Text, out int quantity) || quantity < 1)
@@ -110,28 +130,16 @@ namespace SchoolLibrary.DialogWindows
                     throw new Exception(errorMessage);
                 }
 
-                // var inventoryNumber = int.Parse(txtInventoryNumber.Text);
-                // Инициализация переменной инвентарного номера
-                var inventoryNumber = 0;
-
-                // Извлечение всех инвентарных номеров как строк
                 var inventoryNumbers = context.InventoryBooks
-                    .Select(ib => ib.InventoryNumber)
-                    .ToList();
+                     .Select(ib => ib.InventoryNumber)
+                     .ToList();
 
-                // Конвертирование строк в целые числа и поиск максимального номера
+                // Генерация нового инвентарного номера
                 var maxInventoryNumber = inventoryNumbers
                     .Where(num => int.TryParse(num, out _))
                     .Select(num => int.Parse(num))
                     .DefaultIfEmpty(0)
                     .Max();
-
-                inventoryNumber = maxInventoryNumber + 1;
-
-
-
-
-
 
                 var newInventoryBooks = new List<InventoryBook>();
 
@@ -145,13 +153,14 @@ namespace SchoolLibrary.DialogWindows
                         YearPublished = txtYear.Text,
                         ISBN = txtISBN.Text,
                         Price = price,
-                        InventoryNumber = (inventoryNumber + i).ToString(),
+                        InventoryNumber = (maxInventoryNumber + i + 1).ToString(),
                         IncomingInvoice = txtIncomingInvoice.Text,
                         DateOfReceipt = dpDateOfReceipt.SelectedDate ?? DateTime.Now
                     };
                     newInventoryBooks.Add(inventoryBook);
                 }
 
+                // Проверка на существующую книгу
                 var existingInventoryBook = context.InventoryBooks.FirstOrDefault(ib => ib.ISBN == txtISBN.Text);
 
                 if (existingInventoryBook != null)
@@ -161,7 +170,7 @@ namespace SchoolLibrary.DialogWindows
                         existingInventoryBook.Publisher != txtPublisher.Text ||
                         existingInventoryBook.YearPublished != txtYear.Text ||
                         existingInventoryBook.Book.Class != bookClass ||
-                        existingInventoryBook.Book.CategoryID != (cmbCategory.SelectedItem as Category).CategoryID)
+                        existingInventoryBook.Book.GenreID != (cmbGenre.SelectedItem as Genre).GenreID)
                     {
                         errorMessage = "Книга с таким ISBN существует - вы ввели неверные данные для данного ISBN:\n";
                         if (existingInventoryBook.Title != txtTitle.Text)
@@ -174,8 +183,8 @@ namespace SchoolLibrary.DialogWindows
                             errorMessage += "Год издания не совпадает - в базе данных: " + existingInventoryBook.YearPublished + "\n";
                         if (existingInventoryBook.Book.Class != bookClass)
                             errorMessage += "Класс не совпадает - в базе данных: " + existingInventoryBook.Book.Class + "\n";
-                        if (existingInventoryBook.Book.CategoryID != (cmbCategory.SelectedItem as Category).CategoryID)
-                            errorMessage += "Категория не совпадает - в базе данных: " + existingInventoryBook.Book.Category.CategoryName + "\n";
+                        if (existingInventoryBook.Book.GenreID != (cmbGenre.SelectedItem as Genre).GenreID)
+                            errorMessage += "Жанр не совпадает - в базе данных: " + existingInventoryBook.Book.Genre.GenreName + "\n";
 
                         MessageBox.Show(errorMessage, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
@@ -189,21 +198,57 @@ namespace SchoolLibrary.DialogWindows
                         }
                         existingInventoryBook.Book.Quantity += quantity;
                         existingInventoryBook.Book.QuantityLeft += quantity;
-                        existingInventoryBook.Book.Description = txtDescription.Text; // Update the description
+                        existingInventoryBook.Book.Description = txtDescription.Text;
                         AddBookPhotos(existingInventoryBook.Book);
                     }
                 }
                 else
-                {
-                    var newBook = new Book
+                {     
+                    Book newBook = null; // Инициализация переменной
+
+                    if (cmbGenre.SelectedItem is Genre selectedGenre)
                     {
-                        Class = bookClass,
-                        CategoryID = (cmbCategory.SelectedItem as Category).CategoryID,
-                        Quantity = quantity,
-                        QuantityLeft = quantity,
-                        Category = cmbCategory.SelectedItem as Category,
-                        Description = txtDescription.Text // Save the description
-                    };
+                        // Проверка на наличие жанра "Учебная литература" и отсутствие выбранного предмета
+                        if (selectedGenre.GenreName == "Учебная литература" && cmbSubject.SelectedItem == null)
+                        {
+                            MessageBox.Show("Для жанра 'Учебная литература' необходимо выбрать предмет.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return; // Выход из метода, если условие не выполнено
+                        }
+
+                        // Если жанр не "Учебная литература" и предмет не выбран
+                        if (selectedGenre.GenreName != "Учебная литература" && cmbSubject.SelectedItem == null)
+                        {
+                            // Установка значения по умолчанию для Subject
+                            cmbSubject.SelectedItem = new Subject { SubjectID = 0, SubjectName = "Без предмета" };
+                        }
+
+                        // Проверка на наличие значений перед созданием объекта Book
+                        if (bookClass != null && quantity > 0 && !string.IsNullOrEmpty(txtDescription.Text))
+                        {
+                            newBook = new Book
+                            {
+                                Class = bookClass,
+                                GenreID = selectedGenre.GenreID,
+                                SubjectID = (cmbSubject.SelectedItem as Subject)?.SubjectID ?? 0, // Используем "??" чтобы избежать NullReferenceException
+                                Quantity = quantity,
+                                QuantityLeft = quantity,
+                                Genre = selectedGenre,
+                                Subject = cmbSubject.SelectedItem as Subject,
+                                Description = txtDescription.Text
+                            };
+                        }
+                        else
+                        {
+                            MessageBox.Show("Некоторые обязательные поля не заполнены.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return; // Выход из метода, если проверка не прошла
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Выберите жанр.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return; // Выход из метода, если жанр не выбран
+                    }
+
                     foreach (var inventoryBook in newInventoryBooks)
                     {
                         newBook.InventoryBooks.Add(inventoryBook);
@@ -251,6 +296,57 @@ namespace SchoolLibrary.DialogWindows
             }
         }
 
+
+        private bool ValidateInputs(out string errorMessage)
+        {
+            errorMessage = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(txtTitle.Text))
+            {
+                errorMessage = "Название книги обязательно.";
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(txtAuthor.Text))
+            {
+                errorMessage = "Автор книги обязателен.";
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(txtPublisher.Text))
+            {
+                errorMessage = "Издатель книги обязателен.";
+                return false;
+            }
+            if (!int.TryParse(txtYear.Text, out var year) || year <= 0)
+            {
+                errorMessage = "Некорректный год издания.";
+                return false;
+            }
+            if (!decimal.TryParse(txtPrice.Text, out var price) || price <= 0)
+            {
+                errorMessage = "Некорректная цена.";
+                return false;
+            }
+            if (cmbGenre.SelectedItem == null)
+            {
+                errorMessage = "Выберите жанр книги.";
+                return false;
+            }
+            if (cmbSubject.SelectedItem == null)
+            {
+                errorMessage = "Выберите предмет книги.";
+                return false;
+            }
+            if (!int.TryParse(txtQuantity.Text, out var quantity) || quantity <= 0)
+            {
+                errorMessage = "Некорректное количество экземпляров.";
+                return false;
+            }
+
+            return true;
+        }
+
+
+
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -261,10 +357,10 @@ namespace SchoolLibrary.DialogWindows
             // Implement photo addition logic
         }
 
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-                this.DragMove();
-        }
+        //private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    if (e.ChangedButton == MouseButton.Left)
+        //        this.DragMove();
+        //}
     }
 }

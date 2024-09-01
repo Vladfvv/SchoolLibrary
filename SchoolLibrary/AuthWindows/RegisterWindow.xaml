@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolLibrary.AuthWindows"
         mc:Ignorable="d"
-        Title="Регистрация"  WindowState="Maximized" Height="600" Width="800" Style="{StaticResource {x:Type Window}}" >
+        Title="Регистрация"  WindowState="Maximized" Height="600" Width="800" Style="{StaticResource {x:Type Window}}"  >
     <Grid>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
             <TextBlock Text="Логин:"  HorizontalAlignment="Center"/>
@@ -14,7 +14,7 @@
             <PasswordBox Name="PasswordBox" Width="200" Margin="10"/>
             <TextBlock Text="Тип пользователя:"  HorizontalAlignment="Center"/>
             <ComboBox Name="RoleComboBox" Width="200" Margin="10">
-                <ComboBoxItem Content="Администратор"/>
+                <!--<ComboBoxItem Content="Администратор"/>-->
                 <ComboBoxItem Content="Библиотекарь"/>
                 <ComboBoxItem Content="Читатель"/>
             </ComboBox>

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace SchoolLibrary.Models
 {
     //модель данных Category, представляющая таблицу Category в базе данных
-    public class Category : INotifyPropertyChanged, IDeletable
+    public class Category : INotifyPropertyChanged//, IDeletable
     {
         private int categoryID;
         private string categoryName;  
@@ -54,14 +54,14 @@ namespace SchoolLibrary.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
 
-        public void Delete(EntityContext context)
-        {
-            if (context.Books.Any(b => b.CategoryID == this.CategoryID))
-            {
-                throw new InvalidOperationException("Невозможно удалить категорию, так как она связана с существующими книгами.");
-            }
-            context.Categories.Remove(this);
-            context.SaveChanges();
-        }
+        //public void Delete(EntityContext context)
+        //{
+        //    if (context.Books.Any(b => b.CategoryID == this.CategoryID))
+        //    {
+        //        throw new InvalidOperationException("Невозможно удалить категорию, так как она связана с существующими книгами.");
+        //    }
+        //    context.Categories.Remove(this);
+        //    context.SaveChanges();
+        //}
     }
 }

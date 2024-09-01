@@ -1,0 +1,170 @@
+﻿<local:BaseWindow x:Class="SchoolLibrary.Views.StartLibrarianWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SchoolLibrary.Views"
+        mc:Ignorable="d"
+           Title="Библиотекарь"  Height="450" Width="800"
+        WindowState="Maximized" Style="{StaticResource {x:Type Window}}">
+    <Window.CommandBindings>
+        <CommandBinding Command="Help" Executed="WindowBinding_Executed" />
+    </Window.CommandBindings>
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Margin" Value="5,2"/>
+            <Setter Property="Padding" Value="0, 0, 0, 0"/>
+        </Style>
+        <Style TargetType="DataGridRow">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="LightGray" />
+                </Trigger>
+            </Style.Triggers>
+
+        </Style>
+        <Style x:Key="CenteredTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" >
+            <MenuItem Header="Книги">
+                <MenuItem Header="Все книги" Click="btnListBooks"/>
+                <MenuItem Header="Доступные книги" Click="btnShowAvailableBooksButton_Click"/>
+                <MenuItem Header="Инвентарный журнал учета книг" Click="btnListInventoryBook"/>
+                <MenuItem Header="Поиск книг по параметрам" Click="btnSearchBooks_Click"/>
+                <MenuItem Header="Добавить книгу" Click="btnAddBook_Click"/>
+                <MenuItem Header="Редактировать книгу" Click="btnEditBook_Click"/>
+                <MenuItem Header="Списать книгу" Click="btnDeleteBook_Click"/>
+                <MenuItem Header="Выход" Click="MenuExit_Click"/>
+            </MenuItem>
+            <MenuItem Header="Читатели">
+                <MenuItem Header="Все читатели" Click="btnListStudents"/>
+                <MenuItem Header="Поиск читателя" Click="btnSearchStudents_Click"/>
+                <MenuItem Header="Добавить читателя" Click="btnAddStudent_Click"/>
+                <MenuItem Header="Редактировать читателя" Click="btnEditStudent_Click"/>
+                <MenuItem Header="Удалить читателя" Click="btnDeleteStudent_Click" />
+            </MenuItem>
+            <MenuItem Header="Жанры книг">
+                <MenuItem Header="Все жанры" Click="btnAllGenresShow_Click"/>
+                <MenuItem Header="Все предметы" Click="btnAllSubjectsShow_Click"/>
+                <MenuItem Header="Добавить жанр" Click="btnAddGenre_Click"/>
+                <MenuItem Header="Добавить предмет" Click="btnAddSubject_Click"/>
+                <MenuItem Header="Редактировать жанр" Click="btnEditGenre_Click"/>
+                <MenuItem Header="Редактировать предмет" Click="btnEditSubject_Click"/>
+                <MenuItem Header="Удалить жанр" Click="btnDeleteGenre_Click"/>
+            </MenuItem>
+            <MenuItem Header="Выдача книг">
+                <MenuItem Header="Движение книг" Click="btnBookReport_Click"/>
+                <MenuItem Header="Показать невозвращенные книги" Click="btnFilterNotReturnedBooks_Click"/>
+                <MenuItem Header="Показать возвращенные книги" Click="btnFilterReturnedBooks_Click"/>
+                <MenuItem Header="Оформить книгу на читателя" Click="LoanBookButton_Click"/>
+                <MenuItem Header="Оформить возврат книги" Click="ReturnBookButton_Click"/>
+            </MenuItem>
+            <MenuItem Header="Статистика">
+                <MenuItem Header="Статистика по читателям" Click="StatisticsStudentsMenuItem_Click"/>
+                <MenuItem Header="Статистика по инвентарному журналу" Click="StatisticsBooksMenuItem_Click"/>
+                <MenuItem Header="Статистика по взятым книгам" Click="StatisticsBooksByPeriodMenuItem_Click"/>
+                <MenuItem Header="Показать читателей не бравших книги" Click="btnFilterStudentsWithoutLoans_Click" />
+                <MenuItem Header="Показать книги которые никто не брал" Click="btnFilterBooksNotLoaned_Click" />
+            </MenuItem>
+            <MenuItem Header="Справка" Command="Help"/>
+        </Menu>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="45"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel x:Name="stackButtons" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                <Button x:Name="btnLoanBook" Click="LoanBookButton_Click">
+                    <Button.ToolTip>
+                        <ToolTip>Оформить книгу на читателя</ToolTip>
+                    </Button.ToolTip>
+                    <Image Width="40" Height="40" Source="/Resources/Book out-01.png"/>
+                </Button>
+                <Button x:Name="btnReturnBook" Click="ReturnBookButton_Click">
+                    <Button.ToolTip>
+                        <ToolTip>Оформить возврат книги</ToolTip>
+                    </Button.ToolTip>
+                    <Image Width="40" Height="40" Source="/Resources/Book in-01.png"/>
+                </Button>
+                <Button x:Name="btnFindBook" Click="btnSearchBooks_Click">
+                    <Button.ToolTip>
+                        <ToolTip>Найти книгу</ToolTip>
+                    </Button.ToolTip>
+                    <Image Source="/Resources/Find book.png" Width="40" Height="40"/>
+                </Button>
+                <Button x:Name="btnFindReader" Click="btnSearchStudents_Click">
+                    <Button.ToolTip>
+                        <ToolTip>Найти читателя</ToolTip>
+                    </Button.ToolTip>
+                    <Image Width="40" Height="40" Source="/Resources/Find reader.png"/>
+                </Button>
+                <Button x:Name="btnAdd" Click="btnAddBook_Click">
+                    <Button.ToolTip>
+                        <ToolTip>Добавить книгу</ToolTip>
+                    </Button.ToolTip>
+                    <Image Source="/Resources/Add book.png" Width="40" Height="40"/>
+                </Button>
+                <Button x:Name="btnAddReader" Click="btnAddStudent_Click">
+                    <Button.ToolTip>
+                        <ToolTip>Добавить читателя</ToolTip>
+                    </Button.ToolTip>
+                    <Image Width="40" Height="40" Source="/Resources/Add reader.png"/>
+                </Button>
+                <Button x:Name="btnEdit" Click="btnEditBook_Click">
+                    <Button.ToolTip>
+                        <ToolTip>Редактировать книгу</ToolTip>
+                    </Button.ToolTip>
+                    <Image Source="/Resources/Edit book.png" Width="40" Height="40"/>
+                </Button>               
+                <Button x:Name="btnBooks" Click="btnListBooks">
+                    <Button.ToolTip>
+                        <ToolTip>Все книги</ToolTip>
+                    </Button.ToolTip>
+                    <Image Source="/Resources/All books-01.png" Width="40" Height="40"/>
+                </Button>              
+                <Button x:Name="btnInventoryBooks" Click="btnListInventoryBook">
+                    <Button.ToolTip>
+                        <ToolTip>Инвентарный журнал учета книг</ToolTip>
+                    </Button.ToolTip>
+                    <Image Source="/Resources/Magazin-01.png" Width="40" Height="40" />
+                </Button>
+                <!--<Button x:Name="btnPrint" Click="btnPrint_Click">
+                    <Button.ToolTip>
+                        <ToolTip>Печать</ToolTip>
+                    </Button.ToolTip>
+                    <Image Width="40" Height="40" Source="/Resources/Print-01.png" />
+                </Button>-->
+                <Button x:Name="btnExport" Click="btnExportToFile_Click">
+                    <Button.ToolTip>
+                        <ToolTip>Экспортировать</ToolTip>
+                    </Button.ToolTip>
+                    <Image Width="40" Height="40" Source="/Resources/Export-01.png" />
+                </Button>
+                <Button x:Name="btnLogout" Click="btnLogout_Click">
+                    <Button.ToolTip>
+                        <ToolTip>Выйти из сессии</ToolTip>
+                    </Button.ToolTip>
+                    <Image Width="40" Height="40" Source="/Resources/Exit-01.png" />
+                </Button>
+            </StackPanel>
+            <DataGrid x:Name="dGrid" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" LoadingRow="dGrid_LoadingRow" 
+       AutoGenerateColumns="False" RowHeaderWidth="0" CanUserAddRows="False" CanUserDeleteRows="False" MouseRightButtonDown="dGrid_MouseRightButtonDown">
+            </DataGrid>
+            <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button x:Name="btnPrevious" Content="Предыдущая" Visibility="Collapsed" Width="100" Click="btnPrevious_Click" Style="{StaticResource RoundedButtonStyle}"/>
+                <TextBlock x:Name="txtPageInfo" VerticalAlignment="Center" Margin="10"/>
+                <Button x:Name="btnNext" Content="Следующая" Visibility="Collapsed"  Width="100" Click="btnNext_Click" Style="{StaticResource RoundedButtonStyle}"/>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</local:BaseWindow>

@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Runtime.Remoting.Contexts;
@@ -25,13 +24,12 @@ using SchoolLibrary.DialogWindows.Operations;
 using System.ComponentModel;
 using SchoolLibrary.DialogWindows.CategoryWindows;
 using SchoolLibrary.ViewModels;
+using SchoolLibrary.AuthWindows;
 
 namespace SchoolLibrary
 {
-    using LoanWindowsViewModel = SchoolLibrary.DialogWindows.LoanWindows.BookInventoryViewModel;
-    using ModelsViewModel = SchoolLibrary.Models.BookInventoryViewModel;
-
-
+    using LoanWindowsViewModel = SchoolLibrary.ViewModels.BookInventoryViewModel;
+    using ModelsViewModel = SchoolLibrary.ViewModels.PaginatedBookInventoryModel;
 
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
@@ -120,7 +118,7 @@ namespace SchoolLibrary
         {
             try
             {
-                context.Books.Include(b => b.Category).Include(b => b.InventoryBooks.Select(ib => ib.Loans)).Load();
+                context.Books.Include(b => b.Genre).Include(b => b.InventoryBooks.Select(ib => ib.Loans)).Load();
 
                 var groupedBooks = context.Books.Local
                     .SelectMany(b => b.InventoryBooks, (b, ib) => new { Book = b, InventoryBook = ib })
@@ -135,7 +133,7 @@ namespace SchoolLibrary
                         ISBN = g.Key,
                         Quantity = g.Count(),
                         QuantityLeft = g.Count() - g.Sum(x => x.InventoryBook.Loans.Count(loan => !loan.Returned)),
-                        CategoryName = g.First().Book.Category.CategoryName
+                        CategoryName = g.First().Book.Genre.GenreName
                     }).ToList();
 
                 ConfigureBooksColumns();
@@ -220,7 +218,7 @@ namespace SchoolLibrary
         }
         private void ConfigureInventoryBooksColumns()
         {
-            context.Books.Include(b => b.Category).Load();
+            context.Books.Include(b => b.Genre).Load();
             dGrid.Columns.Clear();
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Инв. номер", Binding = new Binding("InventoryNumber"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
             dGrid.Columns.Add(new DataGridTextColumn { Header = "ISBN", Binding = new Binding("ISBN"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
@@ -280,13 +278,6 @@ namespace SchoolLibrary
         }
 
 
-
-
-
-
-
-
-
         private void btnListCategories(object sender, RoutedEventArgs e)
         {
             CurrentTableName = "Категории книг";
@@ -316,47 +307,14 @@ namespace SchoolLibrary
                 MessageBox.Show(ex.Message);
             }
         }
-        /*private void btnSearchBooks_Click(object sender, RoutedEventArgs e)
-        {
-            CurrentTableName = "Поиск книги";
-            var searchDialog = new SearchBooksDialog(context);
-            if (searchDialog.ShowDialog() == true)
-            {
-                var results = searchDialog.Tag as List<InventoryBook>;
-                if (results != null)
-                {
-                    dGrid.ItemsSource = results;
-                    foreach (var result in results)
-                    {
-                        result.Book.AddInventoryBook(result);
-                    }
-                    // Предположим, что результаты поиска относятся к одной книге
-                    var firstBook = results.First().Book;
-                    CurrentTableName = $"Books with ISBN: {firstBook.InventoryBooks.First().ISBN}";
-                }
-            }
-        }*/
-        /* private void btnSearchBooks_Click(object sender, RoutedEventArgs e)
-         {
-             CurrentTableName = "Поиск книги";
-             var searchDialog = new SearchBooksDialog(context);
-             if (searchDialog.ShowDialog() == true)
-             {
-                 var results = searchDialog.Tag as List<Book>;
-                 if (results != null)
-                 {
-                     dGrid.ItemsSource = results;
-                     CurrentTableName = $"Найдено книг: {results.Count}";
-                 }
-             }
-         }*/
+       
         private void btnSearchBooks_Click(object sender, RoutedEventArgs e)
         {
             CurrentTableName = "Поиск книги без группировки по ISBN";
             var searchDialog = new SearchBooksDialog(context);
             if (searchDialog.ShowDialog() == true)
             {
-                var results = searchDialog.Tag as List<Models.BookInventoryViewModel>;
+                var results = searchDialog.Tag as List<ViewModels.PaginatedBookInventoryModel>;
                 if (results != null)
                 {
                     dGrid.ItemsSource = results;
@@ -367,38 +325,14 @@ namespace SchoolLibrary
                 }
             }
         }
-
-        //private void btnSearchBooks_Click(object sender, RoutedEventArgs e)
-        //{
-        //    CurrentTableName = "Поиск книги без группировки по ISBN";
-        //    var searchDialog = new SearchBooksDialog(context);
-
-        //    if (searchDialog.ShowDialog() == true)
-        //    {
-        //        var results = searchDialog.Tag as List<Models.BookInventoryViewModel>;
-
-        //        if (results != null && results.Any())
-        //        {
-        //            dGrid.ItemsSource = results;
-        //            CurrentTableName = $"Найдено книг с заданными параметрами поиска: {results.First().ISBN}";
-        //        }
-        //        else
-        //        {
-        //            // Обработка случая, когда результаты пусты или null
-        //            MessageBox.Show("Книги не найдены.");
-        //            dGrid.ItemsSource = null;
-        //        }
-        //    }
-        //}
-
-
+           
         private void btnSearchBooksWithGroupByISBN_Click(object sender, RoutedEventArgs e)
         {
             CurrentTableName = "Поиск книги с группировкой по ISBN";
             var searchDialog = new SearchBooksDialog(context);
             if (searchDialog.ShowDialog() == true)
             {
-                var results = searchDialog.Tag as List<SchoolLibrary.DialogWindows.LoanWindows.BookInventoryViewModel>;
+                var results = searchDialog.Tag as List<SchoolLibrary.ViewModels.BookInventoryViewModel>;
                 if (results != null)
                 {
                     dGrid.ItemsSource = results;
@@ -410,17 +344,10 @@ namespace SchoolLibrary
             }
         }
 
-
-
         public void DisplaySearchResults(List<Book> books)
         {
             dGrid.ItemsSource = books;
         }
-
-
-
-
-
 
         #region
         private void btnAddBook_Click(object sender, RoutedEventArgs e)
@@ -459,181 +386,9 @@ namespace SchoolLibrary
         }
         */
         private void btnDeleteBook_Click(object sender, RoutedEventArgs e)
-        {
-            // Получаем выделенную книгу из DataGrid
-            /*  Book selectedBook = dGrid.SelectedItem as Book;
-
-              if (selectedBook != null)
-              {
-                  MessageBoxResult result = MessageBox.Show($"Вы действительно хотите удалить книгу '{selectedBook.Title}'?", "Подтверждение удаления", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                  if (result == MessageBoxResult.Yes)
-                  {
-                      try
-                      {
-                          context.Books.Remove(selectedBook);
-                          context.SaveChanges();
-                          MessageBox.Show("Книга успешно удалена", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-                      }
-                      catch (Exception ex)
-                      {
-                          MessageBox.Show($"Ошибка при удалении книги: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                      }
-
-                      // Обновляем источник данных DataGrid
-                      dGrid.ItemsSource = context.Books.ToList();
-                  }
-              }
-              else
-              {
-                  MessageBox.Show("Выберите книгу для удаления.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
-              }*/
-
-
+        {     
             // Получаем выделенную книгу из DataGrid
             InventoryBook selectedBook = dGrid.SelectedItem as InventoryBook;
-
-            /* if (selectedBook != null)
-             {
-                 MessageBoxResult result = MessageBox.Show($"Вы действительно хотите удалить книгу '{selectedBook.Title}'?", "Подтверждение удаления", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                 if (result == MessageBoxResult.Yes)
-                 {
-                     try
-                     {
-                         var bookIDForDelete = selectedBook.BookID;
-
-                         context.InventoryBooks.Remove(selectedBook);
-                         context.Books.Remove(bookForDelete);
-                         context.SaveChanges();
-                         MessageBox.Show("Книга успешно удалена", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                         // Обновляем источник данных DataGrid
-                         dGrid.ItemsSource = context.InventoryBooks.ToList();
-                     }
-                     catch (Exception ex)
-                     {
-                         MessageBox.Show($"Ошибка при удалении книги: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                     }
-                 }
-             }*/
-            /* if (selectedBook != null)
-             {
-                 MessageBoxResult result = MessageBox.Show($"Вы действительно хотите удалить книгу '{selectedBook.Title}'?", "Подтверждение удаления", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                 if (result == MessageBoxResult.Yes)
-                 {
-                     try
-                     {
-                         // Получаем BookID для удаления книги
-                         var bookIDForDelete = selectedBook.BookID;
-
-                         // Находим запись в таблице InventoryBooks
-                         var inventoryBook = context.InventoryBooks.FirstOrDefault(ib => ib.BookID == bookIDForDelete);
-
-                         if (inventoryBook != null)
-                         {
-                             // Удаляем запись из таблицы InventoryBooks
-                             context.InventoryBooks.Remove(inventoryBook);
-                         }
-
-                         // Находим запись в таблице Books
-                         var bookForDelete = context.Books.FirstOrDefault(b => b.BookID == bookIDForDelete);
-
-                         if (bookForDelete != null)
-                         {
-                             // Удаляем запись из таблицы Books
-                             context.Books.Remove(bookForDelete);
-                         }
-
-                         // Сохраняем изменения в базе данных
-                         context.SaveChanges();
-
-                         MessageBox.Show("Книга успешно удалена", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                         // Обновляем источник данных DataGrid
-                         dGrid.ItemsSource = context.InventoryBooks.ToList();
-                     }
-                     catch (Exception ex)
-                     {
-                         MessageBox.Show($"Ошибка при удалении книги: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                     }
-                 }
-             }*/
-
-            /*  if (selectedBook != null)
-              {
-                  MessageBoxResult result = MessageBox.Show($"Вы действительно хотите удалить книгу '{selectedBook.Title}'?", "Подтверждение удаления", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                  if (result == MessageBoxResult.Yes)
-                  {
-                      try
-                      {
-                          // Получаем все инвентарные книги и займы, связанные с данной книгой
-                          var inventoryBook = context.InventoryBooks.FirstOrDefault(ib => ib.BookID == selectedBook.BookID);
-                          if (inventoryBook == null)
-                          {
-                              MessageBox.Show("Инвентарная книга не найдена.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                              return;
-                          }
-
-                          var loans = context.Loans.Where(l => l.InventoryBookID == inventoryBook.InventoryBookID).ToList();
-
-                          // Перемещаем данные в таблицы Storage
-                          var inventoryBookStorage = new InventoryBookStorage
-                          {
-                              InventoryNumber = inventoryBook.InventoryNumber,
-                              ISBN = inventoryBook.ISBN,
-                              Title = inventoryBook.Title,
-                              Author = inventoryBook.Author,
-                              Publisher = inventoryBook.Publisher,
-                              YearPublished = inventoryBook.YearPublished,
-                              Price = inventoryBook.Price,
-                              DateOfReceipt = inventoryBook.DateOfReceipt,
-                              IncomingInvoice = inventoryBook.IncomingInvoice,
-                              DateOfDisposal = inventoryBook.DateOfDisposal,
-                              OutgoingInvoice = inventoryBook.OutgoingInvoice,
-                              ReasonForDisposal = inventoryBook.ReasonForDisposal,
-                              BookID = inventoryBook.BookID
-                          };
-
-                          context.InventoryBooksStorage.Add(inventoryBookStorage);
-
-                          foreach (var loan in loans)
-                          {
-                              var loanStorage = new LoanStorage
-                              {
-                                  InventoryBookStorageID = inventoryBookStorage.InventoryBookStorageID, // Связываем с InventoryBookStorage
-                                  StudentID = loan.StudentID,
-                                  LoanDate = loan.LoanDate,
-                                  DueDate = loan.DueDate,
-                                  ReturnDate = loan.ReturnDate,
-                                  Returned = loan.Returned
-                              };
-
-                              context.LoansStorage.Add(loanStorage);
-                              context.Loans.Remove(loan);
-                          }
-
-                          // Удаляем книгу из таблицы Books
-                          var bookForDelete = context.Books.Find(selectedBook.BookID);
-                          if (bookForDelete != null)
-                          {
-                              context.Books.Remove(bookForDelete);
-                          }
-
-                          // Удаляем инвентарную книгу из таблицы InventoryBooks
-                          context.InventoryBooks.Remove(inventoryBook);
-
-                          context.SaveChanges();
-
-                          MessageBox.Show("Книга успешно удалена", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                          // Обновляем источник данных DataGrid
-                          dGrid.ItemsSource = context.InventoryBooks.ToList();
-                      }
-                      catch (Exception ex)
-                      {
-                          MessageBox.Show($"Ошибка при удалении книги: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                      }
-                  }
-              }*/
             if (selectedBook != null)
             {
                 MessageBoxResult result = MessageBox.Show($"Вы действительно хотите удалить книгу '{selectedBook.Title}'?", "Подтверждение удаления", MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -660,9 +415,9 @@ namespace SchoolLibrary
                                 Price = inventoryBook.Price,
                                 DateOfReceipt = inventoryBook.DateOfReceipt,
                                 IncomingInvoice = inventoryBook.IncomingInvoice,
-                                DateOfDisposal = inventoryBook.DateOfDisposal,
-                                OutgoingInvoice = inventoryBook.OutgoingInvoice,
-                                ReasonForDisposal = inventoryBook.ReasonForDisposal,
+                                //DateOfDisposal = inventoryBook.DateOfDisposal,
+                                //OutgoingInvoice = inventoryBook.OutgoingInvoice,
+                                //ReasonForDisposal = inventoryBook.ReasonForDisposal,
                                 BookID = inventoryBook.BookID
                             };
 
@@ -784,29 +539,29 @@ namespace SchoolLibrary
 
 
 
-        private void btnDeleteStudent_Click(object sender, RoutedEventArgs e)
-        {
+        //private void btnDeleteStudent_Click(object sender, RoutedEventArgs e)
+        //{
 
-            if (dGrid.SelectedItem is Student selectedStudent)
-            {
-                DeleteStudentDialog dialog = new DeleteStudentDialog(context, selectedStudent);
-                if (dialog.ShowDialog() == true)
-                {
-                    // Обновляем DataGrid после удаления студента
-                    dGrid.ItemsSource = context.Students.ToList();
-                }
-            }
-            else
-            {
-                MessageBox.Show("Выберите студента для удаления.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
-                updateListStudent();
-            }
-        }
+        //    if (dGrid.SelectedItem is Student selectedStudent)
+        //    {
+        //        DeleteStudentDialog dialog = new DeleteStudentDialog(context, selectedStudent);
+        //        if (dialog.ShowDialog() == true)
+        //        {
+        //            // Обновляем DataGrid после удаления студента
+        //            dGrid.ItemsSource = context.Students.ToList();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Выберите студента для удаления.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+        //        updateListStudent();
+        //    }
+        //}
 
 
         private void btnDeleteCategory_Click(object sender, RoutedEventArgs e)
         {
-            if (dGrid.SelectedItem is Category selectedCategory)
+            if (dGrid.SelectedItem is Genre selectedCategory)
             {
                 DeleteCategoryDialog dialog = new DeleteCategoryDialog(context, selectedCategory);
                 if (dialog.ShowDialog() == true)
@@ -846,7 +601,7 @@ namespace SchoolLibrary
                 MessageBox.Show(ex.Message);
             }
         }
-
+            
 
         private void WindowBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
@@ -891,8 +646,8 @@ namespace SchoolLibrary
                     StudentID = selectedStudent.StudentID,
                     FirstName = selectedStudent.FirstName,
                     LastName = selectedStudent.LastName,
-                    Age = selectedStudent.Age,
-                    Class = selectedStudent.Class
+                    DateOfBirth = selectedStudent.DateOfBirth,
+                    StudentClass = selectedStudent.StudentClass
                 };
 
                 EditStudentDialog dialog = new EditStudentDialog(context, studentCopy);
@@ -900,8 +655,8 @@ namespace SchoolLibrary
                 {
                     selectedStudent.FirstName = studentCopy.FirstName;
                     selectedStudent.LastName = studentCopy.LastName;
-                    selectedStudent.Age = studentCopy.Age;
-                    selectedStudent.Class = studentCopy.Class;
+                    selectedStudent.DateOfBirth = studentCopy.DateOfBirth;
+                    selectedStudent.StudentClass = studentCopy.StudentClass;
                     context.SaveChanges();
 
                     dGrid.ItemsSource = context.Students.ToList();
@@ -940,12 +695,10 @@ namespace SchoolLibrary
             }
         }
 
-
-
         private void LoanBookButton_Click(object sender, RoutedEventArgs e)
         {
             dGrid.ItemsSource = null;
-            context.Books.Include(b => b.Category).Load();
+            context.Books.Include(b => b.Genre).Load();
             context.Students.Load(); // Загрузка студентов
             context.Loans.Load();
             InitLoansList();
@@ -966,11 +719,8 @@ namespace SchoolLibrary
             }
         }
 
-
-
         private void btnShowAvailableBooksButton_Click(object sender, RoutedEventArgs e)
         {
-
             context.Students.Load();
             context.Categories.Load();
             context.Books.Load();
@@ -1034,7 +784,6 @@ namespace SchoolLibrary
         {
             return context.InventoryBooks.ToList();
         }
-
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
@@ -1103,6 +852,12 @@ namespace SchoolLibrary
                     dGrid.ItemsSource = null;
                 }
             }
+        }
+        private void btnLogout_Click(object sender, RoutedEventArgs e)
+        {
+            var startWindow = new StartWindow();
+            startWindow.Show();
+            this.Close();
         }
     }
 }

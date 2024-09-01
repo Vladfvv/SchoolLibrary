@@ -4,17 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolLibrary.DialogWindows.CategoryWindows"
-        mc:Ignorable="d"
-        Title="Удаление категории" Height="250" Width="400" Background="LightCoral"
-        MouseDown="Window_MouseDown"
+        mc:Ignorable="d"        
+        Style="{StaticResource {x:Type Window}}" FontSize="16"
+        Title="Удаление категории" Height="140" Width="400" Background="LightCoral"       
         WindowStyle="SingleBorderWindow"
         ResizeMode="CanResize">
     <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/> 
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
@@ -23,8 +20,8 @@
         <TextBlock x:Name="txtCategoryInfo" Grid.Row="1" Margin="5" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-            <Button Content="Удалить" Margin="5" Click="DeleteCategory_Click"/>
-            <Button Content="Отмена" Margin="5" Click="Cancel_Click"/>
+            <Button Content="Удалить" Margin="5" Click="DeleteCategory_Click" Style="{StaticResource RoundedButtonStyle}" Width="100"/>
+            <Button Content="Отмена" Margin="5" Click="Cancel_Click" Style="{StaticResource RoundedButtonStyle}" Width="100"/>
         </StackPanel>
     </Grid>
 </Window>

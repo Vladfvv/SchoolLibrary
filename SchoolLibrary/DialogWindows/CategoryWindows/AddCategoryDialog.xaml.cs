@@ -15,6 +15,8 @@ namespace SchoolLibrary.DialogWindows.CategoryWindows
         public AddCategoryDialog(EntityContext dbContext)
         {
             InitializeComponent();
+            // Центрирование окна на экране
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             context = dbContext;
             newCategory = new Category();
             DataContext = newCategory;
@@ -54,12 +56,12 @@ namespace SchoolLibrary.DialogWindows.CategoryWindows
             DialogResult = false;
         }
 
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                DragMove();
-            }
-        }
+        //private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    if (e.ChangedButton == MouseButton.Left)
+        //    {
+        //        DragMove();
+        //    }
+        //}
     }
 }

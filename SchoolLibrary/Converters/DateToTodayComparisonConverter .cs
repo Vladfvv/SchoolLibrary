@@ -8,20 +8,21 @@ using System.Windows.Data;
 
 namespace SchoolLibrary.Converters
 {
-    public class DateToTodayComparisonConverter : IValueConverter
+    public class DueDateToIsOverdueConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (value is DateTime date)
+            if (value is DateTime dueDate)
             {
-                return date < DateTime.Today ? 1 : 0;
+                return dueDate.Date < DateTime.Now.Date; // Возвращаем true, если книга просрочена
             }
-            return 0;
+            return false;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotImplementedException();
         }
     }
+
 }

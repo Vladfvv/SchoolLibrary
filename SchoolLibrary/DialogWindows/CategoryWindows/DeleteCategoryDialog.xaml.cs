@@ -9,16 +9,18 @@ namespace SchoolLibrary.DialogWindows.CategoryWindows
     public partial class DeleteCategoryDialog : Window
     {
         private readonly EntityContext _context;
-        private readonly Category _category;
+        private readonly Genre _genre;
 
-        public DeleteCategoryDialog(EntityContext context, Category category)
+        public DeleteCategoryDialog(EntityContext context, Genre genre)
         {
             InitializeComponent();
+            // Центрирование окна на экране
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             _context = context;
-            _category = category;
+            _genre = genre;
 
             // Заполняем информацию о категории
-            txtCategoryInfo.Text = $"Название категории: {_category.CategoryName}";
+            txtCategoryInfo.Text = $"Название категории: {_genre.GenreName}";
         }
 
         private void DeleteCategory_Click(object sender, RoutedEventArgs e)
@@ -26,7 +28,7 @@ namespace SchoolLibrary.DialogWindows.CategoryWindows
             try
             {
                 // Проверяем, есть ли книги с удаляемой категорией
-                var booksWithCategory = _context.Books.Any(b => b.CategoryID == _category.CategoryID);
+                var booksWithCategory = _context.Books.Any(b => b.GenreID == _genre.GenreID);
 
                 if (booksWithCategory)
                 {
@@ -35,7 +37,7 @@ namespace SchoolLibrary.DialogWindows.CategoryWindows
                 else
                 {
                     // Удаляем категорию из контекста базы данных
-                    _context.Categories.Remove(_category);
+                    _context.Genres.Remove(_genre);
                     _context.SaveChanges();
 
                     // Закрываем диалоговое окно с результатом DialogResult = true
@@ -54,12 +56,12 @@ namespace SchoolLibrary.DialogWindows.CategoryWindows
             DialogResult = false;
         }
 
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                this.DragMove();
-            }
-        }
+        //private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    if (e.ChangedButton == MouseButton.Left)
+        //    {
+        //        this.DragMove();
+        //    }
+        //}
     }
 }

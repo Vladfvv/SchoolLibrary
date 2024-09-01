@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -18,65 +19,104 @@ namespace SchoolLibrary.DialogWindows.StudentWindows
         public AddStudentDialog(EntityContext dbContext)
         {
             InitializeComponent();
+            // Центрирование окна на экране
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             context = dbContext;
             newStudent = new Student();
             DataContext = newStudent;
-        }
+        }      
 
         private void AddStudent_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                // Force validation
-                txtFirstName.GetBindingExpression(TextBox.TextProperty).UpdateSource();
-                txtLastName.GetBindingExpression(TextBox.TextProperty).UpdateSource();
-                txtAge.GetBindingExpression(TextBox.TextProperty).UpdateSource();
-                txtClass.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+                string errorMessage = string.Empty;
+
+                // Проверка на пустые поля
+                if (string.IsNullOrWhiteSpace(txtFirstName.Text))
+                    errorMessage += "Пожалуйста, введите имя студента.\n";
+                if (string.IsNullOrWhiteSpace(txtLastName.Text))
+                    errorMessage += "Пожалуйста, введите фамилию студента.\n";
+                if (!DateTime.TryParse(txtDateOfBirth.Text, out DateTime dateOfBirth))
+                    errorMessage += "Пожалуйста, введите корректную дату рождения студента.\n";
+                if (!int.TryParse(txtStudentClass.Text, out int studentClass) || studentClass < 1 || studentClass > 11)
+                    errorMessage += "Пожалуйста, введите корректный класс студента (от 1 до 11).\n";
+                if (string.IsNullOrWhiteSpace(txtPrefix.Text))
+                    errorMessage += "Пожалуйста, введите префикс студента.\n";
+                if (string.IsNullOrWhiteSpace(txtAddress.Text))
+                    errorMessage += "Пожалуйста, введите адрес студента.\n";
+                if (!string.IsNullOrWhiteSpace(txtPhone.Text) && !Regex.IsMatch(txtPhone.Text, @"^\+?[0-9]{10,15}$"))
+                    errorMessage += "Пожалуйста, введите корректный телефонный номер (10-15 цифр).\n";
 
 
-                //if (IsValid(newStudent))
-                if (txtFirstName.Text != ""
-                        && txtFirstName.Text.ToString() != ""
-                        && int.Parse(txtAge.Text) > 5 && int.Parse(txtAge.Text) < 100
-                        && int.Parse(txtClass.Text) > 1 && int.Parse(txtClass.Text) < 11)
+                if (!string.IsNullOrEmpty(errorMessage))
                 {
-                    // Добавляем студента в контекст базы данных и сохраняем изменения
-                    context.Students.Add(newStudent);
-                    context.SaveChanges();
-                    // Закрываем диалоговое окно с результатом DialogResult = true
-                    DialogResult = true;
+                    errorMessage = "Вы неверно ввели следующие данные:\n" + errorMessage;
+                    throw new Exception(errorMessage);
                 }
-                else throw new Exception("Пожалуйста, заполните все поля корректно");
+
+                // Приведение studentClass к строке, если поле StudentClass в базе данных имеет тип string
+                var studentClassString = studentClass.ToString();
+
+                // Проверка наличия студента в базе данных
+                var existingStudent = context.Students.FirstOrDefault(s =>
+                    s.FirstName == txtFirstName.Text &&
+                    s.LastName == txtLastName.Text &&
+                    s.DateOfBirth == dateOfBirth &&
+                    s.StudentClass == studentClassString &&
+                    s.Prefix == txtPrefix.Text &&
+                    s.Address == txtAddress.Text
+                );
+
+                if (existingStudent != null)
+                {
+                    errorMessage = "Студент с такими данными уже существует:\n";
+                    if (existingStudent.FirstName != txtFirstName.Text)
+                        errorMessage += "Имя не совпадает - в базе данных: " + existingStudent.FirstName + "\n";
+                    if (existingStudent.LastName != txtLastName.Text)
+                        errorMessage += "Фамилия не совпадает - в базе данных: " + existingStudent.LastName + "\n";
+                    if (existingStudent.DateOfBirth != dateOfBirth)
+                        errorMessage += "Дата рождения не совпадает - в базе данных: " + existingStudent.DateOfBirth.ToShortDateString() + "\n";
+                    if (existingStudent.StudentClass != studentClassString)
+                        errorMessage += "Класс не совпадает - в базе данных: " + existingStudent.StudentClass + "\n";
+                    if (existingStudent.Prefix != txtPrefix.Text)
+                        errorMessage += "Префикс не совпадает - в базе данных: " + existingStudent.Prefix + "\n";
+                    if (existingStudent.Address != txtAddress.Text)
+                        errorMessage += "Адрес не совпадает - в базе данных: " + existingStudent.Address + "\n";
+
+                    MessageBox.Show(errorMessage, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                // Добавление нового студента в базу данных
+                var newStudent = new Student
+                {
+                    FirstName = txtFirstName.Text,
+                    LastName = txtLastName.Text,
+                    DateOfBirth = dateOfBirth,
+                    StudentClass = studentClassString,
+                    Prefix = txtPrefix.Text,
+                    Address = txtAddress.Text,
+                    Phone = txtPhone.Text, 
+                    IsActive = true
+                };
+
+                context.Students.Add(newStudent);
+                context.SaveChanges();
+
+                MessageBox.Show("Студент добавлен успешно!");
+                DialogResult = true; // Закрываем диалоговое окно с результатом DialogResult = true
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
-                // MessageBox.Show($"Error adding student: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            // MessageBox.Show("Пожалуйста, заполните все поля корректно.", "Ошибка валидации", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
-
-
-        //private bool IsValid(object obj)
-        //{
-        //    return !Validation.GetHasError(txtFirstName) &&
-        //           !Validation.GetHasError(txtLastName) &&
-        //           !Validation.GetHasError(txtAge) &&
-        //           !Validation.GetHasError(txtClass);
-        //}
-
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             // Закрываем диалоговое окно с результатом DialogResult = false
+            MessageBox.Show("Отмена действия");
             DialogResult = false;
-        }
-
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                this.DragMove();
-            }
-        }
+        }       
     }
 }

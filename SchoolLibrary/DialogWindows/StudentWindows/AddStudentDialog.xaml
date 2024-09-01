@@ -5,10 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolLibrary.DialogWindows.StudentWindows"
         mc:Ignorable="d"
-        Title="Добавить читателя" Height="250" Width="400"  Style="{StaticResource {x:Type Window}}"
-        MouseDown="Window_MouseDown"
+        Title="Добавить читателя" Height="345" Width="550" Style="{StaticResource {x:Type Window}}"       
         WindowStyle="SingleBorderWindow"
-        ResizeMode="CanResize">
+        ResizeMode="CanResize" FontSize="16">
     <Window.Resources>
         <Style TargetType="{x:Type TextBox}">
             <Style.Triggers>
@@ -23,7 +22,7 @@
                 <Border BorderThickness="2" BorderBrush="Red">
                     <AdornedElementPlaceholder></AdornedElementPlaceholder>
                 </Border>
-                <TextBlock Foreground="Red" FontSize="24">*</TextBlock>
+                <TextBlock Foreground="Red" FontSize="16">*</TextBlock>
             </StackPanel>
         </ControlTemplate>
     </Window.Resources>
@@ -34,27 +33,40 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+
         <Label Content="Имя:" Grid.Row="0" Grid.Column="0"/>
-        <TextBox x:Name="txtFirstName" Grid.Row="0" Grid.Column="1" Margin="5"  Text="{Binding Quantity, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <TextBox x:Name="txtFirstName" Grid.Row="0" Grid.Column="1" Margin="5"/>
 
         <Label Content="Фамилия:" Grid.Row="1" Grid.Column="0"/>
-        <TextBox x:Name="txtLastName" Grid.Row="1" Grid.Column="1" Margin="5"  Text="{Binding Quantity, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <TextBox x:Name="txtLastName" Grid.Row="1" Grid.Column="1" Margin="5"/>
 
-        <Label Content="Возраст:" Grid.Row="2" Grid.Column="0"/>
-        <TextBox x:Name="txtAge" Grid.Row="2" Grid.Column="1" Margin="5" Text="{Binding Quantity, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <Label Content="Дата рождения (пример 2009/07/15):" Grid.Row="2" Grid.Column="0"/>
+        <TextBox x:Name="txtDateOfBirth" Grid.Row="2" Grid.Column="1" Margin="5"/>
 
         <Label Content="Класс:" Grid.Row="3" Grid.Column="0"/>
-        <TextBox x:Name="txtClass" Grid.Row="3" Grid.Column="1" Margin="5" Text="{Binding Quantity, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <TextBox x:Name="txtStudentClass" Grid.Row="3" Grid.Column="1" Margin="5"/>
 
-        <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-            <Button Content="Добавить" Margin="5" Click="AddStudent_Click"/>
-            <Button Content="Отмена" Margin="5" Click="Cancel_Click"/>
+        <Label Content="Префикс:" Grid.Row="4" Grid.Column="0"/>
+        <TextBox x:Name="txtPrefix" Grid.Row="4" Grid.Column="1" Margin="5"/>
+
+        <Label Content="Адрес:" Grid.Row="5" Grid.Column="0"/>
+        <TextBox x:Name="txtAddress" Grid.Row="5" Grid.Column="1" Margin="5"/>
+
+        <Label Content="Телефон (пример +375291234567):" Grid.Row="6" Grid.Column="0"/>
+        <TextBox x:Name="txtPhone" Grid.Row="6" Grid.Column="1" Margin="5"/>
+
+        <StackPanel Grid.Row="7" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="155,14,0,6">
+            <Button Content="Добавить" Margin="5" Click="AddStudent_Click" Style="{StaticResource RoundedButtonStyle}" Width="100"/>
+            <Button Content="Отмена" Margin="5" Click="Cancel_Click" Style="{StaticResource RoundedButtonStyle}" Width="100"/>
         </StackPanel>
     </Grid>
 </Window>
+

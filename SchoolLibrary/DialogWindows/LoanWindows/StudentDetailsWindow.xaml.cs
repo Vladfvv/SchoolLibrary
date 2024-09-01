@@ -23,6 +23,8 @@ namespace SchoolLibrary.DialogWindows.LoanWindows
         public StudentDetailsWindow(Student student)
         {
             InitializeComponent();
+            // Центрирование окна на экране
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             DataContext = student; // Привязка данных к окну
         }
 

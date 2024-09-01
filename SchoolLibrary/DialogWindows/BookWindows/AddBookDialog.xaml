@@ -5,8 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolLibrary.DialogWindows"
         mc:Ignorable="d"
-        Title="Добавить книгу" Height="520" Width="800"
-        MouseDown="Window_MouseDown"
+        Title="Добавить книгу" Height="540" Width="800"       
         WindowStyle="SingleBorderWindow"
         ResizeMode="CanResize" Style="{StaticResource {x:Type Window}}" FontSize="16">
     <Window.Resources>
@@ -42,7 +41,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>                
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -73,44 +73,47 @@
         <Label Grid.Row="2" Grid.Column="3" Content="ISBN:" />
         <TextBox Grid.Row="2" Grid.Column="4" x:Name="txtISBN" Margin="5" Grid.ColumnSpan="2"/>
 
-        <Label Grid.Row="3" Grid.Column="0" Content="Категория:"/>
-        <ComboBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" x:Name="cmbCategory" DisplayMemberPath="CategoryName" SelectedValuePath="CategoryID" Margin="5"/>
+        <Label Grid.Row="3" Grid.Column="0" Content="Жанр:"/>
+        <ComboBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" x:Name="cmbGenre" DisplayMemberPath="GenreName" SelectedValuePath="GenreID" Margin="5" SelectionChanged="cmbGenre_SelectionChanged"/>
 
-        <Label Grid.Row="3" Grid.Column="3" Content="Дата поступления:"/>
-        <DatePicker Grid.Row="3" Grid.Column="4" x:Name="dpDateOfReceipt" Margin="5" Grid.ColumnSpan="2"/>
-      
-        <Label Grid.Row="4" Grid.Column="0" Content="Приходная накладная:" />
-        <TextBox Grid.Row="4" Grid.Column="1" x:Name="txtIncomingInvoice" Margin="5" Grid.ColumnSpan="2"/>
+        <Label Grid.Row="3" Grid.Column="3" Content="Предмет:"/>
+        <ComboBox Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" x:Name="cmbSubject" DisplayMemberPath="SubjectName" SelectedValuePath="SubjectID" Margin="5"/>
 
-        <Label Grid.Row="4" Grid.Column="3" Content="Инвентарный номер:"/>
-        <TextBox Grid.Row="4" Grid.Column="4" x:Name="txtInventoryNumber" Margin="5" Grid.ColumnSpan="2"/>
+        <Label Grid.Row="4" Grid.Column="0" Content="Дата поступления:"/>
+        <DatePicker Grid.Row="4" Grid.Column="1" x:Name="dpDateOfReceipt" Margin="5" Grid.ColumnSpan="2" Language="ru-RU"/>
+
+        <Label Grid.Row="4" Grid.Column="3" Content="Приходная накладная:" />
+        <TextBox Grid.Row="4" Grid.Column="4" x:Name="txtIncomingInvoice" Margin="5" Grid.ColumnSpan="2"/>
+
+        <Label Grid.Row="5" Grid.Column="0" Content="Инвентарный номер:"/>
+        <TextBox Grid.Row="5" Grid.Column="1" x:Name="txtInventoryNumber" Margin="5" Grid.ColumnSpan="2"/>
 
 
-        <Label Grid.Row="5" Grid.Column="0" Content="Класс:"/>
-        <TextBox Grid.Row="5" Grid.Column="1" x:Name="txtClass" Margin="5" Grid.ColumnSpan="2"/>
-       
-        <Label Grid.Row="5" Grid.Column="3" Content="Количество экземпляров:"/>
-        <TextBox Grid.Row="5" Grid.Column="4" x:Name="txtQuantity" Margin="5" Grid.ColumnSpan="2"/>
-        
-        <Label Grid.Row="6" Grid.Column="0" Grid.RowSpan="2" Content="Описание:"/>
-        <TextBox Grid.Row="6" Grid.Column="1" x:Name="txtDescription" Margin="5" Grid.ColumnSpan="5" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" Height="90"/>
+        <Label Grid.Row="5" Grid.Column="3" Content="Класс:"/>
+        <TextBox Grid.Row="5" Grid.Column="4" x:Name="txtClass" Margin="5" Grid.ColumnSpan="2"/>
 
-        <Label Grid.Row="7" Grid.Column="0" Content="Фото книги:"/>
-        <Button Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" x:Name="btnSelectPhoto" Height="60" Width="90" Margin="5" Click="SelectPhotos_Click">
-            <TextBlock Text="Выбрать фото" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Label Grid.Row="6" Grid.Column="0" Content="Количество экземпляров:"/>
+        <TextBox Grid.Row="6" Grid.Column="1" x:Name="txtQuantity" Margin="5" Grid.ColumnSpan="2"/>
+
+        <Label Grid.Row="7" Grid.Column="0" Grid.RowSpan="2" Content="Описание:"/>
+        <TextBox Grid.Row="7" Grid.Column="1" x:Name="txtDescription" Margin="5" Grid.ColumnSpan="5" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" Height="70"/>
+
+        <Label Grid.Row="8" Grid.Column="0" Content="Фото книги:" VerticalAlignment="Center"/>
+        <Button Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" x:Name="btnSelectPhoto" Height="60" Width="90" Margin="5" Click="SelectPhotos_Click" Style="{StaticResource RoundedButtonStyle}">
+            <TextBlock Text="Выбрать фото" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" />
         </Button>
-       <!-- <Image Grid.Row="7" Grid.Column="3" x:Name="imgBookPhoto" Width="70" Height="70" Margin="5"/>
+        <!-- <Image Grid.Row="7" Grid.Column="3" x:Name="imgBookPhoto" Width="70" Height="70" Margin="5"/>
 -->
-        <ListBox  Grid.Row="7" Grid.Column="3" Grid.ColumnSpan="3" x:Name="lbBookPhotos" Height="100" Margin="5" ItemTemplate="{StaticResource ImageItemTemplate}" Background="LightBlue">
+        <ListBox  Grid.Row="8" Grid.Column="3" Grid.ColumnSpan="3" x:Name="lbBookPhotos" Height="100" Margin="5" ItemTemplate="{StaticResource ImageItemTemplate}" Background="LightBlue">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
         </ListBox>
-        <StackPanel Grid.Row="8" Grid.ColumnSpan="6" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
-            <Button  Content="Добавить книгу" Click="btnAdd_Click" Margin="0,0,5,0" />
-            <Button Content="Отмена" Click="CancelButton_Click"/>
+        <StackPanel Grid.Row="10" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Left" Margin="67,14,0,-21" Grid.Column="1">
+            <Button  Content="Добавить книгу" Click="btnAdd_Click" Margin="0,0,20,0" Style="{StaticResource RoundedButtonStyle}" Width="140"/>
+            <Button Content="Отмена" Click="CancelButton_Click" Style="{StaticResource RoundedButtonStyle}" Width="90"/>
         </StackPanel>
 
     </Grid>

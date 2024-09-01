@@ -24,6 +24,8 @@ namespace SchoolLibrary.DialogWindows.Operations
         public ConfirmExitWindow()
         {
             InitializeComponent();
+            // Настройка диалоговое окно, чтобы оно не блокировало ввод в основной форме
+           // this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
         }
 
         private void btnYes_Click(object sender, RoutedEventArgs e)

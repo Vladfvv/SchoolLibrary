@@ -5,39 +5,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolLibrary.DialogWindows.LoanWindows"
         mc:Ignorable="d"
-        Title="Возврат книги" Height="400" Width="800"
-        MouseDown="Window_MouseDown"
-        WindowStyle="SingleBorderWindow"
-        ResizeMode="CanResize">
+        Title="Возврат книги" Height="600" Width="1020"       
+        WindowStyle="SingleBorderWindow" 
+        ResizeMode="CanResize" Style="{StaticResource {x:Type Window}}" FontSize="16">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <DataGrid x:Name="LoansDataGrid" Grid.Row="0" Margin="10" AutoGenerateColumns="False" SelectionMode="Single">
+       <!-- <DataGrid x:Name="LoansDataGrid" Grid.Row="0" Margin="10" AutoGenerateColumns="False" SelectionMode="Single">-->
+        <DataGrid x:Name="LoansDataGrid" Grid.Row="0" Margin="10" AutoGenerateColumns="False" SelectionMode="Single" LoadingRow="LoansDataGrid_LoadingRow">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Student" Binding="{Binding Student.FirstName}" Width="*"/>
-                <DataGridTextColumn Header="Book Title" Binding="{Binding InventoryBook.Title}" Width="*"/>
-                <DataGridTextColumn Header="Loan Date" Binding="{Binding LoanDate}" Width="*"/>
-                <DataGridTextColumn Header="Due Date" Binding="{Binding DueDate}" Width="*"/>
-                <DataGridTextColumn Header="Return Date" Binding="{Binding ReturnDate}" Width="*"/>
+                <DataGridTextColumn Header="Фамилия" Binding="{Binding Student.LastName}" Width="Auto"/>
+                <DataGridTextColumn Header="Имя" Binding="{Binding Student.FirstName}" Width="Auto"/>
+                <DataGridTextColumn Header="Название книги" Binding="{Binding InventoryBook.Title}" Width="*"/>
+                <DataGridTextColumn Header="Когда взяли" Binding="{Binding LoanDate, StringFormat={}{0:dd/MM/yyyy HH:mm:ss}}" Width="Auto"/>
+                <DataGridTextColumn Header="Когда должны вернуть" Binding="{Binding DueDate, StringFormat={}{0:dd/MM/yyyy HH:mm:ss}}" Width="Auto"/>
             </DataGrid.Columns>
         </DataGrid>
 
-        <TextBox x:Name="SearchStudentTextBox" Grid.Row="1" Margin="10" Text="Search by Student Name" KeyUp="SearchTextBox_KeyUp"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+            <Button x:Name="PreviousButton" Content="Назад" Width="100" Margin="5" Click="PreviousButton_Click" Style="{StaticResource RoundedButtonStyle}"/>
+            <TextBlock Text="{Binding CurrentPage}" VerticalAlignment="Center" Margin="10"/>
+            <Button x:Name="NextButton" Content="Вперед" Width="100" Margin="5" Click="NextButton_Click" Style="{StaticResource RoundedButtonStyle}"/>
+        </StackPanel>
 
+        <DatePicker x:Name="ReturnDatePicker" Grid.Row="2" SelectedDate="{Binding ReturnDate}" Margin="5" Width="200"/>
 
-
-        <DatePicker  x:Name="ReturnDatePicker" Grid.Row="2" Grid.Column="1" SelectedDate="{Binding ReturnDate}" Margin="5"/>
-
-
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
-            <Button Content="Return" Width="75" Margin="5" Click="ReturnButton_Click"/>
-            <Button Content="Cancel" Width="75" Margin="5" Click="CancelButton_Click"/>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
+            <Button Content="Возврат" Width="100" Margin="5" Click="ReturnButton_Click" Style="{StaticResource RoundedButtonStyle}"/>
+            <Button Content="Закрыть" Width="100" Margin="5" Click="CancelButton_Click" Style="{StaticResource RoundedButtonStyle}"/>
         </StackPanel>
     </Grid>
 </Window>

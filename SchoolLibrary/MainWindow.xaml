@@ -46,7 +46,7 @@
                 <MenuItem Header="Поиск" Click="btnSearchStudents_Click"/>
                 <MenuItem Header="Добавить" Click="btnAddStudent_Click"/>
                 <MenuItem Header="Редактировать" Click="btnEditStudent_Click"/>
-                <MenuItem Header="Удалить" Click="btnDeleteStudent_Click"/>
+                <!--<MenuItem Header="Удалить" Click="btnDeleteStudent_Click"/>-->
             </MenuItem>
             <MenuItem Header="Категории книг">
                 <MenuItem Header="Все категории"/>
@@ -129,11 +129,17 @@
                     </Button.ToolTip>
                     <Image Source="Resources/Delete reader.png" Width="40" Height="40"/>
                 </Button>
-                <Button x:Name="btnStudents" Click="btnListStudents">Показать читателей</Button>
-                <Button x:Name="btnCategories" Click="btnListCategories">Показать категории книг</Button>
-                <Button x:Name="btnBooks" Click="btnListBooks">Показать все книги библиотеки</Button>
-                <Button x:Name="btnLoans" Click="btnBookReport_Click">Выдача книг</Button>
-                <Button x:Name="btnInventoryBooks" Click="btnListInventoryBook">Инвентарный журнал</Button>
+                <Button x:Name="btnStudents" Click="btnListStudents">Читатели</Button>
+                <Button x:Name="btnCategories" Click="btnListCategories">Категории</Button>
+                <Button x:Name="btnBooks" Click="btnListBooks">Книги</Button>
+                <Button x:Name="btnLoans" Click="btnBookReport_Click">Выдача</Button>
+                <Button x:Name="btnInventoryBooks" Click="btnListInventoryBook">Инвент</Button>
+                <Button x:Name="btnLogout" Click="btnLogout_Click" Content="Выйти">
+                    <Button.ToolTip>
+                        <ToolTip>Выйти из сессии</ToolTip>
+                    </Button.ToolTip>
+                   <!-- <Image Source="Resources/Logout.png" Width="40" Height="40"/>-->
+                </Button>
             </StackPanel>
             <DataGrid x:Name="dGrid" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" LoadingRow="dGrid_LoadingRow" 
                   AutoGenerateColumns="False" RowHeaderWidth="50">

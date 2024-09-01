@@ -20,13 +20,13 @@
 
 
 
-    <Application x:Class="SchoolLibrary.App"
+<Application x:Class="SchoolLibrary.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:SchoolLibrary"
                  StartupUri="AuthWindows/StartWindow.xaml">
     <Application.Resources>
-       <!-- <Style TargetType="ToolTip">
+        <!-- <Style TargetType="ToolTip">
             <Setter Property="ToolTipService.InitialShowDelay" Value="1"/> //для ускорения отображения ToolTip
             <Setter Property="ToolTipService.ShowDuration" Value="5000"/>
         </Style>-->
@@ -36,18 +36,37 @@
         </Style>
         <Style TargetType="Menu">
             <Setter Property="FontSize" Value="16"/>
-        </Style>        
+        </Style>
         <Style TargetType="DataGrid">
             <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
             <Setter Property="ColumnHeaderStyle">
                 <Setter.Value>
                     <Style TargetType="DataGridColumnHeader">
-                        <Setter Property="HorizontalContentAlignment" Value="Center"/>                       
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
                     </Style>
                 </Setter.Value>
             </Setter>
         </Style>
+        <!-- Стиль для DataGridRow -->
+        <Style TargetType="DataGridRow">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="LightBlue" />
+                    <Setter Property="Foreground" Value="White" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
         <Style x:Key="RoundedButtonStyle" TargetType="Button">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="Foreground" Value="CadetBlue" />
+                </Trigger>
+            </Style.Triggers>
+            <!--Стиль для круглых кнопок-->
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Padding" Value="10,5"/>
             <Setter Property="Background" Value="LightGray"/>
@@ -63,7 +82,14 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <!-- Стиль для TextBox -->
+        <Style TargetType="TextBox">
+            <Setter Property="Foreground" Value="CadetBlue" />
+        </Style>
+        <!-- Стиль для PasswordBox -->
+        <Style TargetType="PasswordBox">
+            <Setter Property="Foreground" Value="CadetBlue" />
+        </Style>
+        
     </Application.Resources>
-
-  
 </Application>

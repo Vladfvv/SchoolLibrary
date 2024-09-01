@@ -24,6 +24,8 @@ namespace SchoolLibrary.DialogWindows.CategoryWindows
         public EditCategoryDialog(EntityContext context, Category category)
         {
             InitializeComponent();
+            // Центрирование окна на экране
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             DataContext = this;
             _context = context;
             Category = category;
@@ -53,12 +55,12 @@ namespace SchoolLibrary.DialogWindows.CategoryWindows
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
-            {
-                this.DragMove();
-            }
-        }
+        //private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        //{
+        //    if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
+        //    {
+        //        this.DragMove();
+        //    }
+        //}
     }
 }

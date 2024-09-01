@@ -7,8 +7,7 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:localConverters="clr-namespace:SchoolLibrary.DialogWindows"
         mc:Ignorable="d"
-        Title="Поиск взятых книг" Height="450" Width="400"
-        MouseDown="Window_MouseDown"
+        Title="Поиск взятых книг" Height="450" Width="400"      
         WindowStyle="SingleBorderWindow"
         ResizeMode="CanResize" Style="{StaticResource {x:Type Window}}">
     <Window.Resources>
@@ -93,8 +92,8 @@
         <DatePicker Grid.Row="9" Grid.Column="1" Name="dpReturnToPicker" VerticalAlignment="Center"/>
 
         <StackPanel Grid.Row="10" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
-            <Button Content="Поиск" Width="75" Margin="5" Click="btnSearch_Click"/>
-            <Button Content="Отмена" Width="75" Margin="5" Click="btnCancel_Click"/>
+            <Button Content="Поиск" Width="90" Margin="5" Click="btnSearch_Click" Style="{StaticResource RoundedButtonStyle}" />
+            <Button Content="Отмена" Width="90" Margin="5" Click="btnCancel_Click" Style="{StaticResource RoundedButtonStyle}"/>
         </StackPanel>
     </Grid>
 </Window>

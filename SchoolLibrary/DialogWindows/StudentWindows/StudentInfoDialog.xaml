@@ -1,0 +1,66 @@
+﻿<Window x:Class="SchoolLibrary.DialogWindows.StudentWindows.StudentInfoDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SchoolLibrary.DialogWindows.StudentWindows"
+        mc:Ignorable="d"
+        Title="Информация о читателе" Height="290" Width="400" FontSize="16" Background="LightYellow"
+        Style="{StaticResource {x:Type Window}}"       
+        WindowStyle="SingleBorderWindow"
+        ResizeMode="CanResize" >
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>           
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Content="Имя:" Grid.Row="0" Grid.Column="0"/>
+        <TextBlock x:Name="FirstNameTextBlock" Grid.Row="0" Grid.Column="1" Margin="5"/>
+
+        <Label Content="Фамилия:" Grid.Row="1" Grid.Column="0"/>
+        <TextBlock x:Name="LastNameTextBlock" Grid.Row="1" Grid.Column="1" Margin="5"/>
+
+        <Label Content="Дата рождения:" Grid.Row="2" Grid.Column="0"/>
+        <TextBlock x:Name="DateOfBirthTextBlock" Grid.Row="2" Grid.Column="1" Margin="5"/>
+
+        <Label Content="Класс:" Grid.Row="3" Grid.Column="0"/>
+        <TextBlock x:Name="StudentClassTextBlock" Grid.Row="3" Grid.Column="1" Margin="5"/>      
+
+        <Label Content="Адрес:" Grid.Row="4" Grid.Column="0"/>
+        <TextBlock x:Name="StudentAddressTextBlock" Grid.Row="4" Grid.Column="1" Margin="5"/>
+
+        <Label Content="Телефон:" Grid.Row="5" Grid.Column="0"/>
+        <TextBlock x:Name="PhoneTextBlock" Grid.Row="5" Grid.Column="1" Margin="5"/>
+
+        <StackPanel Grid.Row="6" Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="0">
+            <Button Content="Закрыть" Margin="5" Click="Cancel_Click" Style="{StaticResource RoundedButtonStyle}" Width="100"/>
+        </StackPanel>
+
+        <!--<StackPanel Margin="10">-->
+        <!--<TextBlock Text="Имя:"/>
+            <TextBlock Name="FirstNameTextBlock"/>-->
+
+        <!--<TextBlock Text="Фамилия:" />
+            <TextBlock Name="LastNameTextBlock"/>-->
+
+        <!--<TextBlock Text="Дата рождения:"/>
+            <TextBlock Name="DateOfBirthTextBlock"/>-->
+
+        <!--<TextBlock Text="Класс:" />
+            <TextBlock Name="StudentClassTextBlock"/>-->
+
+        <!--<TextBlock Text="Телефон:"/>
+            <TextBlock Name="PhoneTextBlock"/>-->
+        <!--</StackPanel>-->
+    </Grid>
+</Window>

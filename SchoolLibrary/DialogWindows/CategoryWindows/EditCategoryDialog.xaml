@@ -5,8 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolLibrary.DialogWindows.CategoryWindows"
         mc:Ignorable="d"
-        Title="Редактирование категории" Height="250" Width="350" Background="NavajoWhite"
-        MouseDown="Window_MouseDown"
+        Title="Редактирование категории" Height="250" Width="350" Background="NavajoWhite"       
         WindowStyle="SingleBorderWindow"
         ResizeMode="CanResize">
     <Grid Margin="20">
@@ -23,8 +22,8 @@
         <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding Category.CategoryName, UpdateSourceTrigger=PropertyChanged}"/>
 
         <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-            <Button Content="Сохранить" Margin="5" Click="SaveCategory_Click"/>
-            <Button Content="Отмена" Margin="5" Click="Cancel_Click"/>
+            <Button Content="Сохранить" Margin="5" Click="SaveCategory_Click" Style="{StaticResource RoundedButtonStyle}" Width="100"/>
+            <Button Content="Отмена" Margin="5" Click="Cancel_Click" Style="{StaticResource RoundedButtonStyle}" Width="100"/>
         </StackPanel>
     </Grid>
 </Window>

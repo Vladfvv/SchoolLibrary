@@ -20,7 +20,7 @@ namespace SchoolLibrary.AuthWindows
     /// </summary>
     public partial class StartWindow : Window
     {
-        private EntityContext context;
+        private readonly EntityContext context;
         public StartWindow()
         {
             InitializeComponent();

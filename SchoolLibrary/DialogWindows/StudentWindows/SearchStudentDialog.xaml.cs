@@ -1,4 +1,5 @@
 ﻿using SchoolLibrary.Models;
+using SchoolLibrary.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,8 +28,90 @@ namespace SchoolLibrary.DialogWindows.StudentWindows
         public SearchStudentDialog(EntityContext context)
         {
             InitializeComponent();
+            // Центрирование окна на экране
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            this.DataContext = context;
             _context = context;
         }
+
+        ////private void SearchButton_Click(object sender, RoutedEventArgs e)
+        ////{
+        ////    string firstName = FirstNameTextBox.Text.Trim();
+        ////    string lastName = LastNameTextBox.Text.Trim();
+
+        ////    int minAge, maxAge, minClass, maxClass;
+        ////    bool isMinAgeValid = int.TryParse(MinAgeTextBox.Text, out minAge);
+        ////    bool isMaxAgeValid = int.TryParse(MaxAgeTextBox.Text, out maxAge);
+        ////    bool isMinClassValid = int.TryParse(MinClassTextBox.Text, out minClass);
+        ////    bool isMaxClassValid = int.TryParse(MaxClassTextBox.Text, out maxClass);
+
+        ////    if ((MinAgeTextBox.Text != string.Empty && !isMinAgeValid) ||
+        ////        (MaxAgeTextBox.Text != string.Empty && !isMaxAgeValid) ||
+        ////        (MinClassTextBox.Text != string.Empty && !isMinClassValid) ||
+        ////        (MaxClassTextBox.Text != string.Empty && !isMaxClassValid))
+        ////    {
+        ////        StatusTextBlock.Text = "Введите правильные числа.";
+        ////        return;
+        ////    }
+
+
+
+        ////    var query = _context.Students.AsQueryable();
+
+        ////    if (!string.IsNullOrEmpty(firstName))
+        ////    {
+        ////        query = query.Where(s => s.FirstName.Contains(firstName));
+        ////    }
+
+        ////    if (!string.IsNullOrEmpty(lastName))
+        ////    {
+        ////        query = query.Where(s => s.LastName.Contains(lastName));
+        ////    }
+
+        ////    if (isMinAgeValid)
+        ////    {
+        ////        query = query.Where(s => s.Age >= minAge);
+        ////    }
+
+        ////    if (isMaxAgeValid)
+        ////    {
+        ////        query = query.Where(s => s.Age <= maxAge);
+        ////    }
+
+        ////    if (isMinClassValid)
+        ////    {
+        ////        query = query.Where(s => s.StudentClass.CompareTo(minClass.ToString()) >= 0);
+        ////    }
+
+        ////    if (isMaxClassValid)
+        ////    {
+        ////        query = query.Where(s => s.StudentClass.CompareTo(maxClass.ToString()) <= 0);
+        ////    }
+
+        ////    var results = query.ToList();
+
+        ////    if (results.Count > 0)
+        ////    {
+        ////        //// Assuming MainWindow has a method to update the DataGrid with the search results
+        ////        //(Application.Current.MainWindow as MainWindow)?.UpdateStudentDataGrid(results);
+        ////        //var mainWindow = Application.Current.MainWindow as MainWindow;
+        ////        //if (mainWindow != null)
+        ////        //{
+        ////        //    mainWindow.UpdateStudentDataGrid(results);
+        ////        //}
+        ////        //this.Close();
+
+        ////        // Устанавливаем результаты в Tag и закрываем диалог
+        ////        this.Tag = results;
+        ////        this.DialogResult = true;
+        ////    }
+        ////    else
+        ////    {
+        ////        StatusTextBlock.Text = "Читателей с заданными параметрами не найдено.";
+        ////    }
+        ////}
+
+
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
@@ -46,10 +129,11 @@ namespace SchoolLibrary.DialogWindows.StudentWindows
                 (MinClassTextBox.Text != string.Empty && !isMinClassValid) ||
                 (MaxClassTextBox.Text != string.Empty && !isMaxClassValid))
             {
-                StatusTextBlock.Text = "Please enter valid numerical values.";
+                StatusTextBlock.Text = "Введите корректные данные.";
                 return;
             }
 
+            // Получаем список студентов из базы данных
             var query = _context.Students.AsQueryable();
 
             if (!string.IsNullOrEmpty(firstName))
@@ -62,50 +146,45 @@ namespace SchoolLibrary.DialogWindows.StudentWindows
                 query = query.Where(s => s.LastName.Contains(lastName));
             }
 
-            if (isMinAgeValid)
-            {
-                query = query.Where(s => s.Age >= minAge);
-            }
+            // Получаем данные из базы данных
+            var students = query.ToList();
 
-            if (isMaxAgeValid)
-            {
-                query = query.Where(s => s.Age <= maxAge);
-            }
-
-            if (isMinClassValid)
-            {
-                query = query.Where(s => s.Class.CompareTo(minClass.ToString()) >= 0);
-            }
-
-            if (isMaxClassValid)
-            {
-                query = query.Where(s => s.Class.CompareTo(maxClass.ToString()) <= 0);
-            }
-
-            var results = query.ToList();
+            // Выполняем вычисления после получения данных
+            var results = students
+                .Where(s => (!isMinAgeValid || s.Age >= minAge) &&
+                            (!isMaxAgeValid || s.Age <= maxAge) &&
+                            (!isMinClassValid || s.StudentClass.CompareTo(minClass.ToString()) >= 0) &&
+                            (!isMaxClassValid || s.StudentClass.CompareTo(maxClass.ToString()) <= 0))
+                .Select((student, index) => new PaginatedStudentModel
+                {
+                    StudentID = student.StudentID,
+                    FirstName = student.FirstName,
+                    LastName = student.LastName,
+                    DateOfBirth = student.DateOfBirth,
+                    StudentClass = student.StudentClass,
+                    Prefix = student.Prefix,
+                    Address = student.Address,
+                    Index = index + 1
+                })
+                .ToList();
 
             if (results.Count > 0)
             {
-                // Assuming MainWindow has a method to update the DataGrid with the search results
-                (Application.Current.MainWindow as MainWindow)?.UpdateStudentDataGrid(results);
-                this.Close();
+                // Устанавливаем результаты в Tag и закрываем диалог
+                this.Tag = results;
+                this.DialogResult = true;
             }
             else
             {
-                StatusTextBlock.Text = "No students found matching the criteria.";
+                StatusTextBlock.Text = "Читателей с заданными параметрами не найдено.";
             }
         }
 
+
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
+            this.DialogResult = false;
             this.Close();
-        }
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                this.DragMove();
-            }
-        }
+        }       
     }
 }

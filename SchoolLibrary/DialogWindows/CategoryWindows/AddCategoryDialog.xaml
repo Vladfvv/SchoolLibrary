@@ -5,10 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolLibrary.DialogWindows.CategoryWindows"
         mc:Ignorable="d"
-        Title="Добавить категорию" Height="150" Width="400"  Style="{StaticResource {x:Type Window}}"
-        MouseDown="Window_MouseDown"
+        Title="Добавить категорию" Height="150" Width="400"  Style="{StaticResource {x:Type Window}}"       
         WindowStyle="SingleBorderWindow"
-        ResizeMode="CanResize">
+        ResizeMode="CanResize" FontSize="16">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -35,8 +34,8 @@
         </TextBox>
 
         <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-            <Button Content="Сохранить" Margin="5" Click="AddCategory_Click"/>
-            <Button Content="Закрыть" Margin="5" Click="Cancel_Click"/>
+            <Button Content="Сохранить" Margin="5" Click="AddCategory_Click" Style="{StaticResource RoundedButtonStyle}" Width="100"/>
+            <Button Content="Закрыть" Margin="5" Click="Cancel_Click" Style="{StaticResource RoundedButtonStyle}" Width="100"/>
         </StackPanel>
     </Grid>
 </Window>

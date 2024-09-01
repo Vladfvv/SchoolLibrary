@@ -5,16 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolLibrary.AuthWindows"
         mc:Ignorable="d"
-        Title="LoginWindow" Height="450" Width="800"
-        WindowState="Maximized" Style="{StaticResource {x:Type Window}}">
+        Title="Авторизация" Height="450" Width="800"
+        WindowState="Maximized" Style="{StaticResource {x:Type Window}}"
+        Loaded="Window_Loaded" FontSize="16">
     <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Height="294">
             <TextBlock Text="Логин:"  Margin="10" HorizontalAlignment="Center"/>
             <TextBox Name="UsernameTextBox" Width="200" Margin="0 10 0 0"/>
             <TextBlock Text="Пароль:"  Margin="10" HorizontalAlignment="Center"/>
-            <PasswordBox Name="PasswordBox" Width="200" Margin="10 10 10 0" />
-            <Button Content="Войти" Width="100" Margin="10" Click="LoginButton_Click" Style="{StaticResource RoundedButtonStyle}"/>
-            <TextBlock Text="Для возврата к регистрации нажмите кнопку ниже"  Margin="10" HorizontalAlignment="Center"/>
+            <PasswordBox Name="PasswordBox" Width="200" Margin="10 10 10 10" />
+            <Button Content="Войти" Width="100" Margin="10 15 5 0" Click="LoginButton_Click" Style="{StaticResource RoundedButtonStyle}"/>
+            <TextBlock Text="Для возврата к регистрации нажмите кнопку ниже"  Margin="15" HorizontalAlignment="Center"/>
             <Button Content="Зарегистрироваться" Width="180" Margin="10" Click="RegisterButton_Click" Style="{StaticResource RoundedButtonStyle}"/>
         </StackPanel>
     </Grid>

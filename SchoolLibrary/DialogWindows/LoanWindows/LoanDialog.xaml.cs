@@ -1,252 +1,5 @@
-﻿
-//using SchoolLibrary.Models;
-//using System;
-//using System.Collections.Generic;
-//using System.Data.Entity;
-//using System.Linq;
-//using System.Windows;
-//using System.Windows.Controls;
-//using System.Windows.Input;
-//using System.Windows.Markup;
-
-//namespace SchoolLibrary.DialogWindows.LoanWindows
-//{
-//    public partial class LoanDialog : Window
-//    {
-//        private readonly EntityContext _context;
-//        private List<Book> _books;
-//        private List<Student> _students;
-
-//        public LoanDialog(EntityContext context)
-//        {
-//            InitializeComponent();
-//            _context = context;
-//            LoadBooks();
-//            LoadStudents();
-//            LoanDatePicker.SelectedDate = DateTime.Today;
-//            LoanDatePicker.Language = XmlLanguage.GetLanguage("ru-RU");
-//            DueDatePicker.SelectedDate = DateTime.Today.AddDays(14);
-//            DueDatePicker.Language = XmlLanguage.GetLanguage("ru-RU");
-//        }
-
-//        //private void LoadBooks()
-//        //{
-//        //    _books = _context.Books.Include(b => b.Category)
-//        //                           .Include(b => b.InventoryBooks)
-//        //                           .ToList();
-
-//        //    var bookInventoryViewModels = _books.Select(book => new BookInventoryViewModel
-//        //    {
-//        //        BookID = book.BookID,
-//        //        Title = book.InventoryBooks.FirstOrDefault()?.Title ?? string.Empty,
-//        //        Author = book.InventoryBooks.FirstOrDefault()?.Author ?? string.Empty,
-//        //        Publisher = book.InventoryBooks.FirstOrDefault()?.Publisher ?? string.Empty,
-//        //        YearPublished = book.InventoryBooks.FirstOrDefault()?.YearPublished ?? string.Empty,
-//        //        ISBN = book.InventoryBooks.FirstOrDefault()?.ISBN ?? string.Empty,
-//        //        Quantity = book.Quantity,
-//        //        QuantityLeft = book.QuantityLeft,
-//        //        CategoryName = book.Category?.CategoryName ?? string.Empty
-//        //    }).ToList();
-
-//        //    BooksDataGrid.ItemsSource = bookInventoryViewModels;
-//        //}
-
-//        private void LoadBooks()
-//        {
-//            _books = _context.Books.Include(b => b.Category)
-//                                   .Include(b => b.InventoryBooks)
-//                                   .Where(b => b.QuantityLeft > 0) // Выбираем только книги с положительным QuantityLeft
-//                                   .ToList();
-
-//            var bookInventoryViewModels = _books.Select(book => new BookInventoryViewModel
-//            {
-//                BookID = book.BookID,
-//                Title = book.InventoryBooks.FirstOrDefault()?.Title ?? string.Empty,
-//                Author = book.InventoryBooks.FirstOrDefault()?.Author ?? string.Empty,
-//                Publisher = book.InventoryBooks.FirstOrDefault()?.Publisher ?? string.Empty,
-//                YearPublished = book.InventoryBooks.FirstOrDefault()?.YearPublished ?? string.Empty,
-//                ISBN = book.InventoryBooks.FirstOrDefault()?.ISBN ?? string.Empty,
-//                Quantity = book.Quantity,
-//                QuantityLeft = book.QuantityLeft,
-//                CategoryName = book.Category?.CategoryName ?? string.Empty
-//            }).ToList();
-
-//            BooksDataGrid.ItemsSource = bookInventoryViewModels;
-//        }
-
-//        private void LoadStudents()
-//        {
-//            _students = _context.Students.ToList();
-//            StudentsDataGrid.ItemsSource = _students;
-//        }
-
-
-//        private void BooksDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-//        {
-//            // Обработка выбора книги, если нужно
-//        }
-
-
-//        private void StudentsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-//        {
-//            if (StudentsDataGrid.SelectedItem != null)
-//            {
-//                Student selectedStudent = (Student)StudentsDataGrid.SelectedItem;
-//                ShowStudentDetailsWindow(selectedStudent);
-//            }
-//        }
-
-//        private void ShowStudentDetailsWindow(Student student)
-//        {
-//            StudentDetailsWindow detailsWindow = new StudentDetailsWindow(student);
-//            detailsWindow.Owner = this;
-//            detailsWindow.ShowDialog();
-//        }
-
-//        //private void LoanButton_Click(object sender, RoutedEventArgs e)
-//        //{
-//        //    if (BooksDataGrid.SelectedItem == null || StudentsDataGrid.SelectedItem == null)
-//        //    {
-//        //        MessageBox.Show("Please select a book and a student.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-//        //        return;
-//        //    }
-
-//        //    BookInventoryViewModel selectedBook = (BookInventoryViewModel)BooksDataGrid.SelectedItem;
-//        //    Student selectedStudent = (Student)StudentsDataGrid.SelectedItem;
-//        //    DateTime loanDate = LoanDatePicker.SelectedDate ?? DateTime.Today;
-//        //    DateTime dueDate = DueDatePicker.SelectedDate ?? DateTime.Today.AddDays(14);
-
-//        //    Loan newLoan = new Loan
-//        //    {
-//        //        InventoryBookID = selectedBook.BookID,
-//        //        StudentID = selectedStudent.StudentID,
-//        //        LoanDate = loanDate,
-//        //        DueDate = dueDate,
-//        //        Returned = false
-//        //    };
-
-//        //    using (var transaction = _context.Database.BeginTransaction())
-//        //    {
-//        //        try
-//        //        {
-//        //            _context.Loans.Add(newLoan);
-//        //            _context.SaveChanges();
-
-//        //            var book = _context.Books.Find(selectedBook.BookID);
-//        //            book.QuantityLeft -= 1;
-//        //            _context.Entry(book).State = EntityState.Modified;
-//        //            _context.SaveChanges();
-
-//        //            transaction.Commit();
-
-//        //            MessageBox.Show("Book loaned successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-//        //            this.DialogResult = true;
-//        //        }
-//        //        catch (Exception ex)
-//        //        {
-//        //            transaction.Rollback();
-//        //            MessageBox.Show("An error occurred while processing the loan: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-//        //        }
-//        //    }
-//        //}
-
-
-//        private void LoanButton_Click(object sender, RoutedEventArgs e)
-//        {
-//            if (BooksDataGrid.SelectedItem == null || StudentsDataGrid.SelectedItem == null)
-//            {
-//                MessageBox.Show("Please select a book and a student.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-//                return;
-//            }
-
-//            BookInventoryViewModel selectedBook = (BookInventoryViewModel)BooksDataGrid.SelectedItem;
-//            if (selectedBook.QuantityLeft <= 0)
-//            {
-//                MessageBox.Show("Selected book is out of stock.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-//                return;
-//            }
-
-//            Student selectedStudent = (Student)StudentsDataGrid.SelectedItem;
-//            DateTime loanDate = LoanDatePicker.SelectedDate ?? DateTime.Today;
-//            DateTime dueDate = DueDatePicker.SelectedDate ?? DateTime.Today.AddDays(14);
-
-//            Loan newLoan = new Loan
-//            {
-//                InventoryBookID = selectedBook.BookID,
-//                StudentID = selectedStudent.StudentID,
-//                LoanDate = loanDate,
-//                DueDate = dueDate,
-//                Returned = false
-//            };
-
-//            using (var transaction = _context.Database.BeginTransaction())
-//            {
-//                try
-//                {
-//                    _context.Loans.Add(newLoan);
-//                    _context.SaveChanges();
-
-//                    var book = _context.Books.Find(selectedBook.BookID);
-//                    book.QuantityLeft -= 1;
-//                    _context.Entry(book).State = EntityState.Modified;
-//                    _context.SaveChanges();
-
-//                    transaction.Commit();
-
-//                    MessageBox.Show("Book loaned successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-//                    RefreshBooksData(); // Обновляем данные после оформления займа
-//                    this.DialogResult = true;
-//                }
-//                catch (Exception ex)
-//                {
-//                    transaction.Rollback();
-//                    MessageBox.Show("An error occurred while processing the loan: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-//                }
-//            }
-//        }
-
-
-//        private void RefreshBooksData()
-//        {
-//            var books = _context.Books.Include(b => b.Category)
-//                                       .Include(b => b.InventoryBooks)
-//                                       .Where(b => b.QuantityLeft > 0)
-//                                       .ToList();
-
-//            var bookInventoryViewModels = books.Select(book => new BookInventoryViewModel
-//            {
-//                BookID = book.BookID,
-//                Title = book.InventoryBooks.FirstOrDefault()?.Title ?? string.Empty,
-//                Author = book.InventoryBooks.FirstOrDefault()?.Author ?? string.Empty,
-//                Publisher = book.InventoryBooks.FirstOrDefault()?.Publisher ?? string.Empty,
-//                YearPublished = book.InventoryBooks.FirstOrDefault()?.YearPublished ?? string.Empty,
-//                ISBN = book.InventoryBooks.FirstOrDefault()?.ISBN ?? string.Empty,
-//                Quantity = book.Quantity,
-//                QuantityLeft = book.QuantityLeft,
-//                CategoryName = book.Category?.CategoryName ?? string.Empty
-//            }).ToList();
-
-//            BooksDataGrid.ItemsSource = bookInventoryViewModels;
-//        }
-
-//        private void CancelButton_Click(object sender, RoutedEventArgs e)
-//        {
-//            this.DialogResult = false;
-//        }
-
-//        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-//        {
-//            if (e.ChangedButton == MouseButton.Left)
-//            {
-//                this.DragMove();
-//            }
-//        }
-//    }
-//}
-
-
-
-using SchoolLibrary.Models;
+﻿using SchoolLibrary.Models;
+using SchoolLibrary.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -267,18 +20,23 @@ namespace SchoolLibrary.DialogWindows.LoanWindows
         public LoanDialog(EntityContext context)
         {
             InitializeComponent();
+            // Центрирование окна на экране
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             _context = context;
             LoadBooks();
-            LoadStudents();
+            //LoadStudents();
+            LoadActiveStudents();
             LoanDatePicker.SelectedDate = DateTime.Today;
             LoanDatePicker.Language = XmlLanguage.GetLanguage("ru-RU");
+            LoanDatePicker.FirstDayOfWeek = DayOfWeek.Monday;
             DueDatePicker.SelectedDate = DateTime.Today.AddDays(14);
             DueDatePicker.Language = XmlLanguage.GetLanguage("ru-RU");
+            DueDatePicker.FirstDayOfWeek = DayOfWeek.Monday;
         }
 
         private void LoadBooks()
         {
-            _books = _context.Books.Include(b => b.Category)
+            _books = _context.Books.Include(b => b.Genre)
                                    .Include(b => b.InventoryBooks)
                                    .Where(b => b.QuantityLeft > 0) // Выбираем только книги с положительным QuantityLeft
                                    .ToList();
@@ -294,7 +52,7 @@ namespace SchoolLibrary.DialogWindows.LoanWindows
                 ISBN = book.InventoryBooks.FirstOrDefault()?.ISBN ?? string.Empty,
                 Quantity = book.Quantity,
                 QuantityLeft = book.QuantityLeft,
-                CategoryName = book.Category?.CategoryName ?? string.Empty
+                CategoryName = book.Genre?.GenreName ?? string.Empty
             }).ToList();
 
             BooksDataGrid.ItemsSource = bookInventoryViewModels;
@@ -304,6 +62,22 @@ namespace SchoolLibrary.DialogWindows.LoanWindows
         {
             _students = _context.Students.ToList();
             StudentsDataGrid.ItemsSource = _students;
+        }
+
+        private void LoadActiveStudents()
+        {
+            try
+            {
+                // Получаем только активных студентов из базы данных
+                var activeStudents = _context.Students.Where(s => s.IsActive).ToList();
+
+                // Привязываем отфильтрованный список к DataGrid
+                StudentsDataGrid.ItemsSource = activeStudents;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки данных студентов: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void BooksDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -327,93 +101,57 @@ namespace SchoolLibrary.DialogWindows.LoanWindows
             detailsWindow.ShowDialog();
         }
 
-        /*       private void LoanButton_Click(object sender, RoutedEventArgs e)
-               {
-                   if (BooksDataGrid.SelectedItem == null || StudentsDataGrid.SelectedItem == null)
-                   {
-                       MessageBox.Show("Please select a book and a student.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                       return;
-                   }
-
-                   BookInventoryViewModel selectedBook = (BookInventoryViewModel)BooksDataGrid.SelectedItem;
-                   if (selectedBook.QuantityLeft <= 0)
-                   {
-                       MessageBox.Show("Selected book is out of stock.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                       return;
-                   }
-
-                   Student selectedStudent = (Student)StudentsDataGrid.SelectedItem;
-                   DateTime loanDate = LoanDatePicker.SelectedDate ?? DateTime.Today;
-                   DateTime dueDate = DueDatePicker.SelectedDate ?? DateTime.Today.AddDays(14);
-
-                   Loan newLoan = new Loan
-                   {
-                       InventoryBookID = selectedBook.InventoryBookID,
-                       StudentID = selectedStudent.StudentID,
-                       LoanDate = loanDate,
-                       DueDate = dueDate,
-                       Returned = false
-                   };
-
-                   using (var transaction = _context.Database.BeginTransaction())
-                   {
-                       try
-                       {
-                           _context.Loans.Add(newLoan);
-                           _context.SaveChanges();
-
-                           var book = _context.Books.Find(selectedBook.BookID);
-                           book.QuantityLeft -= 1;
-                           _context.Entry(book).State = EntityState.Modified;
-                           _context.SaveChanges();
-
-                           transaction.Commit();
-
-                           MessageBox.Show("Book loaned successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                           RefreshBooksData(); // Обновляем данные после оформления займа
-                           this.DialogResult = true;
-                       }
-                       catch (Exception ex)
-                       {
-                           transaction.Rollback();
-                           MessageBox.Show("An error occurred while processing the loan: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                       }
-                   }
-               }*/
 
 
         private void LoanButton_Click(object sender, RoutedEventArgs e)
         {
-            if (BooksDataGrid.SelectedItem == null || StudentsDataGrid.SelectedItem == null)
+            if (BooksDataGrid.SelectedItem == null)
             {
-                MessageBox.Show("Please select a book and a student.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Выберите книгу.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if (StudentsDataGrid.SelectedItem == null)
+            {
+                MessageBox.Show("Выберите читателя.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (!(BooksDataGrid.SelectedItem is BookInventoryViewModel selectedBook))
             {
-                MessageBox.Show("Invalid book selection.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Ошибка выбора книги.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (selectedBook.QuantityLeft <= 0)
             {
-                MessageBox.Show("Selected book is out of stock.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Выбраная книга отсутствует в библиотеке.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (!(StudentsDataGrid.SelectedItem is Student selectedStudent))
             {
-                MessageBox.Show("Invalid student selection.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Ошибка выбора читателя.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            DateTime loanDate = LoanDatePicker.SelectedDate ?? DateTime.Today;
-            DateTime dueDate = DueDatePicker.SelectedDate ?? DateTime.Today.AddDays(14);
+            //DateTime loanDate = LoanDatePicker.SelectedDate ?? DateTime.Today;
+            DateTime loanDate = DateTime.Now;
+            DateTime dueDate = DueDatePicker.SelectedDate ?? DateTime.Now.AddDays(14);
+
+            // Найти следующую свободную книгу с этим ISBN
+            var availableBook = _context.InventoryBooks
+                .Where(b => b.BookID == selectedBook.BookID && !_context.Loans.Any(l => l.InventoryBookID == b.InventoryBookID && !l.Returned))
+                .FirstOrDefault();
+
+            if (availableBook == null)
+            {
+                MessageBox.Show("Нет доступных книг.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
             Loan newLoan = new Loan
             {
-                InventoryBookID = selectedBook.InventoryBookID,
+                InventoryBookID = availableBook.InventoryBookID,
                 StudentID = selectedStudent.StudentID,
                 LoanDate = loanDate,
                 DueDate = dueDate,
@@ -437,22 +175,27 @@ namespace SchoolLibrary.DialogWindows.LoanWindows
 
                     transaction.Commit();
 
-                    MessageBox.Show("Book loaned successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    // MessageBox.Show("Book loaned successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    // Используем формат "день/месяц/год часы:минуты:секунды" для времени займа
+                    string loanDateFormatted = loanDate.ToString("dd/MM/yyyy HH:mm:ss");
+
+                    MessageBox.Show($"Книга успешно выдана: {loanDateFormatted}.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                     RefreshBooksData(); // Обновляем данные после оформления займа
                     this.DialogResult = true;
                 }
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    MessageBox.Show("An error occurred while processing the loan: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Ошибка выдачи книги: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
 
 
+
         private void RefreshBooksData()
         {
-            var books = _context.Books.Include(b => b.Category)
+            var books = _context.Books.Include(b => b.Genre)
                                        .Include(b => b.InventoryBooks)
                                        .Where(b => b.QuantityLeft > 0)
                                        .ToList();
@@ -468,7 +211,7 @@ namespace SchoolLibrary.DialogWindows.LoanWindows
                 ISBN = book.InventoryBooks.FirstOrDefault()?.ISBN ?? string.Empty,
                 Quantity = book.Quantity,
                 QuantityLeft = book.QuantityLeft,
-                CategoryName = book.Category?.CategoryName ?? string.Empty
+                CategoryName = book.Genre?.GenreName ?? string.Empty
             }).ToList();
 
             BooksDataGrid.ItemsSource = bookInventoryViewModels;
@@ -478,27 +221,8 @@ namespace SchoolLibrary.DialogWindows.LoanWindows
         {
             this.DialogResult = false;
         }
-
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                this.DragMove();
-            }
-        }
+        
     }
 
-    public class BookInventoryViewModel
-    {
-        public int BookID { get; set; }
-        public int InventoryBookID { get; set; }
-        public string Title { get; set; }
-        public string Author { get; set; }
-        public string Publisher { get; set; }
-        public string YearPublished { get; set; }
-        public string ISBN { get; set; }
-        public int Quantity { get; set; }
-        public int QuantityLeft { get; set; }
-        public string CategoryName { get; set; }
-    }
+   
 }

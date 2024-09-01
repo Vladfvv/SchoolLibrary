@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -22,6 +23,16 @@ namespace SchoolLibrary.DialogWindows.LoanWindows
         public SearchLoanedBooksDialog(EntityContext context)
         {
             InitializeComponent();
+            // Центрирование окна на экране
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            dpLoanDateFrom.Language = XmlLanguage.GetLanguage("ru-RU");
+            dpLoanDateFrom.FirstDayOfWeek = DayOfWeek.Monday;
+            dpLoanDateTo.Language = XmlLanguage.GetLanguage("ru-RU");
+            dpLoanDateTo.FirstDayOfWeek = DayOfWeek.Monday;
+            dpReturnFromPicker.Language = XmlLanguage.GetLanguage("ru-RU");
+            dpReturnFromPicker.FirstDayOfWeek = DayOfWeek.Monday;
+            dpReturnToPicker.Language = XmlLanguage.GetLanguage("ru-RU");
+            dpReturnToPicker.FirstDayOfWeek = DayOfWeek.Monday;
             this.context = context;
         }
 
@@ -109,12 +120,7 @@ namespace SchoolLibrary.DialogWindows.LoanWindows
             DialogResult = false;
             Close();
         }
-
-        private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
-                this.DragMove();
-        }
+       
     }
 
 }

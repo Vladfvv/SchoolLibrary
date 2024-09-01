@@ -5,10 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolLibrary.DialogWindows.LoanWindows"
         mc:Ignorable="d"
-        Title="Выдача книги" Height="640" Width="800" Style="{StaticResource {x:Type Window}}"
-        MouseDown="Window_MouseDown"
+        Title="Выдача книги" Height="640" Width="1100" Style="{StaticResource {x:Type Window}}"       
         WindowStyle="SingleBorderWindow"
         ResizeMode="CanResize">
+    <Window.Resources>
+        <!-- стиль для TextBlock, чтобы выровнять текст по центру-->
+        <Style x:Key="CenteredTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -27,26 +33,27 @@
         <Label Grid.Row="0" Grid.Column="0" Content="Книга:" VerticalAlignment="Center"/>
         <DataGrid x:Name="BooksDataGrid" Grid.Row="0" Grid.ColumnSpan="2" AutoGenerateColumns="False" SelectionMode="Single" SelectionChanged="BooksDataGrid_SelectionChanged" Margin="5" Height="200">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="№п/п" Binding="{Binding BookID}" />
-                <DataGridTextColumn Header="Название" Binding="{Binding Title}" />
-                <DataGridTextColumn Header="Автор" Binding="{Binding Author}" />
-                <DataGridTextColumn Header="Издатель" Binding="{Binding Publisher}" />
-                <DataGridTextColumn Header="Год издания" Binding="{Binding YearPublished}" />
-                <DataGridTextColumn Header="Количество" Binding="{Binding Quantity}" />
-                <DataGridTextColumn Header="Остаток" Binding="{Binding QuantityLeft}" />
-                <DataGridTextColumn Header="Категория" Binding="{Binding CategoryName}" />
+                <!--Пприменение стиля к ElementStyle и EditingElementStyle столбцов DataGrid-->
+                <DataGridTextColumn Header="№п/п" Binding="{Binding BookID}" Width="55"  ElementStyle="{StaticResource CenteredTextBlockStyle}" EditingElementStyle="{StaticResource CenteredTextBlockStyle}"/>
+                <DataGridTextColumn Header="Название" Binding="{Binding Title}" Width="*"/>
+                <DataGridTextColumn Header="Автор" Binding="{Binding Author}" Width="100"/>
+                <DataGridTextColumn Header="Издатель" Binding="{Binding Publisher}" Width="100"/>
+                    <DataGridTextColumn Header="Год" Binding="{Binding YearPublished}" Width="50"   ElementStyle="{StaticResource CenteredTextBlockStyle}" EditingElementStyle="{StaticResource CenteredTextBlockStyle}" />
+                <DataGridTextColumn Header="Количество" Binding="{Binding Quantity}" Width="100"  ElementStyle="{StaticResource CenteredTextBlockStyle}" EditingElementStyle="{StaticResource CenteredTextBlockStyle}"/>
+                        <DataGridTextColumn Header="Остаток" Binding="{Binding QuantityLeft}" Width="80"  ElementStyle="{StaticResource CenteredTextBlockStyle}" EditingElementStyle="{StaticResource CenteredTextBlockStyle}"/>
+                <DataGridTextColumn Header="Жанр" Binding="{Binding CategoryName}" Width="170"/>
             </DataGrid.Columns>
         </DataGrid>
-
 
         <Label Grid.Row="1" Grid.Column="0" Content="Студенты:" VerticalAlignment="Center"/>
         <DataGrid x:Name="StudentsDataGrid" Grid.Row="1" Grid.ColumnSpan="2" AutoGenerateColumns="False" SelectionMode="Single" SelectionChanged="StudentsDataGrid_SelectionChanged" Margin="5" Height="200">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="№п/п" Binding="{Binding StudentID}" />
+                <DataGridTextColumn Header="№п/п" Binding="{Binding StudentID}" Width="55"/>
                 <DataGridTextColumn Header="Имя" Binding="{Binding FirstName}" />
                 <DataGridTextColumn Header="Фамилия" Binding="{Binding LastName}" />
                 <DataGridTextColumn Header="Возраст" Binding="{Binding Age}" />
-                <DataGridTextColumn Header="Класс" Binding="{Binding Class}" />
+                <DataGridTextColumn Header="Класс" Binding="{Binding StudentClass}" />
+                <DataGridTextColumn Header="Префикс" Binding="{Binding Prefix}" />
             </DataGrid.Columns>
         </DataGrid>
 
@@ -57,8 +64,8 @@
         <DatePicker Grid.Row="3" Grid.Column="1" Name="DueDatePicker" Margin="5"/>
 
         <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
-            <Button Content="Выдать книгу" Width="100" Margin="5" Click="LoanButton_Click"/>
-            <Button Content="Отмена" Width="75" Margin="5" Click="CancelButton_Click"/>
+            <Button Content="Выдать книгу" Width="120" Margin="5" Click="LoanButton_Click" Style="{StaticResource RoundedButtonStyle}"/>
+            <Button Content="Отмена" Width="100" Margin="5" Click="CancelButton_Click" Style="{StaticResource RoundedButtonStyle}"/>
         </StackPanel>
     </Grid>
 </Window>

@@ -1,0 +1,46 @@
+﻿<Window x:Class="SchoolLibrary.DialogWindows.GenreWindows.AddGenreDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SchoolLibrary.DialogWindows.GenreWindows"
+        mc:Ignorable="d"
+        Title="Добавить жанр" Height="175" Width="400"         
+        WindowStyle="SingleBorderWindow"
+        ResizeMode="CanResize" Style="{StaticResource {x:Type Window}}" FontSize="16">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Content="Введите название жанра:" Grid.Row="0" Grid.Column="0"/>        
+        <TextBox x:Name="txtGenreName" Grid.Row="0" Grid.Column="1" Margin="5" 
+         Text="{Binding newGenre.GenreName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}">
+            <TextBox.Style>
+                <Style TargetType="{x:Type TextBox}">
+                    <Style.Triggers>
+                        <Trigger Property="Validation.HasError" Value="true">
+                            <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+                            <Setter Property="Background" Value="Pink"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+
+        <Label Content="Выберите предмет:" Grid.Row="1" Grid.Column="0" Visibility="{Binding SubjectSelectionVisibility}" />
+        <ComboBox x:Name="cmbSubject" Grid.Row="1" Grid.Column="1" Margin="5" Visibility="{Binding SubjectSelectionVisibility}"
+                  ItemsSource="{Binding Subjects}" DisplayMemberPath="SubjectName" SelectedItem="{Binding SelectedSubject}" />
+
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="80,23,0,-3">
+            <Button Content="Сохранить" Margin="5" Click="AddGenre_Click" Style="{StaticResource RoundedButtonStyle}" Width="100"/>
+            <Button Content="Закрыть" Margin="5" Click="Cancel_Click" Style="{StaticResource RoundedButtonStyle}" Width="100"/>
+        </StackPanel>
+    </Grid>
+</Window>

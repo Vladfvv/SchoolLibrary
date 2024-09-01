@@ -1,4 +1,5 @@
 ﻿using SchoolLibrary.Models;
+using SchoolLibrary.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,32 +22,55 @@ namespace SchoolLibrary.DialogWindows.StudentWindows
     public partial class DeleteStudentDialog : Window
     {
         private readonly EntityContext context;
-        private readonly Student student;
+        private readonly PaginatedStudentModel student;
 
-        public DeleteStudentDialog(EntityContext ec, Student st)
+        public DeleteStudentDialog(EntityContext ec, PaginatedStudentModel st)
         {
             InitializeComponent();
+            // Центрирование окна на экране
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             context = ec;
             student = st;
 
             // Заполняем информацию о студенте
-            txtStudentInfo.Text = $"Имя: {student.FirstName}\n Фамилия: {student.LastName}\n Age: {student.Age}\n Class: {student.Class}";
+            txtStudentInfo.Text = $"Имя: {student.FirstName}\n Фамилия: {student.LastName}\n Возраст: {student.Age}\n Класс: {student.StudentClass + student.Prefix}";
         }
 
         private void DeleteStudent_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                // Удаляем студента из контекста базы данных
-                context.Students.Remove(student);
-                context.SaveChanges();
+                // Извлекаем данные студента из PaginatedStudentModel
+                string firstName = student.FirstName;
+                string lastName = student.LastName;
+                DateTime dateOfBirth = student.DateOfBirth;
+                string studentClass = student.StudentClass;
 
-                // Закрываем диалоговое окно с результатом DialogResult = true
-                DialogResult = true;
+                // Находим студента в контексте базы данных по имени, фамилии, возрасту и классу
+                var studentInDb = context.Students
+                    .FirstOrDefault(s =>
+                        s.FirstName == firstName &&
+                        s.LastName == lastName &&
+                        s.DateOfBirth == dateOfBirth &&
+                        s.StudentClass == studentClass);
+
+                if (studentInDb != null)
+                {
+                    // Переводим студента в неактивное состояние
+                    studentInDb.IsActive = false;
+                    context.SaveChanges();
+
+                    // Закрываем диалоговое окно с результатом DialogResult = true
+                    DialogResult = true;
+                }
+                else
+                {
+                    MessageBox.Show("Студент не найден в базе данных.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error deleting student: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Ошибка удаления читателя: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -55,13 +79,6 @@ namespace SchoolLibrary.DialogWindows.StudentWindows
             // Закрываем диалоговое окно с результатом DialogResult = false
             DialogResult = false;
         }
-
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                this.DragMove();
-            }
-        }
+      
     }
 }

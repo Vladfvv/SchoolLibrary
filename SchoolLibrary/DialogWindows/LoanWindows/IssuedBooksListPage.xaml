@@ -1,0 +1,92 @@
+﻿<Window x:Class="SchoolLibrary.DialogWindows.LoanWindows.IssuedBooksListPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"       
+        xmlns:local="clr-namespace:SchoolLibrary.DialogWindows.Statistic"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib" 
+        xmlns:local1="clr-namespace:SchoolLibrary.Converters"       
+        mc:Ignorable="d"
+        Title="Список выданных книг" Height="600" Width="920" FontSize="16">
+    <Window.Resources>
+        <local:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+        <local1:IsOverdueConverter x:Key="IsOverdueConverter"/>
+        <Style x:Key="CenteredTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+       <!-- <Style TargetType="DataGridRow">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ReturnDate}" Value="{x:Static sys:DateTime.Today}">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation To="Red" Duration="0:0:0.5" Storyboard.TargetProperty="(DataGridRow.Background).(SolidColorBrush.Color)" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.EnterActions>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="DataGridRow">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation 
+                            Storyboard.TargetProperty="(DataGridRow.Background).(SolidColorBrush.Color)"
+                            From="White" To="LightGray" Duration="0:0:0.2"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>-->
+        <Style TargetType="DataGridRow">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsOverdue}" Value="True">
+                    <Setter Property="Background" Value="LightCoral"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsOverdue}" Value="False">
+                    <Setter Property="Background" Value="White"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <StackPanel Orientation="Vertical" Margin="10">
+            <!-- Поиск -->
+            <Grid>
+                <TextBox x:Name="SearchTextBox" Width="200" Margin="0,0,0,10" TextChanged="SearchTextBox_TextChanged"/>
+                <TextBlock Text="Поиск (Название книги, Автор, ISBN)"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Margin="5,0,0,0"
+                           Foreground="Gray"
+                           IsHitTestVisible="False"
+                           Visibility="{Binding ElementName=SearchTextBox, Path=Text.Length, Converter={StaticResource StringToVisibilityConverter}}"/>
+            </Grid>
+            <Button Content="Поиск" Width="100" Click="SearchButton_Click"/>
+
+            <!-- Список выданных книг -->
+            <DataGrid x:Name="IssuedBooksDataGrid" AutoGenerateColumns="False" SelectionChanged="IssuedBooksDataGrid_SelectionChanged">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding InventoryNumber}" Width="60" ElementStyle="{StaticResource CenteredTextBlockStyle}" EditingElementStyle="{StaticResource CenteredTextBlockStyle}"/>
+                    <DataGridTextColumn Header="Название книги" Binding="{Binding Title}" Width="*"/>
+                    <DataGridTextColumn Header="Автор" Binding="{Binding Author}" Width="120"/>
+                    <DataGridTextColumn Header="ISBN" Binding="{Binding ISBN}" Width="120"/>
+                    <DataGridTextColumn Header="Дата выдачи" Binding="{Binding LoanDate}" Width="120" ElementStyle="{StaticResource CenteredTextBlockStyle}" EditingElementStyle="{StaticResource CenteredTextBlockStyle}"/>
+                    <DataGridTextColumn Header="Дата возврата" Binding="{Binding ReturnDate}" Width="130" ElementStyle="{StaticResource CenteredTextBlockStyle}" EditingElementStyle="{StaticResource CenteredTextBlockStyle}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <!-- Пагинация -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                <Button x:Name="PreviousButton" Content="Предыдущая" Width="120" Click="PreviousButton_Click" Style="{StaticResource RoundedButtonStyle}"/>
+                <TextBlock x:Name="PageNumberTextBlock" VerticalAlignment="Center" Margin="10,0"/>
+                <Button x:Name="NextButton" Content="Следующая" Width="120" Click="NextButton_Click" Style="{StaticResource RoundedButtonStyle}"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

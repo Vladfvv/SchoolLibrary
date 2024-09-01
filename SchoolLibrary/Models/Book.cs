@@ -7,10 +7,14 @@ public class Book
     public int BookID { get; set; }
     public int Class { get; set; }
     public string Description { get; set; }
-    public int CategoryID { get; set; }
+    public int GenreID { get; set; }  // Ссылка на жанр
+    public virtual Genre Genre { get; set; }  // Связь с жанром 
+    //public int CategoryID { get; set; }
+    public int SubjectID { get; set; }  // Внешний ключ к Subject
+    public virtual Subject Subject { get; set; }  // Связь с Subject
     public int Quantity { get; set; }
     public int QuantityLeft { get; set; }
-    public virtual Category Category { get; set; }
+    //public virtual Category Category { get; set; }
     public virtual ICollection<InventoryBook> InventoryBooks { get; set; }
     public virtual ICollection<BookPhoto> BookPhotos { get; set; }
 

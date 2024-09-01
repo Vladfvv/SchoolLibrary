@@ -13,5 +13,6 @@ namespace SchoolLibrary.Models
         public byte[] PasswordHash { get; set; }
         public byte[] Salt { get; set; }
         public string Role { get; set; }
+        public bool IsConfirmed { get; set; }
     }
 }

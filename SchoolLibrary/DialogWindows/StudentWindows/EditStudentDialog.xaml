@@ -5,11 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolLibrary.DialogWindows.StudentWindows"
         mc:Ignorable="d"
-          Title="Редактирование читателя" Height="250" Width="350" Background="NavajoWhite"
-        MouseDown="Window_MouseDown"
+        Title="Редактирование читателя" Height="340" Width="500" Background="NavajoWhite"       
         WindowStyle="SingleBorderWindow"
-        ResizeMode="CanResize">
-    <Grid Margin="20">
+        ResizeMode="CanResize" Style="{StaticResource {x:Type Window}}" FontSize="16">
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -17,6 +16,9 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -24,20 +26,31 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Text="Имя:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-        <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding Student.FirstName, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding Student.FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
         <TextBlock Text="Фамилия:" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="5"/>
-        <TextBox Grid.Row="1"  Grid.Column="1" Margin="5" Text="{Binding Student.LastName, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="1"  Grid.Column="1" Margin="5" Text="{Binding Student.LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
         <TextBlock Text="Возраст:" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" Margin="5"/>
-        <TextBox Grid.Row="2"  Grid.Column="1" Margin="5" Text="{Binding Student.Age, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="2"  Grid.Column="1" Margin="5" Text="{Binding Student.DateOfBirth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <!-- <TextBox Grid.Row="2"  Grid.Column="1" Margin="5" Text="{Binding Student.Age, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+         OneWay - используется только для отображения-->
 
         <TextBlock Text="Класс:" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" Margin="5"/>
-        <TextBox Grid.Row="3"  Grid.Column="1" Margin="5" Text="{Binding Student.Class, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="3"  Grid.Column="1" Margin="5" Text="{Binding Student.StudentClass, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
-        <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-            <Button Content="Сохранить" Margin="5" Click="SaveStudent_Click"/>
-            <Button Content="Отмена" Margin="5" Click="Cancel_Click"/>
+        <TextBlock Text="Префикс класса:" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" Margin="5"/>
+        <TextBox Grid.Row="4"  Grid.Column="1" Margin="5" Text="{Binding Student.Prefix, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
+        <TextBlock Text="Адрес:" Grid.Column="0" Grid.Row="5" VerticalAlignment="Center" Margin="5"/>
+        <TextBox Grid.Row="5"  Grid.Column="1" Margin="5" Text="{Binding Student.Address, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
+        <TextBlock Text="Телефон:" Grid.Column="0" Grid.Row="6" VerticalAlignment="Center" Margin="5"/>
+        <TextBox  Name="txtPhone" Grid.Row="6"  Grid.Column="1" Margin="5" Text="{Binding Student.Phone, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
+        <StackPanel Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Left" Margin="130,9,0,11">
+            <Button Content="Сохранить" Margin="5" Click="SaveStudent_Click" Style="{StaticResource RoundedButtonStyle}" Width="100"/>
+            <Button Content="Отмена" Margin="5" Click="Cancel_Click" Style="{StaticResource RoundedButtonStyle}" Width="100"/>
         </StackPanel>
     </Grid>
 </Window>

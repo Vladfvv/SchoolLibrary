@@ -5,10 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolLibrary.DialogWindows.StudentWindows"
         mc:Ignorable="d"
-          Title="Поиск читателя" Height="250" Width="350"  Style="{StaticResource {x:Type Window}}"
-          MouseDown="Window_MouseDown"
+          Title="Поиск читателя" Height="250" Width="350"  Style="{StaticResource {x:Type Window}}"         
           WindowStyle="SingleBorderWindow"
-          ResizeMode="CanResize">
+          ResizeMode="CanResize" FontSize="16">
     <Grid>
         <StackPanel Margin="10">
             <TextBlock Text="Поиск читателя" FontWeight="Bold" FontSize="14" Margin="0,0,0,10"/>
@@ -24,22 +23,22 @@
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                <TextBlock Text="Возраст от:" Width="80"/>
+                <TextBlock Text="Возраст от:" Width="80" Margin="0,0,5,0"/>
                 <TextBox x:Name="MinAgeTextBox" Width="50"/>
-                <TextBlock Text="Возраст до:" Width="80"/>
-                <TextBox x:Name="MaxAgeTextBox" Width="50"/>
+                <TextBlock Text="Возраст до:" Width="80" Margin="15 0 5 0"/>
+                <TextBox x:Name="MaxAgeTextBox" Width="45"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                <TextBlock Text="Класс от:" Width="80"/>
-                <TextBox x:Name="MinClassTextBox" Width="50"/>
-                <TextBlock Text="Класс до:" Width="80"/>
-                <TextBox x:Name="MaxClassTextBox" Width="50"/>
+                <TextBlock Text="Класс от:" Width="80" Margin="0,0,5,0"/>
+                <TextBox x:Name="MinClassTextBox" Width="50" />
+                <TextBlock Text="Класс до:" Width="80"  Margin="15 0 5 0"/>
+                <TextBox x:Name="MaxClassTextBox" Width="45"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Content="Поиск" Width="100" Margin="5" Click="SearchButton_Click"/>
-                <Button Content="Отмена" Width="100" Margin="5" Click="CancelButton_Click"/>
+                <Button Content="Поиск" Width="100" Margin="5" Click="SearchButton_Click" Style="{StaticResource RoundedButtonStyle}" />
+                <Button Content="Отмена" Width="100" Margin="5" Click="CancelButton_Click" Style="{StaticResource RoundedButtonStyle}"/>
             </StackPanel>
 
             <TextBlock x:Name="StatusTextBlock" Foreground="Red" Margin="10,0,0,0"/>

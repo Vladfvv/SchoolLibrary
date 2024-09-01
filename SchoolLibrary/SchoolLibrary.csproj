@@ -38,18 +38,57 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.9.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.9\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
+      <HintPath>..\packages\BouncyCastle.Cryptography.2.4.0\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="EPPlus, Version=7.2.2.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.7.2.2\lib\net462\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus.Interfaces, Version=6.1.1.0, Culture=neutral, PublicKeyToken=a694d7f3b0907a61, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.Interfaces.6.1.1\lib\net462\EPPlus.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus.System.Drawing, Version=6.1.1.0, Culture=neutral, PublicKeyToken=2308d35469c9bac0, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.System.Drawing.6.1.1\lib\net462\EPPlus.System.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.4, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.4\lib\net461\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IO.RecyclableMemoryStream, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IO.RecyclableMemoryStream.3.0.0\lib\netstandard2.0\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SqlClient, Version=4.6.1.6, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SqlClient.4.8.6\lib\net461\System.Data.SqlClient.dll</HintPath>
     </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -94,9 +133,23 @@
     <Compile Include="AuthWindows\WelcomeWindow.xaml.cs">
       <DependentUpon>WelcomeWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\DateToTodayComparisonConverter .cs" />
+    <Compile Include="Converters\IsOverdueConverter.cs" />
+    <Compile Include="Converters\PasswordUtility.cs" />
+    <Compile Include="DataLoaders\AdminDataLoader .cs" />
+    <Compile Include="DataLoaders\BooksDataLoader.cs" />
+    <Compile Include="DataLoaders\DataLoader.cs" />
+    <Compile Include="DataLoaders\IDataLoader.cs" />
+    <Compile Include="DataLoaders\InventoryBooksDataLoader.cs" />
+    <Compile Include="DataLoaders\LibrarianDataLoader .cs" />
+    <Compile Include="DataLoaders\StudentsDataLoader.cs" />
+    <Compile Include="DataLoaders\UserDataLoader.cs" />
     <Compile Include="DialogWindows\BookWindows\AddBookDialog.xaml.cs">
       <DependentUpon>AddBookDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\BookWindows\DisposalDetailsDialog.xaml.cs">
+      <DependentUpon>DisposalDetailsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="DialogWindows\BookWindows\EditBookDialog.xaml.cs">
       <DependentUpon>EditBookDialog.xaml</DependentUpon>
@@ -114,6 +167,18 @@
       <DependentUpon>EditCategoryDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="DialogWindows\DateToTodayComparisonConverter.cs" />
+    <Compile Include="DialogWindows\GenreWindows\AddGenreDialog.xaml.cs">
+      <DependentUpon>AddGenreDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\GenreWindows\DeleteGenreDialog.xaml.cs">
+      <DependentUpon>DeleteGenreDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\GenreWindows\EditGenreDialog.xaml.cs">
+      <DependentUpon>EditGenreDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\LoanWindows\IssuedBooksListPage.xaml.cs">
+      <DependentUpon>IssuedBooksListPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DialogWindows\LoanWindows\LoanDialog.xaml.cs">
       <DependentUpon>LoanDialog.xaml</DependentUpon>
     </Compile>
@@ -129,6 +194,25 @@
     <Compile Include="DialogWindows\Operations\ConfirmExitWindow.xaml.cs">
       <DependentUpon>ConfirmExitWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DialogWindows\Operations\CustomMessageBox .xaml.cs">
+      <DependentUpon>CustomMessageBox .xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\Statistic\BookDetailsWindow.xaml.cs">
+      <DependentUpon>BookDetailsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\Statistic\StatisticsByPeriodWindow.xaml.cs">
+      <DependentUpon>StatisticsByPeriodWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\Statistic\StatisticsPageInventoryBook .xaml.cs">
+      <DependentUpon>StatisticsPageInventoryBook .xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\Statistic\StatisticsPageStudent.xaml.cs">
+      <DependentUpon>StatisticsPageStudent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\Statistic\StringToVisibilityConverter .cs" />
+    <Compile Include="DialogWindows\Statistic\StudentDetailsWindow.xaml.cs">
+      <DependentUpon>StudentDetailsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DialogWindows\StudentWindows\AddStudentDialog.xaml.cs">
       <DependentUpon>AddStudentDialog.xaml</DependentUpon>
     </Compile>
@@ -141,20 +225,63 @@
     <Compile Include="DialogWindows\StudentWindows\SearchStudentDialog.xaml.cs">
       <DependentUpon>SearchStudentDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DialogWindows\StudentWindows\StudentInfoDialog.xaml.cs">
+      <DependentUpon>StudentInfoDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\SubjectWindows\AddSubjectDialog.xaml.cs">
+      <DependentUpon>AddSubjectDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\SubjectWindows\EditSubjectDialog.xaml.cs">
+      <DependentUpon>EditSubjectDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EntityContext.cs" />
     <Compile Include="Models\AvailableBook.cs" />
-    <Compile Include="Models\BookInventoryViewModel.cs" />
     <Compile Include="Models\BookPhoto.cs" />
+    <Compile Include="Models\Genre.cs" />
     <Compile Include="Models\IDeletable.cs" />
     <Compile Include="Models\InventoryBook.cs" />
     <Compile Include="Models\InventoryBookStorage.cs" />
     <Compile Include="Models\LoanStorage.cs" />
+    <Compile Include="Models\StudentViewModel.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserSession.cs" />
+    <Compile Include="Service\BookService.cs" />
+    <Compile Include="Service\CategoryService.cs" />
+    <Compile Include="Service\ExportToFile.cs" />
+    <Compile Include="Service\InventoryBookService.cs" />
+    <Compile Include="Service\LoansService.cs" />
+    <Compile Include="Service\StudentService.cs" />
     <Compile Include="SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\BookInventoryViewModel.cs" />
+    <Compile Include="ViewModels\InventoryBookDetailsViewModel.cs" />
+    <Compile Include="ViewModels\InventoryBookViewModel.cs" />
     <Compile Include="ViewModels\LoanBookStudentViewModel.cs" />
+    <Compile Include="ViewModels\LoanInventoryBookStatisticViewModel.cs" />
+    <Compile Include="ViewModels\LoanViewModel.cs" />
+    <Compile Include="ViewModels\PaginatedBookInventoryModel.cs" />
+    <Compile Include="ViewModels\PaginatedInventoryBookModel.cs" />
+    <Compile Include="ViewModels\PaginatedLoanBookStudentViewModel.cs" />
+    <Compile Include="ViewModels\PaginatedStudentModel.cs" />
+    <Compile Include="ViewModels\StudentDetailsViewModel.cs" />
+    <Compile Include="Views\BaseSettings.cs" />
+    <Compile Include="Views\BaseWindow.cs" />
+    <Compile Include="Views\StartAdminWindow.xaml.cs">
+      <DependentUpon>StartAdminWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StartLibrarianWindow.xaml.cs">
+      <DependentUpon>StartLibrarianWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StartLibrarianWindow2.xaml.cs">
+      <DependentUpon>StartLibrarianWindow2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StartUserWindow.xaml.cs">
+      <DependentUpon>StartUserWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StartUserWindow2.xaml.cs">
+      <DependentUpon>StartUserWindow2.xaml</DependentUpon>
+    </Compile>
     <Page Include="AuthWindows\LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -164,8 +291,8 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AuthWindows\MainWindowLibrarian.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="AuthWindows\MainWindowUser.xaml">
       <SubType>Designer</SubType>
@@ -184,6 +311,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DialogWindows\BookWindows\AddBookDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\BookWindows\DisposalDetailsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -207,6 +338,22 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="DialogWindows\GenreWindows\AddGenreDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\GenreWindows\DeleteGenreDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\GenreWindows\EditGenreDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\LoanWindows\IssuedBooksListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DialogWindows\LoanWindows\LoanDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -227,6 +374,30 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="DialogWindows\Operations\CustomMessageBox .xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\Statistic\BookDetailsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\Statistic\StatisticsByPeriodWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\Statistic\StatisticsPageInventoryBook .xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\Statistic\StatisticsPageStudent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\Statistic\StudentDetailsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DialogWindows\StudentWindows\AddStudentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -240,6 +411,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DialogWindows\StudentWindows\SearchStudentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\StudentWindows\StudentInfoDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\SubjectWindows\AddSubjectDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\SubjectWindows\EditSubjectDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -257,6 +440,26 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="SplashScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StartAdminWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StartLibrarianWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StartLibrarianWindow2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StartUserWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StartUserWindow2.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -297,7 +500,13 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </DesignData>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Book in-01.png" />
+    <Resource Include="Resources\Book out-01.png" />
+    <Resource Include="Resources\Export-01.png" />
+    <Resource Include="Resources\Magazin-01.png" />
+    <Resource Include="Resources\Print-01.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\gif2.gif" />
   </ItemGroup>
@@ -341,6 +550,18 @@
     <Resource Include="Resources\4.png" />
     <Resource Include="Resources\5.png" />
     <Resource Include="Resources\7.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\All books-01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Exit-01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Reader book.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\user.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
