@@ -58,35 +58,7 @@ namespace SchoolLibrary.Service
 
             return loansListForExport; // Возвращаем список задолженностей книг
         }
-
-        //private void InitLoansList() //Загружает данные о задолженностях книг, преобразует их в коллекцию анонимных объектов и устанавливает ItemsSource для DataGrid. Затем вызывается метод ConfigureLoansColumns для настройки колонок.
-        //{
-        //    List<LoanBookStudentViewModel> loanList = new List<LoanBookStudentViewModel>();
-        //    try
-        //    {
-        //        context.Loans.Include(l => l.InventoryBook).Include(l => l.Student).Load();
-
-        //        var loansList = context.Loans.Local
-        //            .Select(l => new 
-        //            {
-        //                l.InventoryBook.Title,
-        //                l.Student.FirstName,
-        //                l.Student.LastName,
-        //                l.LoanDate,
-        //                l.DueDate,
-        //                l.ReturnDate,
-        //                l.Returned
-        //            }).ToList();
-
-        //        dGrid.ItemsSource = loansList;
-        //        ConfigureLoansColumns();
-        //        dGrid.Tag = "Loans"; //тэг для использования при идентификации данных что сейчас в dDrid 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show(ex.Message);
-        //    }
-        //}
+              
 
         public List<LoanViewModel> GetNotReturnedBooks()
         {

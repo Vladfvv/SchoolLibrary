@@ -7,94 +7,15 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using NLog;
 using SchoolLibrary.Service;
 
 namespace SchoolLibrary
-{
-    /// <summary>
-    /// Логика взаимодействия для App.xaml
-    /// </summary>
+{  
     public partial class App : Application
     {
         private SplashScreen splashScreen;
-        //private void Application_Startup(object sender, StartupEventArgs e)
-        //{
-
-
-        // Установка культуры на русский язык для всего приложения
-        //System.Globalization.CultureInfo cultureInfo = new System.Globalization.CultureInfo("ru-RU");
-        //cultureInfo.DateTimeFormat.FirstDayOfWeek = DayOfWeek.Monday;
-        //System.Threading.Thread.CurrentThread.CurrentCulture = cultureInfo;
-        //System.Threading.Thread.CurrentThread.CurrentUICulture = cultureInfo;
-        //// Show the splash screen
-        //SplashScreen splash = new SplashScreen();
-        //        splash.Show();
-
-
-        //        // Initialize the main window
-        //        //       MainWindow mainWindow = new MainWindow();
-        //        AuthWindows.StartWindow startWindow = new AuthWindows.StartWindow();
-
-        //        /*    // Simulate loading delay (replace with actual initialization)
-        //            Task.Run(() =>
-        //            {
-        //                Thread.Sleep(3000); // Simulate a 3-second loading delay
-        //                Dispatcher.Invoke(() =>
-        //                {
-        //                    // Close the splash screen
-        //                    splash.Close();*/
-
-        //        // Show the main window/*
-        //        //              mainWindow.Show();
-        //        startWindow.Show();
-        //        /* });
-        //      });*/
-        //    }
-
-        //    private void CloseButton_Click(object sender, RoutedEventArgs e)
-        //    {
-
-        //    }
-        //}
-
-        /*
-        public partial class App : Application
-        {
-            private SplashScreen splashScreen;
-
-            protected override void OnStartup(StartupEventArgs e)
-            {
-                base.OnStartup(e);
-
-                // Показать загрузочный экран
-                splashScreen = new SplashScreen();
-                splashScreen.Show();
-
-                // Инициализация основного окна асинхронно
-                Task.Run(() =>
-                {
-                    // Имитируем задержку для загрузки данных
-                    System.Threading.Thread.Sleep(6000); // Замените это реальной загрузкой
-
-                    Dispatcher.Invoke(() =>
-                    {
-                        // Создание и отображение главного окна
-                       // var mainWindow = new MainWindow();
-                       // mainWindow.Show();
-
-                        // Закрытие загрузочного экрана
-                        splashScreen.Close();
-                    });
-                });
-            }
-        }
-        */
-
-        /* 
-         public partial class App : Application
-         {
-             private SplashScreen splashScreen;
-     */
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         protected override void OnStartup(StartupEventArgs e)
         {
 
@@ -103,7 +24,7 @@ namespace SchoolLibrary
             System.Threading.Thread.CurrentThread.CurrentCulture = cultureInfo;
             System.Threading.Thread.CurrentThread.CurrentUICulture = cultureInfo;
             base.OnStartup(e);
-
+            logger.Info("Программа запущена");
             // Показать загрузочный экран
             splashScreen = new SplashScreen();
             splashScreen.Show();
@@ -113,17 +34,7 @@ namespace SchoolLibrary
         }
 
         private async Task InitializeMainWindowAsync()
-        {
-            //// Имитируем задержку для загрузки данных (например, инициализация контекста)
-            //await Task.Delay(5000); // Замените это реальной загрузкой данных
-
-            //// Инициализация основного окна и контекста данных
-            //await Dispatcher.InvokeAsync(() =>
-            //{
-            //    var mainWindow = new MainWindow();
-            //    mainWindow.Show();
-            //    splashScreen.Close();
-            //});
+        {           
             // Имитируем задержку для загрузки данных (например, инициализация контекста)
             await Task.Delay(5000); // Замените это реальной загрузкой данных
 
@@ -132,6 +43,12 @@ namespace SchoolLibrary
             {
                 splashScreen.Close();
             });
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            logger.Info("Программа завершена");
+            base.OnExit(e);
         }
     }
     

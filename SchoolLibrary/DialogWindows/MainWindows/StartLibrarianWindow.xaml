@@ -36,6 +36,7 @@
                 <MenuItem Header="Доступные книги" Click="btnShowAvailableBooksButton_Click"/>
                 <MenuItem Header="Инвентарный журнал учета книг" Click="btnListInventoryBook"/>
                 <MenuItem Header="Поиск книг по параметрам" Click="btnSearchBooks_Click"/>
+                <MenuItem Header="Поиск книг через сканер" Click="btnSearchBooksByBarcode_Click"/>
                 <MenuItem Header="Добавить книгу" Click="btnAddBook_Click"/>
                 <MenuItem Header="Редактировать книгу" Click="btnEditBook_Click"/>
                 <MenuItem Header="Списать книгу" Click="btnDeleteBook_Click"/>
@@ -165,6 +166,9 @@
                 <TextBlock x:Name="txtPageInfo" VerticalAlignment="Center" Margin="10"/>
                 <Button x:Name="btnNext" Content="Следующая" Visibility="Collapsed"  Width="100" Click="btnNext_Click" Style="{StaticResource RoundedButtonStyle}"/>
             </StackPanel>
+            <!-- TextBox для ввода штрих-кодов -->
+            <TextBox Name="BarcodeTextBox" Width="200" Height="30" VerticalAlignment="Top" Margin="580 5 0 0"
+                 KeyDown="BarcodeTextBox_KeyDown" Background="LightBlue"/>
         </Grid>
     </DockPanel>
 </local:BaseWindow>

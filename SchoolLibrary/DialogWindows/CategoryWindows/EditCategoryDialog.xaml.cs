@@ -53,14 +53,6 @@ namespace SchoolLibrary.DialogWindows.CategoryWindows
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        //private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        //{
-        //    if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
-        //    {
-        //        this.DragMove();
-        //    }
-        //}
+        }        
     }
 }

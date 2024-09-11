@@ -14,15 +14,13 @@ namespace SchoolLibrary
 
         public EntityContext(string v) : base("SchoolLibrary")
         {
-            //5.В конструкторе класса контекста укажите необходимость
+            //В конструкторе класса контекста указываем необходимость
             //использования созданного инициализатора БД:
             Database.SetInitializer(new DataBaseInitializer());
 
-        }
-        //  public DbSet<Notice> Notices { get; set; }
+        }      
         public DbSet<Student> Students { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        //public DbSet<Genre> Genries { get; set; }
+        public DbSet<Category> Categories { get; set; }        
         public DbSet<InventoryBook> InventoryBooks { get; set; }
         public DbSet<BookPhoto> BookPhotos { get; set; }
         public DbSet<Book> Books { get; set; }
@@ -35,6 +33,7 @@ namespace SchoolLibrary
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            //создаем связи через билдер
             modelBuilder.Entity<Subject>()
            .HasRequired(s => s.Genre)
            .WithMany(g => g.Subjects)
@@ -57,12 +56,7 @@ namespace SchoolLibrary
             modelBuilder.Entity<Book>()
                 .HasRequired(b => b.Genre)
                 .WithMany(g => g.Books)
-                .HasForeignKey(b => b.GenreID);
-
-            //modelBuilder.Entity<Subject>()
-            //    .HasRequired(s => s.Genre)
-            //    .WithMany(g => g.Subjects)
-            //    .HasForeignKey(s => s.GenreID);
+                .HasForeignKey(b => b.GenreID);            
         }
     }
 }

@@ -26,22 +26,22 @@ namespace SchoolLibrary.DialogWindows.CategoryWindows
         {           
             try
             {
-                // Force validation
+                // Валидация
                 txtCategoryName.GetBindingExpression(TextBox.TextProperty).UpdateSource();
 
-                // Check if the category already exists in the database
+                // Проверка категории если сущнствует в БД
                 var existingCategory = context.Categories.FirstOrDefault(c => c.CategoryName == newCategory.CategoryName);
                 if (existingCategory != null)
                 {
                     MessageBox.Show("Такая категория уже существует.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return; // Exit without adding if category already exists
+                    return; // Выход без добавления если категория существует
                 }
 
-                // Add category to database context and save changes
+                // Добавляем категорию, сохраняем изменения
                 context.Categories.Add(newCategory);
                 context.SaveChanges();
 
-                // Close dialog with DialogResult set to true
+                // Закрываем диалог с результатом true
                 DialogResult = true;
             }
             catch (Exception ex)
@@ -52,16 +52,10 @@ namespace SchoolLibrary.DialogWindows.CategoryWindows
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            // Close dialog with DialogResult set to false
+            // Закрываем диалог с результатом false
             DialogResult = false;
         }
 
-        //private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    if (e.ChangedButton == MouseButton.Left)
-        //    {
-        //        DragMove();
-        //    }
-        //}
+        
     }
 }

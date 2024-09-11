@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace SchoolLibrary.Models
 {
     //модель данных Category, представляющая таблицу Category в базе данных
-    public class Category : INotifyPropertyChanged//, IDeletable
+    public class Category : INotifyPropertyChanged
     {
         private int categoryID;
         private string categoryName;  
@@ -35,14 +35,12 @@ namespace SchoolLibrary.Models
 
 
         // свойство для связи с книгами
-        public virtual ICollection<Book> Books { get; set; }
-        //public virtual ICollection<AvailableBook> AvailableBooks { get; set; }
+        public virtual ICollection<Book> Books { get; set; }        
 
         // Конструктор по умолчанию
         public Category() {
             Books = new HashSet<Book>();
-        }
-        // Конструктор
+        }       
         public Category(string categoryName) : this()
         {
             CategoryName = categoryName;
@@ -52,16 +50,6 @@ namespace SchoolLibrary.Models
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-        }
-
-        //public void Delete(EntityContext context)
-        //{
-        //    if (context.Books.Any(b => b.CategoryID == this.CategoryID))
-        //    {
-        //        throw new InvalidOperationException("Невозможно удалить категорию, так как она связана с существующими книгами.");
-        //    }
-        //    context.Categories.Remove(this);
-        //    context.SaveChanges();
-        //}
+        }       
     }
 }

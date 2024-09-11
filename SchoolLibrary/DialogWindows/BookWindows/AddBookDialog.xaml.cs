@@ -16,15 +16,15 @@ namespace SchoolLibrary.DialogWindows
 {
     public partial class AddBookDialog : Window
     {
-        private EntityContext context;
-        private List<byte[]> bookPhotoDataList = new List<byte[]>(); // To store multiple photos
+        private readonly EntityContext context;
+        private readonly List<byte[]> bookPhotoDataList = new List<byte[]>(); // Для хранения multiple photos
         public AddBookDialog(EntityContext dbContext)
         {
             InitializeComponent();
             // Центрирование окна на экране
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             this.context = dbContext;
-            this.Loaded += AddBookDialog_Loaded; // Add Loaded event handler
+            this.Loaded += AddBookDialog_Loaded; // Загрузка данных через event handler
             dpDateOfReceipt.Language = XmlLanguage.GetLanguage("ru-RU");
             dpDateOfReceipt.FirstDayOfWeek = DayOfWeek.Monday;            
             LoadGenres();
@@ -75,13 +75,12 @@ namespace SchoolLibrary.DialogWindows
 
 
         private void InitializeInventoryNumber()
-        {
-            // Get all inventory numbers from the database
+        {            
             var inventoryNumbers = context.InventoryBooks
                 .Select(ib => ib.InventoryNumber)
-                .ToList(); // Materialize the query to avoid multiple enumerations
+                .ToList(); 
 
-            // Find the maximum inventory number that can be parsed to int
+            
             var maxInventoryNumberString = inventoryNumbers
                 .Where(num => int.TryParse(num, out _))
                 .OrderByDescending(num => int.Parse(num))
@@ -159,8 +158,7 @@ namespace SchoolLibrary.DialogWindows
                     };
                     newInventoryBooks.Add(inventoryBook);
                 }
-
-                // Проверка на существующую книгу
+               
                 var existingInventoryBook = context.InventoryBooks.FirstOrDefault(ib => ib.ISBN == txtISBN.Text);
 
                 if (existingInventoryBook != null)
@@ -346,7 +344,6 @@ namespace SchoolLibrary.DialogWindows
         }
 
 
-
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -354,13 +351,7 @@ namespace SchoolLibrary.DialogWindows
 
         private void AddBookPhotos(Book book)
         {
-            // Implement photo addition logic
-        }
-
-        //private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    if (e.ChangedButton == MouseButton.Left)
-        //        this.DragMove();
-        //}
+            // Что-то написать доп при добавлении книги
+        }      
     }
 }

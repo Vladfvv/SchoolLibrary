@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolLibrary.DialogWindows.CategoryWindows"
         mc:Ignorable="d"
-        Title="Добавить категорию" Height="150" Width="400"  Style="{StaticResource {x:Type Window}}"       
+        Title="Добавить категорию" Height="150" Width="510"  Style="{StaticResource {x:Type Window}}"       
         WindowStyle="SingleBorderWindow"
         ResizeMode="CanResize" FontSize="16">
     <Grid Margin="10">

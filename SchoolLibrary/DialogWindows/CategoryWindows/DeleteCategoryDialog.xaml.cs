@@ -54,14 +54,6 @@ namespace SchoolLibrary.DialogWindows.CategoryWindows
         {
             // Закрываем диалоговое окно с результатом DialogResult = false
             DialogResult = false;
-        }
-
-        //private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    if (e.ChangedButton == MouseButton.Left)
-        //    {
-        //        this.DragMove();
-        //    }
-        //}
+        }      
     }
 }

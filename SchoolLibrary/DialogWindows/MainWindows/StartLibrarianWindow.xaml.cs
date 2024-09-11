@@ -1,5 +1,4 @@
 ﻿using SchoolLibrary.AuthWindows;
-using SchoolLibrary.DataLoaders;
 using SchoolLibrary.DialogWindows.Operations;
 using SchoolLibrary.DialogWindows;
 using System;
@@ -34,6 +33,7 @@ using iTextSharp.text;
 using System.IO;
 using SchoolLibrary.Service;
 using SchoolLibrary.Converters;
+using NLog;
 
 
 namespace SchoolLibrary.Views
@@ -48,23 +48,19 @@ namespace SchoolLibrary.Views
         readonly InventoryBookService inventoryBookService;
         readonly BookService bookService;
         readonly LoansService loanService;
-        private readonly DataLoader _dataLoader;
-        // private readonly string _currentTableName;
         readonly String nameBooklist = "Books";
         readonly PaginatedBookInventoryModel groupedBooks;
-        //private string currentListType;//переменная для хранения текущего типа списка будет использоваться для определения, какой именно метод инициализации должен быть вызван при смене страницы
         private List<object> listForExport = new List<object>();//список для хранения данных на экспорт
         private readonly List<Student> studentsWithoutLoans; // Объявляем переменную на уровне класса
         public StartLibrarianWindow(EntityContext context) : base(context)
         {
             InitializeComponent();
             this.context = context;
-            _dataLoader = new UserDataLoader(context); // Используем конкретную реализацию DataLoader
-            _dataLoader.LoadData();
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Help, WindowBinding_Executed));
             studentService = new StudentService(context);
             inventoryBookService = new InventoryBookService(context);
             bookService = new BookService(context);
+            BarcodeTextBox.Visibility = Visibility.Hidden;
         }
 
 
@@ -103,7 +99,7 @@ namespace SchoolLibrary.Views
             CurrentTableName = "Перечень книг";
             currentListType = "Books";
             updateListBooks();
-
+            BarcodeTextBox.Visibility = Visibility.Hidden;
             // Инициализация контекстного меню для книг
             InitializeContextMenuForBooks();
         }
@@ -117,7 +113,6 @@ namespace SchoolLibrary.Views
                 dGrid.ItemsSource = null;
                 currentListType = nameBooklist;
                 InitList(currentListType);
-                //InitBooksList();
             }
             catch (Exception ex)
             {
@@ -183,7 +178,7 @@ namespace SchoolLibrary.Views
         public void UpdateStudentDataGrid(IEnumerable<PaginatedStudentModel> students)
         {
             dGrid.ItemsSource = students;
-            dGrid.Items.Refresh(); // Обновите отображение данных
+            dGrid.Items.Refresh(); // Обновление отображения данных
 
             // Обновляем количество страниц и текущую страницу
             totalPages = (int)Math.Ceiling((double)students.Count() / PageSize);
@@ -220,7 +215,6 @@ namespace SchoolLibrary.Views
                 dGrid.ItemsSource = null;
                 currentListType = "InventoryBooks";
                 InitList(currentListType);
-                //InitInventoryBooksList();
             }
             catch (Exception ex)
             {
@@ -267,7 +261,6 @@ namespace SchoolLibrary.Views
                     InitLoansList();
                     break;
                 case "StudentsWithoutLoans":
-                    //DisplayPaginatedStudentsWithoutLoans();   
                     InitStudentsWithoutLoansList();
                     break;
                 case "BooksNotLoaned":
@@ -281,15 +274,6 @@ namespace SchoolLibrary.Views
                     break;
             }
         }
-
-
-
-
-
-
-
-
-
 
 
         private void initListForExport(string listType)
@@ -316,21 +300,18 @@ namespace SchoolLibrary.Views
                     break;
                 case "Genre":
                     //InitGenresList();
-                    // listForExport = genresService.InitGenresListForExport();
+                    // listForExport = genresService.InitGenresListForExport(); - нужно реализовать
                     break;
                 case "Subject":
                     //InitSubjectsList();
-                    // listForExport = subjectsService.InitSubjectsListForExport();
+                    // listForExport = subjectsService.InitSubjectsListForExport(); - нужно реализовать
                     break;
+                //и так далеее
                 default:
                     MessageBox.Show("Извините, эта часть кода еще в разработке");
                     break;
             }
         }
-
-
-
-
 
         private void InitStudentsList()
         {
@@ -442,7 +423,6 @@ namespace SchoolLibrary.Views
                         Publisher = book.Publisher,
                         YearPublished = book.YearPublished,
                         ISBN = book.ISBN,
-                        //CategoryName = book.Book != null && book.Book.Genre != null ? book.Book.Genre.GenreName : "Неизвестно"
                         GenreName = book.Book.Genre.GenreName != null ? book.Book.Genre.GenreName : "Неизвестно",
                         SubjectName = book.Book.Subject.SubjectName != null ? book.Book.Subject.SubjectName : "Неизвестно"
                     })
@@ -466,8 +446,6 @@ namespace SchoolLibrary.Views
         }
 
 
-
-
         private void InitBooksList()
         {
             try
@@ -484,7 +462,6 @@ namespace SchoolLibrary.Views
                     .SelectMany(b => b.InventoryBooks, (b, ib) => new { Book = b, InventoryBook = ib })
                     .GroupBy(x => x.InventoryBook.ISBN)
                       .Select(g => new PaginatedBookInventoryModel
-                      //.Select(g => new BookInventoryModel
                       {
                           BookID = g.First().Book.BookID,
                           Title = g.First().InventoryBook.Title,
@@ -494,7 +471,6 @@ namespace SchoolLibrary.Views
                           ISBN = g.Key,
                           Quantity = g.Count(),
                           QuantityLeft = g.Count() - g.Sum(x => x.InventoryBook.Loans.Count(loan => !loan.Returned)),
-                          //CategoryName = g.First().Book.Genre != null ? g.First().Book.Genre.GenreName : "Неизвестно"
                           GenreName = g.First().Book.Genre.GenreName != null ? g.First().Book.Genre.GenreName : "Неизвестно",
                           SubjectName = g.First().Book.Subject.SubjectName != null ? g.First().Book.Subject.SubjectName : "Неизвестно"
                       }).ToList();
@@ -543,9 +519,9 @@ namespace SchoolLibrary.Views
         {
             dGrid.Columns.Clear();
             // Колонка для порядкового номера
-            var indexColumn = new DataGridTextColumn { Header = "№", Width = new DataGridLength(0.25, DataGridLengthUnitType.Star), Binding = new Binding("Index") };
+            var indexColumn = new DataGridTextColumn { Header = "№", Binding = new Binding("Index"), Width = new DataGridLength(0.3, DataGridLengthUnitType.Star) };
+            indexColumn.CellStyle = new Style(typeof(DataGridCell)) { Setters = { new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center) } };
             dGrid.Columns.Add(indexColumn);
-            //dGrid.Columns.Add(new DataGridTextColumn { Header = "InventoryBookID", Binding = new Binding("BookID"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Название книги", Binding = new Binding("Title"), Width = new DataGridLength(2, DataGridLengthUnitType.Star) });//2 - ширина в 2 раза больше стандартной
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Автор", Binding = new Binding("Author"), Width = new DataGridLength(0.9, DataGridLengthUnitType.Star) });
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Издательство", Binding = new Binding("Publisher"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
@@ -556,8 +532,6 @@ namespace SchoolLibrary.Views
             var quantityColumn = new DataGridTextColumn { Header = "Количество", Binding = new Binding("Quantity"), Width = new DataGridLength(0.6, DataGridLengthUnitType.Star) };// Ширина меньше, чем у остальных
             quantityColumn.CellStyle = new Style(typeof(DataGridCell)) { Setters = { new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center) } };
             dGrid.Columns.Add(quantityColumn);
-            //  dGrid.Columns.Add(new DataGridTextColumn { Header = "Остаток", Binding = new Binding("QuantityLeft"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
-            //  dGrid.Columns.Add(new DataGridTextColumn { Header = "Категория", Binding = new Binding("CategoryName"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
         }
 
 
@@ -568,9 +542,10 @@ namespace SchoolLibrary.Views
             {
                 Header = "ID",
                 Binding = new Binding("GenreID"),
-                Width = new DataGridLength(1, DataGridLengthUnitType.Star),
+                Width = new DataGridLength(0.5, DataGridLengthUnitType.Star),
                 CanUserSort = true // Включаем возможность сортировки
             };
+            idColumn.CellStyle = new Style(typeof(DataGridCell)) { Setters = { new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center) } };
             dGrid.Columns.Add(idColumn);
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Название жанра", Binding = new Binding("GenreName"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
         }
@@ -578,7 +553,10 @@ namespace SchoolLibrary.Views
         private void ConfigureSubjectColumns()
         {
             dGrid.Columns.Clear();
-            dGrid.Columns.Add(new DataGridTextColumn { Header = "ID", Binding = new Binding("SubjectID"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
+            dGrid.Columns.Clear();
+            var indexColumn = new DataGridTextColumn { Header = "№", Binding = new Binding("SubjectID"), Width = new DataGridLength(0.5, DataGridLengthUnitType.Star) };
+            indexColumn.CellStyle = new Style(typeof(DataGridCell)) { Setters = { new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center) } };
+            dGrid.Columns.Add(indexColumn);
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Название предмета", Binding = new Binding("SubjectName"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Жанр", Binding = new Binding("Genre.GenreName"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
         }
@@ -603,7 +581,6 @@ namespace SchoolLibrary.Views
             // Колонка для порядкового номера
             var indexColumn = new DataGridTextColumn { Header = "№", Width = new DataGridLength(0.25, DataGridLengthUnitType.Star), Binding = new Binding("Index") };
             dGrid.Columns.Add(indexColumn);
-            //dGrid.Columns.Add(new DataGridTextColumn { Header = "InventoryBookID", Binding = new Binding("InventoryBookID"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Название книги", Binding = new Binding("Title"), Width = new DataGridLength(2, DataGridLengthUnitType.Star) });
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Автор", Binding = new Binding("Author"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Издательство", Binding = new Binding("Publisher"), Width = new DataGridLength(0.8, DataGridLengthUnitType.Star) });
@@ -617,24 +594,16 @@ namespace SchoolLibrary.Views
             var quantityLeftColumn = new DataGridTextColumn { Header = "Остаток", Binding = new Binding("QuantityLeft"), Width = new DataGridLength(0.5, DataGridLengthUnitType.Star) };
             quantityLeftColumn.CellStyle = new Style(typeof(DataGridCell)) { Setters = { new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center) } };
             dGrid.Columns.Add(quantityLeftColumn);
-            // dGrid.Columns.Add(new DataGridTextColumn { Header = "Категория", Binding = new Binding("CategoryName"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Жанр", Binding = new Binding("GenreName"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Предмет", Binding = new Binding("SubjectName"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
         }
         private void ConfigureInventoryBooksColumns2()
         {
             dGrid.Columns.Clear();
-            // Колонка для порядкового номера
-            //var indexColumn = new DataGridTextColumn { Header = "№", Width = new DataGridLength(0.25, DataGridLengthUnitType.Star), Binding = new Binding("Index") };
-            // dGrid.Columns.Add(indexColumn);
-            var indexColumn = new DataGridTextColumn
-            {
-                Header = "№",
-                Width = new DataGridLength(0.25, DataGridLengthUnitType.Star),
-                Binding = new Binding("Index")
-            };
+
+            var indexColumn = new DataGridTextColumn { Header = "№", Binding = new Binding("Index"), Width = new DataGridLength(0.3, DataGridLengthUnitType.Star) };
+            indexColumn.CellStyle = new Style(typeof(DataGridCell)) { Setters = { new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center) } };
             dGrid.Columns.Add(indexColumn);
-            // dGrid.Columns.Add(new DataGridTextColumn { Header = "ID", Binding = new Binding("InventoryBookID"), Width = new DataGridLength(0.3, DataGridLengthUnitType.Star) });
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Название книги", Binding = new Binding("Title"), Width = new DataGridLength(2, DataGridLengthUnitType.Star) });
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Автор", Binding = new Binding("Author"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Издательство", Binding = new Binding("Publisher"), Width = new DataGridLength(0.8, DataGridLengthUnitType.Star) });
@@ -642,13 +611,6 @@ namespace SchoolLibrary.Views
             yearColumn.CellStyle = new Style(typeof(DataGridCell)) { Setters = { new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center) } };
             dGrid.Columns.Add(yearColumn);
             dGrid.Columns.Add(new DataGridTextColumn { Header = "ISBN", Binding = new Binding("ISBN"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
-            //var quantityColumn = new DataGridTextColumn { Header = "Количество", Binding = new Binding("Quantity"), Width = new DataGridLength(0.65, DataGridLengthUnitType.Star) };
-            //quantityColumn.CellStyle = new Style(typeof(DataGridCell)) { Setters = { new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center) } };
-            //dGrid.Columns.Add(quantityColumn);
-            //var quantityLeftColumn = new DataGridTextColumn { Header = "Остаток", Binding = new Binding("QuantityLeft"), Width = new DataGridLength(0.5, DataGridLengthUnitType.Star) };
-            //quantityLeftColumn.CellStyle = new Style(typeof(DataGridCell)) { Setters = { new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center) } };
-            //dGrid.Columns.Add(quantityLeftColumn);
-            // dGrid.Columns.Add(new DataGridTextColumn { Header = "Категория", Binding = new Binding("CategoryName"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Жанр", Binding = new Binding("GenreName"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Предмет", Binding = new Binding("SubjectName"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
         }
@@ -665,8 +627,6 @@ namespace SchoolLibrary.Views
             dueDate.CellStyle = new Style(typeof(DataGridCell)) { Setters = { new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center) } };
             dGrid.Columns.Add(dueDate);
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Когда вернули", Binding = new Binding("ReturnDate") { StringFormat = "dd/MM/yyyy HH:mm:ss" }, Width = new DataGridLength(0.5, DataGridLengthUnitType.Star) });
-            // dGrid.Columns.Add(new DataGridTextColumn { Header = "Подтверждение", Binding = new Binding("Returned"), Width = new DataGridLength(0.45, DataGridLengthUnitType.Star) });
-
             // Применяем стили
             //ApplyRowStyle();
         }
@@ -698,6 +658,24 @@ namespace SchoolLibrary.Views
             }
         }
 
+        private void btnSearchBooksByBarcode_Click(object sender, RoutedEventArgs e)
+        {
+            RemoveRowStyle();
+            dGrid.Tag = "SearchBooksByBarcode"; // Устанавливаем тег для идентификации текущих данных
+            dGrid.ContextMenu = null;
+            currentPage = 1;
+            totalPages = 1;
+            CurrentTableName = "Перечень книг";
+            currentListType = "BooksByBarcode";
+            updateListBooks();
+            BarcodeTextBox.Visibility = Visibility.Visible;
+            BarcodeTextBox.Focus();
+            // Инициализация контекстного меню для книг
+            InitializeContextMenuForBooks();
+        }
+
+
+
         private void btnAddBook_Click(object sender, RoutedEventArgs e)
         {
             RemoveRowStyle();
@@ -706,6 +684,13 @@ namespace SchoolLibrary.Views
             {
                 var newBook = (Book)addBookDialog.DataContext;
                 context.Books.Add(newBook);
+                // Получаем информацию о названии книги из коллекции InventoryBooks
+                var inventoryBookTitles = newBook.InventoryBooks.Select(ib => ib.Title).ToList();
+                var titles = string.Join(", ", inventoryBookTitles);
+
+                // Логирование с информацией о названии книги
+                logger.Info($"Пользователь {UserSession.Username}, дата сохранения: {DateTime.Now}, добавил книгу с названиями: {titles}.");
+
                 context.SaveChanges();
 
                 // Обновляем книги и отображение
@@ -733,13 +718,14 @@ namespace SchoolLibrary.Views
                 totalPages = (int)Math.Ceiling((double)context.Loans.Local.Count() / PageSize);
                 UpdatePaginationButtons(totalPages);
 
-               
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
+
         private void LoanBookButton_Click(object sender, RoutedEventArgs e)
         {
             ApplyRowStyle(dGrid);
@@ -748,7 +734,7 @@ namespace SchoolLibrary.Views
             totalPages = 1;
             CurrentTableName = "Движение книг";
             dGrid.ItemsSource = null;  // Очистка DataGrid перед загрузкой новых данных
-            // Инициализация списка заемов
+                                       // Инициализация списка заемов
             currentListType = "Loans";
             InitList(currentListType);
             LoanDialog dialog = new LoanDialog(context);
@@ -756,14 +742,22 @@ namespace SchoolLibrary.Views
             if (dialog.ShowDialog() == true)
             {
                 MessageBox.Show("Новая запись в журнале оформлена");
+                
+                DateTime currentDateTime = DateTime.Now;
+                logger.Info($"[{currentDateTime:yyyy-MM-dd HH:mm:ss}] Пользователь {UserSession.Username} оформил новый заем.");
+
                 dGrid.ItemsSource = null;
                 dGrid.UpdateLayout();
                 InitList(currentListType);            // Загрузка и отображение обновленного списка заемов
-                UpdatePaginationButtons(totalPages);  // Обновление кнопок пагинации в зависимости от количества страниц          // Перезагрузка данных и обновление отображения
+                UpdatePaginationButtons(totalPages);  // Обновление кнопок пагинации в зависимости от количества страниц
             }
             else
             {
                 MessageBox.Show("Отмена действия...");
+               
+                DateTime currentDateTime = DateTime.Now;
+                logger.Info($"[{currentDateTime:yyyy-MM-dd HH:mm:ss}] Пользователь {UserSession.Username} отменил оформление займа.");
+
                 // Перезагрузка данных и обновление отображения
                 dGrid.ItemsSource = null;
                 dGrid.UpdateLayout();
@@ -773,11 +767,11 @@ namespace SchoolLibrary.Views
         }
 
 
+
         private void ReturnBookButton_Click(object sender, RoutedEventArgs e)
         {
             ApplyRowStyle(dGrid);
-
-            // Установка начальных значений для пагинации
+            
             currentPage = 1;
             totalPages = 1;
             CurrentTableName = "Движение книг";
@@ -790,6 +784,10 @@ namespace SchoolLibrary.Views
             if (dialog.ShowDialog() == true)
             {
                 MessageBox.Show("Возврат в журнале оформлен");
+                
+                DateTime currentDateTime = DateTime.Now;
+                logger.Info($"[{currentDateTime:yyyy-MM-dd HH:mm:ss}] Пользователь {UserSession.Username} оформил возврат книги.");
+
                 dGrid.ItemsSource = null;   // Очистка DataGrid перед обновлением данных
                 dGrid.UpdateLayout();
                 InitList(currentListType);  // Загрузка и отображение обновленного списка заемов
@@ -797,14 +795,18 @@ namespace SchoolLibrary.Views
             }
             else
             {
-                //MessageBox.Show("Что-то пошло не так...");
                 MessageBox.Show("Отмена действия");
+               
+                DateTime currentDateTime = DateTime.Now;
+                logger.Info($"[{currentDateTime:yyyy-MM-dd HH:mm:ss}] Пользователь {UserSession.Username} отменил возврат книги.");
+
                 dGrid.ItemsSource = null;   // Очистка DataGrid перед обновлением данных
                 dGrid.UpdateLayout();
                 InitList(currentListType);  // Загрузка и отображение обновленного списка заемов
                 UpdatePaginationButtons(totalPages);  // Обновление кнопок пагинации
             }
         }
+
 
 
 
@@ -882,43 +884,10 @@ namespace SchoolLibrary.Views
         }
 
 
-        //private void btnEditBook_Click(object sender, RoutedEventArgs e)
-        //{
-        //    RemoveRowStyle();
-        //    dGrid.Tag = null;
-        //    dGrid.ContextMenu = null;
-        //    if (dGrid.SelectedItem is PaginatedBookInventoryModel selectedBookViewModel)
-        //    {
-        //        // Найти исходную сущность Book по BookID
-        //        var selectedBook = context.Books.Include(b => b.InventoryBooks).FirstOrDefault(b => b.BookID == selectedBookViewModel.BookID);
-
-        //        if (selectedBook != null)
-        //        {
-        //            var editBookDialog = new EditBookDialog(context, selectedBook);
-        //            if (editBookDialog.ShowDialog() == true)
-        //            {
-        //                context.SaveChanges();
-        //                dGrid.Items.Refresh();
-        //            }
-        //        }
-        //        else
-        //        {
-        //            MessageBox.Show("Книга не найдена", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Выберите книгу для редактирования", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-        //    }
-        //    InitBooksList();
-        //}
         private void btnEditBook_Click(object sender, RoutedEventArgs e)
         {
             EditSelectedBook(); // Вызов нового метода для редактирования книги
         }
-
-
-
 
         private void btnDeleteBook_Click(object sender, RoutedEventArgs e)
         {
@@ -1017,7 +986,6 @@ namespace SchoolLibrary.Views
 
                                 // Обновляем источник данных DataGrid
                                 updateListInventoryBook();
-                                //dGrid.ItemsSource = context.InventoryBooks.ToList();
                             }
                             else
                             {
@@ -1062,12 +1030,6 @@ namespace SchoolLibrary.Views
 
         private void btnListInventoryBook(object sender, RoutedEventArgs e)
         {
-            //RemoveRowStyle();
-            //currentPage = 1;
-            //totalPages = 1;
-            //CurrentTableName = "Инвентарный журнал книг";
-            //updateListInventoryBook();
-
             RemoveRowStyle();
             currentPage = 1;
             totalPages = 1;
@@ -1096,7 +1058,6 @@ namespace SchoolLibrary.Views
                 var results = searchDialog.Tag as List<PaginatedStudentModel>;
                 if (results != null)
                 {
-                    //dGrid.ItemsSource = results;
                     UpdateStudentDataGrid(results);
                     if (results.Any())
                     {
@@ -1143,8 +1104,15 @@ namespace SchoolLibrary.Views
                 int indexOnPage = selectedStudent.Index;
                 actualStudentID = indexOnPage;
 
-                var studentToEdit = context.Students.SingleOrDefault(s => s.StudentID == actualStudentID);
-
+                // var studentToEdit = context.Students.SingleOrDefault(s => s.StudentID == actualStudentID);
+                var studentToEdit = context.Students
+                            .SingleOrDefault(s => s.FirstName == selectedStudent.FirstName
+                            && s.LastName == selectedStudent.LastName
+                            && s.DateOfBirth == selectedStudent.DateOfBirth
+                            && s.StudentClass == selectedStudent.StudentClass
+                            && s.Prefix == selectedStudent.Prefix
+                            && s.Address == selectedStudent.Address
+                            && s.Phone == selectedStudent.Phone);
                 if (studentToEdit != null)
                 {
                     var studentCopy = new Student
@@ -1174,22 +1142,22 @@ namespace SchoolLibrary.Views
 
                         context.SaveChanges();
 
-                        // Сохраните текущую страницу перед обновлением данных
+                        // Сохранить текущую страницу перед обновлением данных
                         int savedCurrentPage = currentPage;
 
-                        // Перезагрузите студентов и обновите источник данных
+                        // Перезагрузить читателей и обновить источник данных
                         var students = context.Students.ToList();
                         dGrid.ItemsSource = students.Select(PaginatedStudentModel.ConvertToPaginatedStudentModel).ToList();
 
                         // Пересчитать индексацию строк
                         UpdateRowIndex(dGrid.ItemsSource.Cast<PaginatedStudentModel>().ToList());
 
-                        // Вызовите метод обновления списка читателей
+                        // Вызовить метод обновления списка читателей
                         updateListStudent();
 
-                        // Восстановите сохраненную страницу
+                        // Восстановить сохраненную страницу
                         currentPage = savedCurrentPage;
-                        // Инициализируйте снова с учетом текущей страницы
+                        // Инициализировать снова с учетом текущей страницы
                         InitList(currentListType);
                     }
                 }
@@ -1205,29 +1173,6 @@ namespace SchoolLibrary.Views
             }
         }
 
-
-
-        private void CheckDataGridType()
-        {
-            if (dGrid.ItemsSource != null)
-            {
-                var itemType = dGrid.ItemsSource.GetType();
-                var genericArguments = itemType.GetGenericArguments();
-
-                if (genericArguments.Length > 0)
-                {
-                    MessageBox.Show($"Тип данных в DataGrid: {genericArguments[0]}", "DataGrid Type", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                else
-                {
-                    MessageBox.Show($"Тип данных в DataGrid: {itemType}", "DataGrid Type", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            }
-            else
-            {
-                MessageBox.Show("ItemsSource не установлен.", "DataGrid Type", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-        }
 
 
         private void btnFilterStudentsWithoutLoans_Click(object sender, RoutedEventArgs e)
@@ -1349,8 +1294,6 @@ namespace SchoolLibrary.Views
         }
 
 
-
-
         private void btnAddGenre_Click(object sender, RoutedEventArgs e)
         {
             AddGenreDialog acd = new AddGenreDialog(context);
@@ -1376,8 +1319,7 @@ namespace SchoolLibrary.Views
                 DeleteStudentDialog dialog = new DeleteStudentDialog(context, selectedStudent);
                 if (dialog.ShowDialog() == true)
                 {
-                    // Обновляем DataGrid после удаления студента
-                    // dGrid.ItemsSource = context.Students.ToList();
+                    // Обновляем DataGrid после удаления студента                    
                     updateListStudent();
                 }
             }
@@ -1442,16 +1384,25 @@ namespace SchoolLibrary.Views
 
         private void btnAllGenresShow_Click(object sender, RoutedEventArgs e)
         {
+            RemoveRowStyle();
+            currentPage = 1;
+            totalPages = 1;
             updateListGenres();
         }
 
         private void btnAllSubjectsShow_Click(object sender, RoutedEventArgs e)
         {
+            RemoveRowStyle();
+            currentPage = 1;
+            totalPages = 1;
             updateListSubjects();
         }
 
         private void btnAddSubject_Click(object sender, RoutedEventArgs e)
         {
+            RemoveRowStyle();
+            currentPage = 1;
+            totalPages = 1;
             // Создание экземпляра окна для добавления предмета
             AddSubjectDialog addSubjectDialog = new AddSubjectDialog(context);
 
@@ -1470,12 +1421,15 @@ namespace SchoolLibrary.Views
             else if (result == false)
             {
                 // Сообщение о том, что добавление предмета было отменено или произошла ошибка
-                MessageBox.Show("Добавление предмета было отменено или возникла ошибка.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Добавление предмета было отменено", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
         private void btnEditSubject_Click(object sender, RoutedEventArgs e)
         {
+            RemoveRowStyle();
+            currentPage = 1;
+            totalPages = 1;
             if (dGrid.SelectedItem is Subject selectedSubject)
             {
                 // Создаем копию выбранного предмета
@@ -1591,7 +1545,6 @@ namespace SchoolLibrary.Views
 
         private void btnFilterNotReturnedBooks_Click(object sender, RoutedEventArgs e)
         {
-            // FilterNotReturnedBooks();
             try
             {
                 var notReturnedBooksList = GetNotReturnedBooks();
@@ -1646,136 +1599,6 @@ namespace SchoolLibrary.Views
         }
 
 
-
-        //private void InitBooksNotLoanedList()
-        //{
-        //    try
-        //    {
-        //        // Загрузка данных InventoryBooks
-        //        context.InventoryBooks.Load();
-
-        //        // Запрос для получения всех книг, которые не были взяты читателями
-        //        var booksNotLoaned = context.InventoryBooks
-        //            .Where(ib => !ib.Loans.Any())
-        //            .ToList();
-
-        //        // Применение пагинации
-        //        totalPages = (int)Math.Ceiling((double)booksNotLoaned.Count / PageSize);
-        //        var paginatedBooksNotLoaned = booksNotLoaned
-        //            .Skip((currentPage - 1) * PageSize)
-        //            .Take(PageSize)
-        //            .Select((book, index) => new PaginatedInventoryBookModel
-        //            {
-        //                Index = (currentPage - 1) * PageSize + index + 1, // Вычисляем индекс с учетом текущей страницы
-        //                InventoryBookID = book.InventoryBookID,
-        //                Title = book.Title,
-        //                Author = book.Author,
-        //                Publisher = book.Publisher,
-        //                YearPublished = book.YearPublished,
-        //                ISBN = book.ISBN,
-        //                GenreName = book.Book?.Genre?.GenreName ?? "Неизвестно",
-        //                SubjectName = book.Book?.Subject?.SubjectName ?? "Неизвестно"
-        //            })
-        //            .ToList();
-
-        //        // Обновление источника данных и конфигурации колонок
-        //        ConfigureInventoryBooksColumns2(); // Используем существующий метод для настройки колонок
-        //        dGrid.ItemsSource = paginatedBooksNotLoaned;
-
-        //        // Обновление отображения DataGrid
-        //        dGrid.Items.Refresh();
-
-        //        // Обновление кнопок пагинации
-        //        UpdatePaginationButtons(totalPages);
-        //        dGrid.Tag = "InventoryBooksNotLoanedList"; // Используем тег для идентификации текущего отображения
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show(ex.Message);
-        //    }
-        //}
-
-        //private void btnFilterBooksNotLoaned_Click(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        RemoveRowStyle();
-        //        currentPage = 1;
-        //        totalPages = 1;
-        //        dGrid.ItemsSource = null;  // Очистка DataGrid перед загрузкой новых данных
-        //        currentListType = "BooksNotLoaned"; // Текущий тип списка
-        //        InitList(currentListType);
-
-        //        // Получаем пагинированные книги без займов из сервиса
-        //        var paginatedBooksNotLoaned = bookService.GetPaginatedBooksNotLoaned(currentPage, PageSize);
-
-        //        if (paginatedBooksNotLoaned != null && paginatedBooksNotLoaned.Any())
-        //        {
-        //            ConfigureInventoryBooksColumns2(); // Настройка колонок для книг
-        //            dGrid.ItemsSource = paginatedBooksNotLoaned;
-        //            dGrid.UpdateLayout();
-        //        }
-        //        else
-        //        {
-        //            MessageBox.Show("Все книги были задействованы.");
-        //        }
-
-        //        UpdatePaginationButtons(totalPages);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show(ex.Message);
-        //        dGrid.ItemsSource = null;
-        //        dGrid.UpdateLayout();
-        //        InitList(currentListType);
-        //        UpdatePaginationButtons(totalPages);
-        //    }
-        //}
-
-
-
-        //private void btnFilterBooksNotLoaned_Click(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        RemoveRowStyle();
-        //        currentPage = 1;
-        //        totalPages = 1;
-        //        CurrentTableName = "Книги которые ни разу не взяли";
-        //        dGrid.ItemsSource = null;  // Очистка DataGrid перед загрузкой новых данных
-        //        currentListType = "BooksNotLoaned"; // Текущий тип списка
-        //       // InitList(currentListType);
-
-        //        // Получаем пагинированные книги без займов из сервиса
-        //        var paginatedBooksNotLoaned = bookService.GetPaginatedBooksNotLoaned(currentPage, PageSize);
-
-        //        if (paginatedBooksNotLoaned != null && paginatedBooksNotLoaned.Any())
-        //        {
-        //            ConfigureInventoryBooksColumns2(); // Настройка колонок для книг
-        //            dGrid.ItemsSource = paginatedBooksNotLoaned;
-        //            dGrid.UpdateLayout();
-        //        }
-        //        else
-        //        {
-        //            MessageBox.Show("Все книги были задействованы.");
-        //        }
-
-        //        // Переопределяем количество страниц для кнопок пагинации
-        //        totalPages = (int)Math.Ceiling((double)paginatedBooksNotLoaned.Count / PageSize);
-        //        UpdatePaginationButtons(totalPages);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show(ex.Message);
-        //        dGrid.ItemsSource = null;
-        //        dGrid.UpdateLayout();
-        //        InitList(currentListType);
-        //        UpdatePaginationButtons(totalPages);
-        //    }
-        //}
-
-
-
         private void btnFilterBooksNotLoaned_Click(object sender, RoutedEventArgs e)
         {
             RemoveRowStyle();
@@ -1792,7 +1615,6 @@ namespace SchoolLibrary.Views
                 dGrid.ItemsSource = null;
                 currentListType = "BooksNotLoaned";
                 InitList(currentListType);
-                //InitInventoryBooksList();
             }
             catch (Exception ex)
             {
@@ -1852,9 +1674,6 @@ namespace SchoolLibrary.Views
             }
         }
 
-
-
-
         private void InitializeContextMenu()
         {
             // Создаем контекстное меню
@@ -1864,12 +1683,8 @@ namespace SchoolLibrary.Views
             MenuItem returnYesMenuItem = new MenuItem { Header = "Оформить возврат книги?", FontSize = 16 };
             returnYesMenuItem.Click += ReturnBookYes_Click; // Подписываем обработчик события
 
-            //MenuItem returnNoMenuItem = new MenuItem { Header = "Вернуть книгу: Нет" };
-            //returnNoMenuItem.Click += ReturnBookNo_Click; // Подписываем обработчик события
-
             // Добавляем элементы в контекстное меню
             contextMenu.Items.Add(returnYesMenuItem);
-            //contextMenu.Items.Add(returnNoMenuItem);
 
             // Устанавливаем контекстное меню в зависимости от значения Tag
             if (dGrid.Tag != null && dGrid.Tag.ToString() == "Loans")
@@ -1888,45 +1703,6 @@ namespace SchoolLibrary.Views
                 InitializeContextMenu();
             };
         }
-        //private void ReturnBookYes_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (dGrid.SelectedItem is LoanViewModel selectedLoanViewModel)
-        //    {
-        //        // Проверяем, если книга уже возвращена
-        //        if (selectedLoanViewModel.Returned)
-        //        {
-        //            MessageBox.Show("Эта книга уже была возвращена ранее.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Information);
-        //            return; // Выходим из метода, чтобы предотвратить повторный возврат
-        //        }
-
-        //        MessageBoxResult result = MessageBox.Show("Вы уверены, что хотите вернуть книгу?", "Подтверждение возврата", MessageBoxButton.YesNo, MessageBoxImage.Question);
-        //        if (result == MessageBoxResult.Yes)
-        //        {
-        //            // Найдите соответствующую сущность Loan в базе данных по LoanID из LoanViewModel
-        //            Loan selectedLoan = context.Loans.FirstOrDefault(loan => loan.LoanID == selectedLoanViewModel.LoanID);
-        //            if (selectedLoan != null)
-        //            {
-        //                // Проверяем еще раз, если книга уже возвращена в базе данных
-        //                if (selectedLoan.Returned)
-        //                {
-        //                    MessageBox.Show("Эта книга уже была возвращена ранее.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Information);
-        //                    return; // Выходим из метода, чтобы предотвратить повторный возврат
-        //                }
-
-        //                // Обработка возврата книги
-        //                ReturnBook(selectedLoan);
-        //            }
-        //            else
-        //            {
-        //                MessageBox.Show("Запись о займе не найдена в базе данных.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Выберите запись для возврата.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-        //    }
-        //}
 
         private void ReturnBookYes_Click(object sender, RoutedEventArgs e)
         {
@@ -1940,7 +1716,7 @@ namespace SchoolLibrary.Views
                     return; // Выходим из метода, чтобы предотвратить повторный возврат
                 }
 
-                // Логика возврата книги
+                // возврат книги
                 try
                 {
                     selectedLoanViewModel.Returned = true;
@@ -1987,36 +1763,6 @@ namespace SchoolLibrary.Views
 
             }
         }
-
-
-        //private void InitializeContextMenuForBooks()
-        //{
-        //    // Проверяем, что тег DataGrid равен "Books"
-        //    if (dGrid.Tag != null && dGrid.Tag.ToString() == "Books")
-        //    {
-        //        // Создаем контекстное меню
-        //        ContextMenu contextMenu = new ContextMenu();
-
-        //        // Создаем элементы контекстного меню
-        //        MenuItem editYesMenuItem = new MenuItem { Header = "Редактировать книгу: Да" };
-        //        editYesMenuItem.Click += EditBookYes_Click; // Подписываем обработчик события
-
-        //        MenuItem editNoMenuItem = new MenuItem { Header = "Редактировать книгу: Нет" };
-        //        editNoMenuItem.Click += EditBookNo_Click; // Подписываем обработчик события
-
-        //        // Добавляем элементы в контекстное меню
-        //        contextMenu.Items.Add(editYesMenuItem);
-        //        contextMenu.Items.Add(editNoMenuItem);
-
-        //        // Устанавливаем контекстное меню
-        //        dGrid.ContextMenu = contextMenu;
-        //    }
-        //    else
-        //    {
-        //        dGrid.ContextMenu = null; // Очищаем контекстное меню, если данные не соответствуют
-        //    }
-        //}
-
 
 
         private void EditBookYes_Click(object sender, RoutedEventArgs e)
@@ -2066,19 +1812,6 @@ namespace SchoolLibrary.Views
             InitBooksList();
         }
 
-        //private void dGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    // Проверяем, что тег DataGrid равен "Books"
-        //    if (dGrid.Tag != null && dGrid.Tag.ToString() == "Books" && dGrid.SelectedItem is PaginatedBookInventoryModel)
-        //    {
-        //        InitializeContextMenuForBooks(); // Инициализируем контекстное меню
-        //    }
-        //    else
-        //    {
-        //        dGrid.ContextMenu = null; // Удаляем контекстное меню, если данные не соответствуют
-        //    }
-        //}
-
 
         private void InitializeContextMenuForBooks()
         {
@@ -2101,92 +1834,6 @@ namespace SchoolLibrary.Views
             dGrid.ContextMenu = contextMenu;
         }
 
-
-        //private void dGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    // Проверяем значение тега DataGrid
-        //    if (dGrid.Tag != null)
-        //    {
-        //        if (dGrid.Tag.ToString() == "Books" && dGrid.SelectedItem is PaginatedBookInventoryModel)
-        //        {
-        //            InitializeContextMenuForBooks(); // Инициализируем контекстное меню для книг
-        //        }
-        //        else if (dGrid.Tag.ToString() == "Loans" && dGrid.SelectedItem is LoanViewModel)
-        //        {
-        //            InitializeContextMenuForLoans(); // Инициализируем контекстное меню для возврата книг
-        //        }
-        //        else
-        //        {
-        //            dGrid.ContextMenu = null; // Удаляем контекстное меню, если данные не соответствуют
-        //        }
-        //    }
-        //    else
-        //    {
-        //        dGrid.ContextMenu = null; // Удаляем контекстное меню, если тег отсутствует
-        //    }
-        //}
-
-
-        //private void dGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    // Проверяем значение тега DataGrid
-        //    if (dGrid.Tag != null)
-        //    {
-        //        if (dGrid.Tag.ToString() == "Books" && dGrid.SelectedItem is PaginatedBookInventoryModel)
-        //        {
-        //            InitializeContextMenuForBooks(); // Инициализируем контекстное меню для книг
-        //        }
-        //        else if (dGrid.Tag.ToString() == "InventoryBooks" && dGrid.SelectedItem is PaginatedInventoryBookModel)
-        //        {
-        //            InitializeContextMenuForInventoryBooks(); // Инициализируем контекстное меню для инвентарных книг
-        //        }
-        //        else if (dGrid.Tag.ToString() == "Loans" && dGrid.SelectedItem is LoanViewModel)
-        //        {
-        //            InitializeContextMenuForLoans(); // Инициализируем контекстное меню для возврата книг
-        //        }
-        //        else
-        //        {
-        //            dGrid.ContextMenu = null; // Удаляем контекстное меню, если данные не соответствуют
-        //        }
-        //    }
-        //    else
-        //    {
-        //        dGrid.ContextMenu = null; // Удаляем контекстное меню, если тег отсутствует
-        //    }
-        //}
-
-
-        //private void dGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    // Проверяем значение тега DataGrid
-        //    if (dGrid.Tag != null)
-        //    {
-        //        if (dGrid.Tag.ToString() == "Books" && dGrid.SelectedItem is PaginatedBookInventoryModel)
-        //        {
-        //            InitializeContextMenuForBooks(); // Инициализируем контекстное меню для книг
-        //        }
-        //        else if (dGrid.Tag.ToString() == "InventoryBooks" && dGrid.SelectedItem is PaginatedInventoryBookModel)
-        //        {
-        //            InitializeContextMenuForInventoryBooks(); // Инициализируем контекстное меню для инвентарных книг
-        //        }
-        //        else if (dGrid.Tag.ToString() == "Loans" && dGrid.SelectedItem is LoanViewModel)
-        //        {
-        //            InitializeContextMenuForLoans(); // Инициализируем контекстное меню для возврата книг
-        //        }
-        //        else if (dGrid.Tag.ToString() == "Students" && dGrid.SelectedItem is PaginatedStudentModel)
-        //        {
-        //            InitializeContextMenuForStudents(); // Инициализируем контекстное меню для читателей
-        //        }
-        //        else
-        //        {
-        //            dGrid.ContextMenu = null; // Удаляем контекстное меню, если данные не соответствуют
-        //        }
-        //    }
-        //    else
-        //    {
-        //        dGrid.ContextMenu = null; // Удаляем контекстное меню, если тег отсутствует
-        //    }
-        //}
 
         private void dGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -2224,6 +1871,110 @@ namespace SchoolLibrary.Views
             }
         }
 
+        //private void dGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    // Проверяем значение тега DataGrid
+        //    if (dGrid.Tag != null)
+        //    {
+        //        switch (dGrid.Tag.ToString())
+        //        {
+        //            case "Books" when dGrid.SelectedItem is PaginatedBookInventoryModel:
+        //                InitializeContextMenuForBooks(); // Инициализируем контекстное меню для книг
+        //                break;
+
+        //            case "InventoryBooks" when dGrid.SelectedItem is PaginatedInventoryBookModel:
+        //                InitializeContextMenuForInventoryBooks(); // Инициализируем контекстное меню для инвентарных книг
+        //                break;
+
+        //            case "Loans" when dGrid.SelectedItem is LoanViewModel:
+        //                InitializeContextMenuForLoans(); // Инициализируем контекстное меню для возврата книг
+        //                break;
+
+        //            case "Students" when dGrid.SelectedItem is PaginatedStudentModel:
+        //                InitializeContextMenuForStudents(); // Инициализируем контекстное меню для читателей
+        //                break;
+
+        //            case "BookMovements" when dGrid.SelectedItem is LoanViewModel:
+        //                InitializeContextMenuForBookMovements(); // Инициализируем контекстное меню для движения книг
+        //                break;   
+        //            //case "SearchBooksByBarcode" when dGrid.SelectedItem is PaginatedBookInventoryModel:
+        //            case "SearchBooksByBarcode" when dGrid.SelectedItem is PaginatedInventoryBookModel:
+        //                InitializeContextMenuForSearchBooksByBarcode(); // Инициализируем контекстное меню для движения книг
+        //                break;
+
+        //            default:
+        //                dGrid.ContextMenu = null; // Удаляем контекстное меню, если данные не соответствуют
+        //                break;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        dGrid.ContextMenu = null; // Удаляем контекстное меню, если тег отсутствует
+        //    }
+        //}
+
+
+
+        //private void InitializeContextMenuForSearchBooksByBarcode() {
+        //    // Инициализация контекстного меню для поиска книг по штрих-коду
+        //    // Создаем контекстное меню
+        //    ContextMenu contextMenu = new ContextMenu();
+
+
+        //  //  contextMenu.Items.Add(new MenuItem { Header = "Выдать книгу", Command = new RelayCommand(IssueBook_Click) });
+        // //   contextMenu.Items.Add(new MenuItem { Header = "Вернуть книгу", Command = new RelayCommand(ReturnBook_Click) });
+
+        //    MenuItem issueBookMenuItem = new MenuItem { Header = "Выдать книгу", FontSize = 16 };
+        //    issueBookMenuItem.Click += IssueBookButton_Click; // Подписываем обработчик события
+
+        //    MenuItem returnBookMenuItem = new MenuItem { Header = "Вернуть книгу", FontSize = 16 };
+        //    returnBookMenuItem.Click += ReturnBookButton_Click; // Подписываем обработчик события
+
+
+        //    contextMenu.Items.Add(issueBookMenuItem);
+        //    contextMenu.Items.Add(returnBookMenuItem);
+
+        //    if (dGrid.SelectedItem is PaginatedInventoryBookModel selectedBook)
+        //    {
+        //        if (selectedBook.QuantityLeft > 0)
+        //        {
+        //            issueBookMenuItem.Visibility = Visibility.Visible;      // Выдать книгу
+        //            returnBookMenuItem.Visibility = Visibility.Collapsed; // Вернуть книгу
+        //        }
+        //        else
+        //        {
+        //            issueBookMenuItem.Visibility = Visibility.Collapsed;      // Выдать книгу
+        //            returnBookMenuItem.Visibility = Visibility.Visible; // Вернуть книгу
+        //        }
+
+        //    }
+
+        //}
+
+        private void IssueBookButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedBook = dGrid.SelectedItem as BookInventoryViewModel;
+            if (selectedBook != null)
+            {
+                // Проверим, если книга на руках
+                var loan = context.Loans.FirstOrDefault(l => l.InventoryBookID == selectedBook.InventoryBookID && l.Returned);
+                if (loan == null)
+                {
+                    // Откроем диалог для возврата книги
+                    var returnDialog = new ReturnBookDialogSelectDate(context, loan);
+                    returnDialog.Owner = this; // Установить владельца окна
+                    if (returnDialog.ShowDialog() == true)
+                    {
+                        // Логика для возврата книги
+                        RefreshBooksData();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Эта книга не на руках.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
 
         private void InitializeContextMenuForBookMovements()
         {
@@ -2291,19 +2042,6 @@ namespace SchoolLibrary.Views
 
         private void InitializeContextMenuForLoans()
         {
-            //// Создаем контекстное меню
-            //ContextMenu contextMenu = new ContextMenu();
-
-            //// Создаем элемент для возврата книги
-            //MenuItem returnYesMenuItem = new MenuItem { Header = "Оформить возврат книги?" };
-            //returnYesMenuItem.Click += ReturnBookYes_Click; // Подписываем обработчик события
-
-            //// Добавляем элемент в контекстное меню
-            //contextMenu.Items.Add(returnYesMenuItem);
-
-            //// Устанавливаем контекстное меню
-            //dGrid.ContextMenu = contextMenu;
-
             // Создаем контекстное меню
             ContextMenu contextMenu = new ContextMenu();
 
@@ -2328,22 +2066,266 @@ namespace SchoolLibrary.Views
             // Создаем контекстное меню
             ContextMenu contextMenu = new ContextMenu();
 
-            // Создаем элемент для редактирования книги
-            //MenuItem editBookMenuItem = new MenuItem { Header = "Редактировать книгу" };
-            //editBookMenuItem.Click += EditInventoryBook_Click; // Подписываем обработчик события
-
             // Создаем элемент для списания книги
             MenuItem deleteBookMenuItem = new MenuItem { Header = "Списать книгу", FontSize = 16 };
             deleteBookMenuItem.Click += btnDeleteBook_Click; // Подписываем обработчик события для удаления книги
 
-            // Добавляем элементы в контекстное меню
-           // contextMenu.Items.Add(editBookMenuItem);
+            // Добавляем элементы в контекстное меню          
             contextMenu.Items.Add(deleteBookMenuItem);
 
             // Устанавливаем контекстное меню для DataGrid
             dGrid.ContextMenu = contextMenu;
         }
 
+        //private void BarcodeTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    if (!string.IsNullOrWhiteSpace(BarcodeTextBox.Text))
+        //    {
+        //        var isbn = BarcodeTextBox.Text.Trim();
+        //        SearchInventoryBooksByISBN(isbn);
+        //        BarcodeTextBox.Clear();
+        //    }
+        //}
+
+        //private void BarcodeTextBox_KeyDown(object sender, KeyEventArgs e)      
+        //{
+        //    // Проверяем, что нажат Enter (или другой символ окончания сканирования)
+        //    if (e.Key == Key.Enter)
+        //    {
+        //        string scannedBarcode = BarcodeTextBox.Text.Trim();
+        //       // MessageBox.Show(scannedBarcode);
+        //        if (!string.IsNullOrEmpty(scannedBarcode))
+        //        {
+        //            SearchInventoryBooksByISBN(scannedBarcode);
+        //        }
+
+        //        // Очищаем TextBox для следующего ввода
+        //        BarcodeTextBox.Clear();
+        //    }
+        //}
+
+
+        //private void SearchInventoryBooksByISBN(string inputISBN)
+        //{
+        //    // Очищаем ввод от всех символов, кроме цифр и удаляем пробелы и переносы строк
+        //    string cleanedInputISBN = CleanISBN(inputISBN.Trim());
+        //   // MessageBox.Show("+"+cleanedInputISBN+"+");
+        //   // Загружаем книги в память и выполняем фильтрацию на стороне клиента
+        //   var book = context.InventoryBooks
+        //        .ToList() // Загружаем все книги в память
+        //        .FirstOrDefault(b => CleanISBN(b.ISBN.Trim()) == cleanedInputISBN);
+
+        //    if (book != null)
+        //    {
+        //        MessageBox.Show($"Книга найдена: {book.Title}, автор: {book.Author}");
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Книга с таким ISBN не найдена.");
+        //    }
+
+        //    // Сбрасываем фокус на BarcodeTextBox после поиска
+        //    BarcodeTextBox.Focus();
+        //}
+
+        // Метод для очистки ISBN от всех символов, кроме цифр
+        private string CleanISBN(string isbn)
+        {
+            return new string(isbn.Where(char.IsDigit).ToArray());
+        }
+
+
+        private void BarcodeTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            dGrid.Tag = "SearchBooksByBarcode";
+            // Проверяем, что нажат Enter (или другой символ окончания сканирования)
+            if (e.Key == Key.Enter)
+            {
+                string scannedBarcode = BarcodeTextBox.Text.Trim();
+                if (!string.IsNullOrEmpty(scannedBarcode))
+                {
+                    // Ищем книги по ISBN
+                    SearchInventoryBooksByISBN(scannedBarcode);
+                }
+
+                // Очищаем TextBox для следующего ввода
+                BarcodeTextBox.Clear();
+            }
+        }
+
+        private void SearchInventoryBooksByISBN(string inputISBN)
+        {
+            // Очищаем ввод от всех символов, кроме цифр
+            string cleanedInputISBN = CleanISBN(inputISBN.Trim());
+
+            // Загружаем книги из базы данных и выполняем фильтрацию по ISBN
+            var allBooks = context.InventoryBooks
+     .ToList(); // This will execute the query and bring the data to memory
+
+            // Then, apply the custom filtering logic in memory
+            var matchedBooks = allBooks
+                .Where(b => CleanISBN(b.ISBN.Trim()) == cleanedInputISBN)
+                .ToList();
+
+            // Проверяем, найдены ли книги
+            if (matchedBooks.Any())
+            {
+                // Выводим книги в DataGrid
+                dGrid.ItemsSource = matchedBooks
+                    .Select((book, index) => new PaginatedInventoryBookModel
+                    {
+                        Index = index + 1, // Индексация книг
+                        InventoryBookID = book.InventoryBookID,
+                        Title = book.Title,
+                        Author = book.Author,
+                        Publisher = book.Publisher,
+                        YearPublished = book.YearPublished,
+                        ISBN = book.ISBN,
+                        GenreName = book.Book.Genre.GenreName ?? "Неизвестно",
+                        SubjectName = book.Book.Subject.SubjectName ?? "Неизвестно"
+                    })
+                    .ToList();
+
+                // Обновляем DataGrid и заголовок
+                ConfigureInventoryBooksColumns2();
+                dGrid.Items.Refresh();
+                CurrentTableName = $"Найдено книг с ISBN: {cleanedInputISBN}";
+            }
+            else
+            {
+                MessageBox.Show("Книга с таким ISBN не найдена.");
+            }
+
+            // Сбрасываем фокус на BarcodeTextBox после поиска
+            BarcodeTextBox.Focus();
+        }
+
+
+
+        private void ReturnBook_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedBook = dGrid.SelectedItem as BookInventoryViewModel;
+            if (selectedBook != null)
+            {
+                // Проверим, если книга на руках
+                var loan = context.Loans.FirstOrDefault(l => l.InventoryBookID == selectedBook.InventoryBookID && !l.Returned);
+                if (loan != null)
+                {
+                    // Откроем диалог для возврата книги
+                    var returnDialog = new ReturnBookDialogSelectDate(context, loan);
+                    returnDialog.Owner = this; // Установить владельца окна
+                    if (returnDialog.ShowDialog() == true)
+                    {
+                        // Логика для возврата книги
+                        RefreshBooksData();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Эта книга не на руках.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+
+        private void RefreshBooksData()
+        {
+            try
+            {
+                // Получение актуального списка инвентарных книг из базы данных
+                var inventoryBooks = context.InventoryBooks
+                    .Include(ib => ib.Book)
+                    .Include(ib => ib.Book.Genre)
+                    .Include(ib => ib.Book.Subject)
+                    .ToList();
+
+                // Создание списка модели PaginatedBookInventoryModel на основе списка инвентарных книг
+                var paginatedBooks = inventoryBooks
+                    .Select(ib => new PaginatedBookInventoryModel
+                    {
+                        InventoryBookID = ib.InventoryBookID,
+                        BookID = ib.BookID ?? 0,
+                        Title = ib.Title,
+                        Author = ib.Author,
+                        Publisher = ib.Publisher,
+                        YearPublished = ib.YearPublished,
+                        ISBN = ib.ISBN,
+                        Quantity = ib.Book.Quantity,
+                        QuantityLeft = ib.Book.QuantityLeft,
+                        //CategoryName = ib.Book.Genre?.GenreName, // Предполагаем, что Genre имеет свойство Name
+                        GenreName = ib.Book.Genre?.GenreName,
+                        SubjectName = ib.Book.Subject?.SubjectName
+                    })
+                    .ToList();
+
+                // Обновление DataGrid с новыми данными
+                dGrid.ItemsSource = paginatedBooks;
+
+                // Очистка выделения
+                dGrid.SelectedItem = null;
+            }
+            catch (Exception ex)
+            {
+                // Обработка ошибок
+                MessageBox.Show($"Ошибка при обновлении данных книг: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+
+
+        private void InitializeContextMenuForSearchBooksByBarcode()
+        {
+            // Создаем контекстное меню
+            ContextMenu contextMenu = new ContextMenu();
+
+            // Создаем пункты меню
+            MenuItem issueBookMenuItem = new MenuItem { Header = "Выдать книгу", FontSize = 16 };
+            issueBookMenuItem.Click += IssueBookButton_Click; // Подписываем обработчик события
+
+            MenuItem returnBookMenuItem = new MenuItem { Header = "Вернуть книгу", FontSize = 16 };
+            returnBookMenuItem.Click += ReturnBookButton_Click; // Подписываем обработчик события
+
+            // Добавляем пункты меню в контекстное меню
+            contextMenu.Items.Add(issueBookMenuItem);
+            contextMenu.Items.Add(returnBookMenuItem);
+
+            if (dGrid.SelectedItem is PaginatedInventoryBookModel selectedBook)
+            {
+                bool isBookIssued = IsBookIssued(selectedBook.InventoryBookID);
+
+                if (isBookIssued)
+                {
+                    // Если книга выдана, показываем опцию для возврата
+                    issueBookMenuItem.Visibility = Visibility.Collapsed;
+                    returnBookMenuItem.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    // Если книга не выдана, показываем опцию для выдачи
+                    issueBookMenuItem.Visibility = Visibility.Visible;
+                    returnBookMenuItem.Visibility = Visibility.Collapsed;
+                }
+            }
+            else
+            {
+                // Если элемент не выбран или не является книгой, скрываем меню
+                contextMenu = null;
+            }
+
+            // Присваиваем контекстное меню DataGrid
+            dGrid.ContextMenu = contextMenu;
+        }
+
+        private bool IsBookIssued(int inventoryBookID)
+        {
+            // Здесь нужно реализовать логику проверки, есть ли активные выдачи для данной книги
+            // Пример использования Entity Framework для проверки в базе данных
+
+
+            return context.Loans.Any(loan => loan.InventoryBookID == inventoryBookID && !loan.Returned);
+
+        }
 
         #endregion
     }

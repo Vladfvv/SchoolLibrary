@@ -54,34 +54,7 @@ namespace SchoolLibrary.Service
             return query.ToList();
         }
 
-        //переход читателей-школьников в следующий класс
-        //public void UpdateStudentClasses()
-        //{
-        //    try
-        //    {
-        //        var students = context.Students.ToList();
-
-        //        foreach (var student in students)
-        //        {
-        //            if (student.StudentClass == "11")
-        //            {
-        //                student.StudentClass = "Graduate";
-        //                student.Prefix = "";
-        //            }
-        //            else if (int.TryParse(student.StudentClass, out int classNumber))
-        //            {
-        //                student.StudentClass = (classNumber + 1).ToString();
-        //            }
-        //        }
-
-        //        context.SaveChanges();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show($"Ошибка обновления классов студентов: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-        //    }
-        //}
-
+       
         public void UpdateStudentClasses()
         {
             try
@@ -119,95 +92,7 @@ namespace SchoolLibrary.Service
             }
         }
 
-
-        //public List<Book> InitBooksListForExport()
-        //{
-        //    List<Book> bookList = new List<Book>();
-
-        //    try
-        //    {
-        //        // Загружаем книги и связанные данные
-        //        context.Books
-        //            .Include(b => b.Genre)
-        //            .Include(b => b.InventoryBooks.Select(ib => ib.Loans))
-        //            .Load();
-
-        //        // Группируем книги по ISBN
-        //        var groupedBooks = context.Books.Local
-        //            .SelectMany(b => b.InventoryBooks, (b, ib) => new { Book = b, InventoryBook = ib })
-        //            .GroupBy(x => x.InventoryBook.ISBN)
-        //            .Select(g => new PaginatedBookInventoryModel // Или используйте другую подходящую модель, если PaginatedBookInventoryModel не подходит
-        //            {
-        //                BookID = g.First().Book.BookID,
-        //                Title = g.First().InventoryBook.Title,
-        //                Author = g.First().InventoryBook.Author,
-        //                Publisher = g.First().InventoryBook.Publisher,
-        //                YearPublished = g.First().InventoryBook.YearPublished,
-        //                ISBN = g.Key,
-        //                Quantity = g.Count(),
-        //                QuantityLeft = g.Count() - g.Sum(x => x.InventoryBook.Loans.Count(loan => !loan.Returned)),
-        //                GenreName = g.First().Book.Genre != null ? g.First().Book.Genre.GenreName : "Неизвестно",
-        //                SubjectName = g.First().Book.Genre != null ? g.First().Book.Genre.GenreName : "Неизвестно"
-        //            })
-        //            .ToList();
-
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show(ex.Message);
-        //    }
-
-        //    return bookList; // Можно вернуть bookList, если нужно использовать его в других частях программы
-        //}
-
-        //private void InitStudentsList()
-        //{
-        //    try
-        //    {
-        //        // Загружаем студентов
-        //        context.Students.Load();
-
-        //        // Подсчитываем общее количество студентов
-        //        var totalStudents = context.Students.Local.Count;
-
-        //        // Вычисляем общее количество страниц
-        //        totalPages = (int)Math.Ceiling((double)totalStudents / PageSize);
-
-        //        // Получаем студентов для текущей страницы
-        //        var studentsOnPage = context.Students.Local
-        //            .Skip((currentPage - 1) * PageSize)
-        //            .Take(PageSize)
-        //            .Select((student, index) => new PaginatedStudentModel//Select((student, index) => new { Index = (currentPage - 1) * PageSize + index + 1, ... }): В этом выражении Index вычисляется таким образом, чтобы он продолжал нумерацию между страницами
-        //            {
-        //                Index = (currentPage - 1) * PageSize + index + 1, // Вычисляем порядковый номер
-        //                FirstName = student.FirstName,
-        //                LastName = student.LastName,
-        //                DateOfBirth = student.DateOfBirth,
-        //                //Age = student.Age,
-        //                StudentClass = student.StudentClass,
-        //                Prefix = student.Prefix,
-        //                Address = student.Address
-        //            })
-        //            .ToList();
-        //        //Index - отображает порядковый номер строки, который продолжает нумерацию между страницами
-        //        // Обновляем источник данных и колонки
-        //        ConfigureStudentColumns();
-        //        dGrid.ItemsSource = studentsOnPage;
-
-        //        // Обновляем отображение DataGrid
-        //        dGrid.Items.Refresh();
-
-        //        // Обновляем видимость и активное состояние кнопок пагинации
-        //        UpdatePaginationButtons(totalPages);
-
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show(ex.Message);
-        //    }
-        //}
+      
         public List<PaginatedStudentModel> GetStudentsListForExport()
         {
             List<PaginatedStudentModel> studentsList = new List<PaginatedStudentModel>();
@@ -263,27 +148,7 @@ namespace SchoolLibrary.Service
 
             return studentsWithoutLoans;
         }
-
-        //public List<PaginatedStudentModel> GetPaginatedStudentsWithoutLoans()
-        //{
-        //    List<Student> studentsWithoutLoans = studentService.GetStudentsWithoutLoans();
-        //    List<PaginatedStudentModel> paginatedStudentsWithoutLoans = studentsWithoutLoans
-        //        .OrderBy(s => s.LastName)
-        //        .ThenBy(s => s.FirstName)
-        //        .Select((student, index) => new PaginatedStudentModel
-        //        {
-        //            StudentID = student.StudentID,
-        //            FirstName = student.FirstName,
-        //            LastName = student.LastName,
-        //            DateOfBirth = student.DateOfBirth,
-        //            StudentClass = student.StudentClass,
-        //            Prefix = student.Prefix,
-        //            Address = student.Address,
-        //            Index = index + 1 + (currentPage - 1) * PageSize
-        //        })
-        //        .ToList();
-        //    return paginatedStudentsWithoutLoans;
-        //}
+                
 
         public List<PaginatedStudentModel> GetPaginatedStudentsWithoutLoans(int currentPage, int pageSize)
         {

@@ -72,7 +72,7 @@ namespace SchoolLibrary.DialogWindows.LoanWindows
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            _currentPage = 1; // Reset to first page on search
+            _currentPage = 1; // сброс 1 стр
             LoadIssuedBooks(SearchTextBox.Text);
         }
 
@@ -96,12 +96,12 @@ namespace SchoolLibrary.DialogWindows.LoanWindows
 
         private void IssuedBooksDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Optionally handle row selection if needed
+            //действие при изменении Datagrid
         }
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            // Optionally handle text changes if needed
+            // действие при поиске Datagrid
         }
     }
 }

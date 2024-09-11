@@ -175,7 +175,7 @@ namespace SchoolLibrary.DialogWindows.LoanWindows
 
                     transaction.Commit();
 
-                    // MessageBox.Show("Book loaned successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    
                     // Используем формат "день/месяц/год часы:минуты:секунды" для времени займа
                     string loanDateFormatted = loanDate.ToString("dd/MM/yyyy HH:mm:ss");
 

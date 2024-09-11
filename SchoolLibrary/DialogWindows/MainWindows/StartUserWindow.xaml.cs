@@ -1,5 +1,4 @@
-﻿using SchoolLibrary.DataLoaders;
-using SchoolLibrary.DialogWindows;
+﻿using SchoolLibrary.DialogWindows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,24 +17,14 @@ using SchoolLibrary.ViewModels;
 
 namespace SchoolLibrary.Views
 {
-
-    //создание псевдонима для типа SchoolLibrary.DialogWindows.LoanWindows.BookInventoryViewModel.
-    //Это позволяет использовать псевдоним LoanWindowsViewModel вместо полного имени типа SchoolLibrary.   //DialogWindows.LoanWindows.BookInventoryViewModel
-    using LoanWindowsViewModel = SchoolLibrary.ViewModels.BookInventoryViewModel;
-    using ModelsViewModel = SchoolLibrary.ViewModels.PaginatedBookInventoryModel;
-    /// <summary>
-    /// Логика взаимодействия для StartUserWindow.xaml
-    /// </summary>
+       
     public partial class StartUserWindow : BaseWindow
-    {
-        private readonly DataLoader _dataLoader;
+    {       
 
         public StartUserWindow(EntityContext context) : base(context)
         {
             InitializeComponent();
-            this.context = context;
-            _dataLoader = new UserDataLoader(context); // Используем конкретную реализацию DataLoader
-            _dataLoader.LoadData();
+            this.context = context;            
         }
 
 
@@ -77,8 +66,7 @@ namespace SchoolLibrary.Views
             try
             {
                 dGrid.ItemsSource = null;
-                InitBooksList();
-                //InitBooksList();
+                InitBooksList();                
             }
             catch (Exception ex)
             {
@@ -113,8 +101,7 @@ namespace SchoolLibrary.Views
             // Колонка для порядкового номера
             var indexColumn = new DataGridTextColumn { Header = "№", Width = new DataGridLength(0.25, DataGridLengthUnitType.Star), Binding = new Binding("Index") };
             indexColumn.CellStyle = new Style(typeof(DataGridCell)) { Setters = { new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center) } };
-            dGrid.Columns.Add(indexColumn);
-            //dGrid.Columns.Add(new DataGridTextColumn { Header = "InventoryBookID", Binding = new Binding("BookID"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
+            dGrid.Columns.Add(indexColumn);            
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Название книги", Binding = new Binding("Title"), Width = new DataGridLength(2, DataGridLengthUnitType.Star) });//2 - ширина в 2 раза больше стандартной
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Автор", Binding = new Binding("Author"), Width = new DataGridLength(0.9, DataGridLengthUnitType.Star) });
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Издательство", Binding = new Binding("Publisher"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
@@ -124,15 +111,10 @@ namespace SchoolLibrary.Views
             dGrid.Columns.Add(new DataGridTextColumn { Header = "ISBN", Binding = new Binding("ISBN"), Width = new DataGridLength(0.9, DataGridLengthUnitType.Star) });
             var quantityColumn = new DataGridTextColumn { Header = "Количество", Binding = new Binding("Quantity"), Width = new DataGridLength(0.6, DataGridLengthUnitType.Star) };// Ширина меньше, чем у остальных
             quantityColumn.CellStyle = new Style(typeof(DataGridCell)) { Setters = { new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center) } };
-            dGrid.Columns.Add(quantityColumn);
-            //var quantityNow = new DataGridTextColumn { Header = "В наличии", Binding = new Binding("QuantityLeft"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) };
-            //quantityNow.CellStyle = new Style(typeof(DataGridCell)) { Setters = { new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center) } };
-            //dGrid.Columns.Add(quantityNow);
-            //dGrid.Columns.Add(new DataGridTextColumn { Header = "В наличии", Binding = new Binding("QuantityLeft"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
-            //  dGrid.Columns.Add(new DataGridTextColumn { Header = "Категория", Binding = new Binding("CategoryName"), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
+            dGrid.Columns.Add(quantityColumn);           
         }
 
-        protected override void ConfigureLoansColumns() //Очищает все текущие колонки в DataGrid и добавляет новые колонки с соответствующими заголовками и привязками
+        protected override void ConfigureLoansColumns() //Очищаем все текущие колонки в DataGrid и добавляем новые колонки с соответствующими заголовками и привязками
         {
             dGrid.Columns.Clear();
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Название книги", Binding = new Binding("Title"), Width = new DataGridLength(1.15, DataGridLengthUnitType.Star) });
@@ -143,7 +125,7 @@ namespace SchoolLibrary.Views
             dueDate.CellStyle = new Style(typeof(DataGridCell)) { Setters = { new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center) } };
             dGrid.Columns.Add(dueDate);
             dGrid.Columns.Add(new DataGridTextColumn { Header = "Когда вернули", Binding = new Binding("ReturnDate") { StringFormat = "dd/MM/yyyy HH:mm:ss" }, Width = new DataGridLength(0.5, DataGridLengthUnitType.Star) });
-            // dGrid.Columns.Add(new DataGridTextColumn { Header = "Подтверждение", Binding = new Binding("Returned"), Width = new DataGridLength(0.45, DataGridLengthUnitType.Star) });
+            
                        
         }
                 
@@ -187,8 +169,7 @@ namespace SchoolLibrary.Views
                 var groupedBooks = context.Books.Local
                     .SelectMany(b => b.InventoryBooks, (b, ib) => new { Book = b, InventoryBook = ib })
                     .GroupBy(x => x.InventoryBook.ISBN)
-                      .Select(g => new PaginatedBookInventoryModel
-                      //.Select(g => new BookInventoryModel
+                      .Select(g => new PaginatedBookInventoryModel                     
                       {
                           BookID = g.First().Book.BookID,
                           Title = g.First().InventoryBook.Title,
@@ -197,8 +178,7 @@ namespace SchoolLibrary.Views
                           YearPublished = g.First().InventoryBook.YearPublished,
                           ISBN = g.Key,
                           Quantity = g.Count(),
-                          QuantityLeft = g.Count() - g.Sum(x => x.InventoryBook.Loans.Count(loan => !loan.Returned)),
-                          //CategoryName = g.First().Book.Genre != null ? g.First().Book.Genre.GenreName : "Неизвестно"
+                          QuantityLeft = g.Count() - g.Sum(x => x.InventoryBook.Loans.Count(loan => !loan.Returned)),                         
                           GenreName = g.First().Book.Genre.GenreName != null ? g.First().Book.Genre.GenreName : "Неизвестно",
                           SubjectName = g.First().Book.Subject.SubjectName != null ? g.First().Book.Subject.SubjectName : "Неизвестно"
                       }).ToList();
@@ -213,7 +193,7 @@ namespace SchoolLibrary.Views
                     {
                         Index = (currentPage - 1) * PageSize + index + 1, // Вычисляем индекс с учетом текущей страницы
                         BookID = book.BookID,
-                        InventoryBookID = book.InventoryBookID, // Добавлено
+                        InventoryBookID = book.InventoryBookID, 
                         Title = book.Title,
                         Author = book.Author,
                         Publisher = book.Publisher,
@@ -288,9 +268,7 @@ namespace SchoolLibrary.Views
 
                 var groupedBooks = context.Books.Local
                     .SelectMany(b => b.InventoryBooks, (b, ib) => new { Book = b, InventoryBook = ib })
-                    .GroupBy(x => x.InventoryBook.ISBN)
-                    //.Select(g => new SchoolLibrary.DialogWindows.LoanWindows.BookInventoryViewModel
-                    //.Select(g => new PaginatedBookInventoryModel
+                    .GroupBy(x => x.InventoryBook.ISBN)                   
                     .Select((g, index) => new PaginatedBookInventoryModel
                     {
                         BookID = g.First().Book.BookID,

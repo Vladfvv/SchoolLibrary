@@ -29,8 +29,7 @@ namespace SchoolLibrary.DialogWindows.LoanWindows
         }
 
         private void SelectButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Здесь можно добавить логику для выбора студента и закрытия окна
+        {            
             DialogResult = true; // Устанавливаем DialogResult в true
             Close(); // Закрываем окно
         }

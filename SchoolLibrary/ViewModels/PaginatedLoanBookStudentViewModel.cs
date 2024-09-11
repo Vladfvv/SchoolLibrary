@@ -8,7 +8,7 @@ namespace SchoolLibrary.ViewModels
 {
     public class PaginatedLoanBookStudentViewModel
     {
-        public int Index { get; set; } // Новый индекс
+        public int Index { get; set; } 
         public int LoanID { get; set; }
         public string StudentName { get; set; }
         public string StudentLastName { get; set; }

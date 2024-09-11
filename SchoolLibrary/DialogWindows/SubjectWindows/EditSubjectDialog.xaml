@@ -5,10 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolLibrary.DialogWindows.SubjectWindows"
         mc:Ignorable="d"
-       Title="Редактирование предмета" Height="250" Width="350" Background="NavajoWhite"       
+       Title="Редактирование предмета" Height="150" Width="505" Background="NavajoWhite"       
         WindowStyle="SingleBorderWindow"
         ResizeMode="CanResize" Style="{StaticResource {x:Type Window}}" FontSize="16">
-
+    <Window.Resources>
+        <!-- Определяем стиль для красного моргающего текста -->
+        <Style x:Key="BlinkingTextStyle" TargetType="TextBox">
+            <Setter Property="Foreground" Value="Red"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="Loaded">
+                    <BeginStoryboard>
+                        <Storyboard RepeatBehavior="Forever">
+                            <ColorAnimation
+                            Storyboard.TargetProperty="(TextBox.Foreground).(SolidColorBrush.Color)"
+                            From="Red" To="Transparent"
+                            Duration="0:0:1.5" AutoReverse="True"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -20,7 +39,7 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Text="Название предмета:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-        <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding Subject.SubjectName, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding Subject.SubjectName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource BlinkingTextStyle}"/>
 
         <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
             <Button Content="Сохранить" Margin="5" Width="100" Click="SaveSubject_Click" Style="{StaticResource RoundedButtonStyle}"/>

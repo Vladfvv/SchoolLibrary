@@ -60,7 +60,7 @@
         <Label Content="Адрес:" Grid.Row="5" Grid.Column="0"/>
         <TextBox x:Name="txtAddress" Grid.Row="5" Grid.Column="1" Margin="5"/>
 
-        <Label Content="Телефон (пример +375291234567):" Grid.Row="6" Grid.Column="0"/>
+        <Label Content="Телефон (пример 375291234567):" Grid.Row="6" Grid.Column="0"/>
         <TextBox x:Name="txtPhone" Grid.Row="6" Grid.Column="1" Margin="5"/>
 
         <StackPanel Grid.Row="7" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="155,14,0,6">

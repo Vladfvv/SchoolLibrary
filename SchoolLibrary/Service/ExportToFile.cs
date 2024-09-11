@@ -1,28 +1,20 @@
-﻿
-using iTextSharp.text.pdf;
+﻿using iTextSharp.text.pdf;
 using iTextSharp.text;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows;
 using OfficeOpenXml;
-using System.Windows.Documents;
-using SchoolLibrary.DataLoaders;
-using Microsoft.Win32;
 
 namespace SchoolLibrary.Service
 {
     public class ExportToFile
     {  
-
         public void ExportDataGridToPDF(IEnumerable<object> listForExport, DataGrid dataGrid, string pdfFilePath)
         {
-            // Шаг 1: Определите максимальные ширины столбцов
+            // Определяем максимальные ширины столбцов
             var columnWidths = new float[dataGrid.Columns.Count];
             for (int colIndex = 0; colIndex < dataGrid.Columns.Count; colIndex++)
             {

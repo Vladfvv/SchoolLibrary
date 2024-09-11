@@ -18,7 +18,7 @@ namespace SchoolLibrary.Models
 
         public override string ToString()
         {
-            return $"BookPhotoID: {BookPhotoID}, BookID: {BookID}, DateAdded: {DateAdded}";
+            return $"I фотоD: {BookPhotoID}, ID книги: {BookID}, Дата добавления: {DateAdded}";
         }
 
         public static byte[] LoadImage(string path)

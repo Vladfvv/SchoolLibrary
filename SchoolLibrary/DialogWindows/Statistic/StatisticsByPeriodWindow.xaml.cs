@@ -37,115 +37,7 @@ namespace SchoolLibrary.DialogWindows.Statistic
             EndDatePicker.FirstDayOfWeek = DayOfWeek.Monday;
             _context = context;
             LoadBooks();
-        }
-
-        //private void LoadBooks(DateTime? startDate = null, DateTime? endDate = null)
-        //{
-        //    var query = _context.Loans.AsQueryable();
-
-        //    if (startDate.HasValue)
-        //    {
-        //        query = query.Where(l => l.LoanDate >= startDate.Value);
-        //    }
-
-        //    if (endDate.HasValue)
-        //    {
-        //        query = query.Where(l => l.LoanDate <= endDate.Value);
-        //    }
-
-        //    _totalPages = (int)Math.Ceiling(query.Count() / (double)_pageSize);
-
-        //    var books = query
-        //        .Select(l => new
-        //        {
-        //            l.InventoryBook.InventoryNumber,
-        //            l.InventoryBook.Title,
-        //            l.InventoryBook.Author,
-        //            l.InventoryBook.ISBN,
-        //            l.LoanDate,
-        //            l.ReturnDate
-        //        })
-        //        .OrderBy(b => b.LoanDate)
-        //        .Skip((_currentPage - 1) * _pageSize)
-        //        .Take(_pageSize)
-        //        .ToList();
-
-        //    BooksDataGrid.ItemsSource = books;
-        //    UpdatePaginationControls();
-        //}
-
-        //private void LoadBooks(DateTime? startDate = null, DateTime? endDate = null)
-        //{
-        //    var query = _context.Loans.AsQueryable();
-
-        //    if (startDate.HasValue)
-        //    {
-        //        query = query.Where(l => l.LoanDate >= startDate.Value);
-        //    }
-
-        //    if (endDate.HasValue)
-        //    {
-        //        query = query.Where(l => l.LoanDate <= endDate.Value);
-        //    }
-
-        //    _totalPages = (int)Math.Ceiling(query.Count() / (double)_pageSize);
-
-        //    var loans = query
-        //        .OrderBy(l => l.LoanDate)
-        //        .Skip((_currentPage - 1) * _pageSize)
-        //        .Take(_pageSize)
-        //        .Select(l => new LoanInventoryBookStatisticViewModel
-        //        {
-        //            InventoryNumber = l.InventoryBook.InventoryNumber,
-        //            Title = l.InventoryBook.Title,
-        //            Author = l.InventoryBook.Author,
-        //            ISBN = l.InventoryBook.ISBN,
-        //            LoanDate = l.LoanDate,
-        //            ReturnDate = l.ReturnDate
-        //        })
-        //        .ToList();
-
-        //    BooksDataGrid.ItemsSource = loans; // Устанавливаем источник данных для DataGrid
-        //    UpdatePaginationControls(); // Обновляем элементы управления пагинацией
-        //}
-
-
-        //private void LoadBooks(DateTime? startDate = null, DateTime? endDate = null)
-        //{
-        //    var query = _context.Loans.AsQueryable();
-
-        //    if (startDate.HasValue)
-        //    {
-        //        query = query.Where(l => l.LoanDate >= startDate.Value);
-        //    }
-
-        //    if (endDate.HasValue)
-        //    {
-        //        query = query.Where(l => l.LoanDate <= endDate.Value);
-        //    }
-
-        //    _totalPages = (int)Math.Ceiling(query.Count() / (double)_pageSize);
-
-        //    var loans = query
-        //        .Select(l => new LoanInventoryBookStatisticViewModel
-        //        {
-        //            InventoryNumber = l.InventoryBook.InventoryNumber,
-        //            Title = l.InventoryBook.Title,
-        //            Author = l.InventoryBook.Author,
-        //            ISBN = l.InventoryBook.ISBN,
-        //            LoanDate = l.LoanDate,
-        //            ReturnDate = l.ReturnDate
-        //        })
-        //        .OrderBy(b => b.InventoryNumber)  // Сортировка по инвентарному номеру
-        //        .ThenBy(b => b.LoanDate)          // Затем по дате выдачи
-        //        .Skip((_currentPage - 1) * _pageSize)
-        //        .Take(_pageSize)
-        //        .ToList();
-
-        //    BooksDataGrid.ItemsSource = loans; // Устанавливаем источник данных для DataGrid
-        //    UpdatePaginationControls(); // Обновляем элементы управления пагинацией
-        //}
-
+        }       
 
         private void LoadBooks(DateTime? startDate = null, DateTime? endDate = null)
         {
@@ -192,7 +84,7 @@ namespace SchoolLibrary.DialogWindows.Statistic
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            _currentPage = 1; // Reset to first page on search
+            _currentPage = 1; // Сброс текущей страницы
             LoadBooks(StartDatePicker.SelectedDate, EndDatePicker.SelectedDate);
         }
 
@@ -216,12 +108,12 @@ namespace SchoolLibrary.DialogWindows.Statistic
 
         private void BooksDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Optionally handle row selection if needed
+            // для изменения визуала 
         }
 
         private void DatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            // This event handler can be used to update the search results when dates change, if needed
+            // event handler для обновления результатов поиска
         }
     }
 }

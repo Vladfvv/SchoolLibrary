@@ -47,14 +47,14 @@ namespace SchoolLibrary.DialogWindows.Statistic
                                          s.Address.Contains(searchQuery));
             }
 
-            // StudentsDataGrid.ItemsSource = query.Where(s => s.IsActive).ToList();
-            // Count the total number of records
+           
+            // Общее число записей
             _totalPages = (int)Math.Ceiling(query.Count() / (double)_pageSize);
 
-            // Get the students for the current page
+            // Получить текущее число читателей на странице
             var students = query
                 .Where(s => s.IsActive)
-                .OrderBy(s => s.StudentID) // Ensure consistent ordering
+                .OrderBy(s => s.StudentID) // сортировка по полю
                 .Skip((_currentPage - 1) * _pageSize)
                 .Take(_pageSize)
                 .ToList();
@@ -72,7 +72,7 @@ namespace SchoolLibrary.DialogWindows.Statistic
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            _currentPage = 1; // Reset to first page on search
+            _currentPage = 1; // сброс 1-й страницы
             LoadStudents(SearchTextBox.Text);
         }
 
@@ -105,7 +105,7 @@ namespace SchoolLibrary.DialogWindows.Statistic
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            // If needed, you can add logic to handle text changes
-        }        
+            // для изменения текстбокса после поиска
+        }
     }
 }

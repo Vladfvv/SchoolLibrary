@@ -12,8 +12,7 @@ namespace SchoolLibrary.ViewModels
         public int StudentID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        // public int Age { get; set; }
-        //public int Age { get; private set; } // Private setter for read-only access
+       
         public DateTime DateOfBirth { get; set; }
         public string StudentClass { get; set; }
         public string Prefix { get; set; }

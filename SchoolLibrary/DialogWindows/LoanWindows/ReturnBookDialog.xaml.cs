@@ -49,20 +49,50 @@ namespace SchoolLibrary.DialogWindows.LoanWindows
             }
         }
 
+        //private void AdjustWindowHeight()
+        //{
+        //    double rowHeight = 30; // Установить нужное значение
+        //    int rowCount = LoansDataGrid.Items.Count;
+
+        //    double requiredHeight = (rowHeight * rowCount) + 150; // 150 - дополнительное пространство для заголовков, кнопок и т.д.
+        //    this.MinHeight = 400; // Пример минимальной высоты
+        //    this.Height = requiredHeight;
+        //}
+
+
         private void AdjustWindowHeight()
         {
-            double rowHeight = 30; // Задайте нужное значение
+            double rowHeight = 30; // Высота одной строки в DataGrid
             int rowCount = LoansDataGrid.Items.Count;
 
-            double requiredHeight = (rowHeight * rowCount) + 150; // 150 - дополнительное пространство для заголовков, кнопок и т.д.
-            this.MinHeight = 400; // Пример минимальной высоты
-            this.Height = requiredHeight;
+            // Рассчитываем необходимую высоту для всех строк DataGrid
+            double requiredHeight = (rowHeight * rowCount) + 200; // 200 - пространство для заголовков, кнопок и других элементов интерфейса
+
+            // Устанавливаем минимальную и максимальную высоту окна
+            double minHeight = 400; // Минимальная высота окна
+            double maxHeight = 700; // Максимальная высота окна
+
+            // Если рассчитанная высота меньше минимальной, используем минимальную
+            if (requiredHeight < minHeight)
+            {
+                this.Height = minHeight;
+            }
+            // Если рассчитанная высота больше максимальной, используем максимальную
+            else if (requiredHeight > maxHeight)
+            {
+                this.Height = maxHeight;
+            }
+            // Если рассчитанная высота в пределах допустимого диапазона, устанавливаем ее
+            else
+            {
+                this.Height = requiredHeight;
+            }
         }
 
         private void RefreshLoansData()
         {
             LoadLoans();
-            AdjustWindowHeight(); // Обновите высоту окна после загрузки данных
+            AdjustWindowHeight(); // Обновить высоту окна после загрузки данных
         }
 
         private void LoadLoans()
@@ -74,9 +104,9 @@ namespace SchoolLibrary.DialogWindows.LoanWindows
                 .Where(l => !l.Returned)
                 .Include(l => l.InventoryBook)
                 .Include(l => l.Student)
-                .OrderBy(l => l.LoanDate)
-                .Skip((CurrentPage - 1) * PageSize)
-                .Take(PageSize)
+                .OrderBy(l => l.LoanDate) //сортировка по дате выдачи
+                .Skip((CurrentPage - 1) * PageSize)//пропускаем записи для всех предыдущих страниц до текущей
+                .Take(PageSize) //выбираем количество записей, равное PageSize
                 .ToList();
             LoansDataGrid.ItemsSource = loans;
 
@@ -114,17 +144,20 @@ namespace SchoolLibrary.DialogWindows.LoanWindows
                 MessageBox.Show("Выберите дату.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-
+            
             DateTime selectedDate = ReturnDatePicker.SelectedDate.Value;
+            DateTime now = DateTime.Now; // Текущее время
 
             if (selectedDate > DateTime.Now)
             {
                 MessageBox.Show("Невозможно оформить возврат, эта дата еще не наступила.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-
+           
             var selectedLoan = (Loan)LoansDataGrid.SelectedItem;
-            selectedLoan.ReturnDate = selectedDate;
+
+            // Установить дату возврата с текущим временем
+            selectedLoan.ReturnDate = new DateTime(selectedDate.Year, selectedDate.Month, selectedDate.Day, now.Hour, now.Minute, now.Second);
             selectedLoan.Returned = true;
 
             var inventoryBook = selectedLoan.InventoryBook;

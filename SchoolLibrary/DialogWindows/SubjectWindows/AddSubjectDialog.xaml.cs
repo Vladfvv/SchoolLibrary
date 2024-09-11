@@ -23,11 +23,7 @@ namespace SchoolLibrary.DialogWindows.SubjectWindows
         private readonly EntityContext context;
 
         public AddSubjectDialog(EntityContext dbContext)
-        {
-            //InitializeComponent();
-            //this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            //context = dbContext;
-            //cmbGenre.ItemsSource = context.Genres.ToList();
+        {            
             InitializeComponent();
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             context = dbContext;

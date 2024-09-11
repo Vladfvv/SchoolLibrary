@@ -1,5 +1,5 @@
 ﻿using SchoolLibrary.AuthWindows;
-using SchoolLibrary.DataLoaders;
+
 using SchoolLibrary.DialogWindows.Operations;
 using SchoolLibrary.DialogWindows;
 using System;
@@ -29,18 +29,13 @@ using SchoolLibrary.DialogWindows.Statistic;
 namespace SchoolLibrary.Views
 {   
     public partial class StartAdminWindow : BaseWindow
-    {
-        private readonly DataLoader _dataLoader;
+    {        
         private User _selectedUser;
 
         public StartAdminWindow(EntityContext context) : base(context)
         {
             InitializeComponent();
-            this.context = context;
-
-            _dataLoader = new UserDataLoader(context);
-            _dataLoader.LoadData();
-
+            this.context = context;    
             LoadPendingRegistrations();
         }
 
@@ -204,15 +199,6 @@ namespace SchoolLibrary.Views
 
             // Обновляем список неподтвержденных регистраций
             LoadPendingRegistrations();
-        }
-
-
-
-
-
-
-
-
+        }        
     }
-
 }

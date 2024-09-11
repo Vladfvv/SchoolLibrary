@@ -14,5 +14,7 @@ namespace SchoolLibrary.Models
         public byte[] Salt { get; set; }
         public string Role { get; set; }
         public bool IsConfirmed { get; set; }
+        public int FailedLoginAttempts { get; set; } = 0; // Счетчик неверных попыток
+        public DateTime? LastFailedLogin { get; set; } // Время последней неудачной попытки
     }
 }

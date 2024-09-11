@@ -18,7 +18,7 @@ namespace SchoolLibrary.AuthWindows
 {   
     public partial class RegisterWindow : Window
     {
-        private EntityContext context;
+        private readonly EntityContext context;
 
         public RegisterWindow(EntityContext dbContext)
         {

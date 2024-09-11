@@ -69,46 +69,16 @@ namespace SchoolLibrary.Service
                 .Where(ib => !ib.Loans.Any()) // Фильтрация книг, которые не были взяты
                 .ToList();
         }
-
-        //public List<PaginatedInventoryBookModel> GetPaginatedBooksNotLoaned(int currentPage, int pageSize)
-        //{
-        //    // Используем метод для получения книг без займов
-        //    List<InventoryBook> booksNotLoaned = GetBooksNotLoaned();
-
-        //    List<PaginatedInventoryBookModel> paginatedBooksNotLoaned = booksNotLoaned
-        //        .OrderBy(b => b.Title)
-        //        .ThenBy(b => b.Author)
-        //        .Skip((currentPage - 1) * pageSize)
-        //        .Take(pageSize)
-        //        .Select((book, index) => new PaginatedInventoryBookModel
-        //        {
-        //            InventoryBookID = book.InventoryBookID,
-        //            Title = book.Title,
-        //            Author = book.Author,
-        //            Publisher = book.Publisher,
-        //            YearPublished = book.YearPublished,
-        //            ISBN = book.ISBN,
-        //            GenreName = book.Book?.Genre?.GenreName ?? "Неизвестно",
-        //            SubjectName = book.Book?.Subject?.SubjectName ?? "Неизвестно",
-        //            Index = index + 1 + (currentPage - 1) * pageSize
-        //        })
-        //        .ToList();
-
-        //    return paginatedBooksNotLoaned;
-        //}
+        
         public List<PaginatedInventoryBookModel> GetPaginatedBooksNotLoaned(int currentPage, int pageSize)
         {
             // Получаем книги, которые не были взяты
             List<InventoryBook> booksNotLoaned = GetBooksNotLoaned();
 
-            List<PaginatedInventoryBookModel> paginatedBooksNotLoaned = booksNotLoaned
-                //.OrderBy(b => b.Title)
-                //.ThenBy(b => b.Author)
-                //.Skip((currentPage - 1) * pageSize)
-               // .Take(pageSize)
+            List<PaginatedInventoryBookModel> paginatedBooksNotLoaned = booksNotLoaned               
                 .Select((book, index) => new PaginatedInventoryBookModel
                 {
-                    Index = index + 1,// + (currentPage - 1) * pageSize, // Вычисляем индекс с учетом текущей страницы
+                    Index = index + 1,
                     InventoryBookID = book.InventoryBookID,
                     Title = book.Title,
                     Author = book.Author,

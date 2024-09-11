@@ -17,14 +17,40 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-       <!-- <DataGrid x:Name="LoansDataGrid" Grid.Row="0" Margin="10" AutoGenerateColumns="False" SelectionMode="Single">-->
         <DataGrid x:Name="LoansDataGrid" Grid.Row="0" Margin="10" AutoGenerateColumns="False" SelectionMode="Single" LoadingRow="LoansDataGrid_LoadingRow">
+            <DataGrid.Resources>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="Foreground" Value="Black" />
+                    <!-- Применяем стиль при наведении мыши -->
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="Purple" />
+                            <Setter Property="Background" Value="CadetBlue" />
+                        </Trigger>
+                        <!-- Триггер для выбранной строки -->
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Foreground" Value="White" />
+                            <Setter Property="Background" Value="DarkBlue" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Resources>
+
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Фамилия" Binding="{Binding Student.LastName}" Width="Auto"/>
-                <DataGridTextColumn Header="Имя" Binding="{Binding Student.FirstName}" Width="Auto"/>
+                <DataGridTextColumn Header="Фамилия" Binding="{Binding Student.LastName}" Width="140"/>
+                <DataGridTextColumn Header="Имя" Binding="{Binding Student.FirstName}" Width="140"/>
                 <DataGridTextColumn Header="Название книги" Binding="{Binding InventoryBook.Title}" Width="*"/>
-                <DataGridTextColumn Header="Когда взяли" Binding="{Binding LoanDate, StringFormat={}{0:dd/MM/yyyy HH:mm:ss}}" Width="Auto"/>
-                <DataGridTextColumn Header="Когда должны вернуть" Binding="{Binding DueDate, StringFormat={}{0:dd/MM/yyyy HH:mm:ss}}" Width="Auto"/>
+                <DataGridTextColumn Header="Когда взяли" Binding="{Binding LoanDate, StringFormat={}{0:dd/MM/yyyy HH:mm}}" Width="Auto"/>
+                <DataGridTextColumn Header="Когда вернут" 
+                    Binding="{Binding DueDate, StringFormat={}{0:dd/MM/yyyy}}" 
+                    Width="110">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
 

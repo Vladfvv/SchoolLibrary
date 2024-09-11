@@ -13,13 +13,10 @@ using System.Security.Cryptography;
 
 namespace SchoolLibrary
 {
-    //3.Для того, чтобы новая база данных при создании заполнялась
-    // исходными данными, создайте класс инициализации базы данных
+    //чтобы новая база данных при создании заполнялась
+    // исходными данными, создаем класс инициализации базы данных
     class DataBaseInitializer : DropCreateDatabaseIfModelChanges<EntityContext>
     {
-        private string adminUsername = "admin";
-        private string adminPassword = "vlad";
-        
 
         //Seed для инициализации начальных значений :
 
@@ -35,36 +32,37 @@ namespace SchoolLibrary
             context.Students.RemoveRange(context.Students);
             context.SaveChanges();
 
-            Student ivanIvanov = new Student { FirstName = "Иван", LastName = "Иванов", DateOfBirth = new DateTime(2008, 9, 1), StudentClass = "10", Prefix = "A", Address = "Минск, ул. Притыцкого, 1", IsActive = true };
-            Student mariyaPetrova = new Student { FirstName = "Мария", LastName = "Петрова", DateOfBirth = new DateTime(2008, 9, 1), StudentClass = "9", Prefix = "B", Address = "Минск, ул. Ленина, 20", IsActive = true };
-            Student alexeySmirnov = new Student { FirstName = "Алексей", LastName = "Смирнов", DateOfBirth = new DateTime(2009, 9, 1), StudentClass = "8", Prefix = "C", Address = "Минск, пр. Независимости, 30", IsActive = true };
-            Student ekaterinaKozlova = new Student { FirstName = "Екатерина", LastName = "Козлова", DateOfBirth = new DateTime(2010, 9, 1), StudentClass = "7", Prefix = "A", Address = "Минск, ул. Московская, 15", IsActive = true };
-            Student artemFedorov = new Student { FirstName = "Артем", LastName = "Федоров", DateOfBirth = new DateTime(2011, 9, 1), StudentClass = "6", Prefix = "B", Address = "Минск, ул. Советская, 40", IsActive = true };
-            Student anastasiaMikhaylova = new Student { FirstName = "Анастасия", LastName = "Михайлова", DateOfBirth = new DateTime(2012, 9, 1), StudentClass = "5", Prefix = "C", Address = "Минск, ул. Романовская, 25", IsActive = true };
-            Student dmitriyNikolaev = new Student { FirstName = "Дмитрий", LastName = "Николаев", DateOfBirth = new DateTime(2013, 9, 1), StudentClass = "4", Prefix = "A", Address = "Минск, ул. Сурганова, 5", IsActive = true };
-            Student sofiaIvanova = new Student { FirstName = "София", LastName = "Иванова", DateOfBirth = new DateTime(2014, 9, 1), StudentClass = "3", Prefix = "B", Address = "Минск, ул. Станиславского, 10", IsActive = true };
-            Student maximSmirnov = new Student { FirstName = "Максим", LastName = "Смирнов", DateOfBirth = new DateTime(2015, 9, 1), StudentClass = "2", Prefix = "C", Address = "Минск, ул. Купалы, 12", IsActive = true };
-            Student alisaPetrova = new Student { FirstName = "Алиса", LastName = "Петрова", DateOfBirth = new DateTime(2016, 9, 1), StudentClass = "1", Prefix = "A", Address = "Минск, ул. Пушкина, 8", IsActive = true };
-            Student nikitaKuznetsov = new Student { FirstName = "Никита", LastName = "Кузнецов", DateOfBirth = new DateTime(2008, 9, 1), StudentClass = "10", Prefix = "B", Address = "Минск, ул. Червякова, 22", IsActive = true };
-            Student annaSidorova = new Student { FirstName = "Анна", LastName = "Сидорова", DateOfBirth = new DateTime(2008, 9, 1), StudentClass = "9", Prefix = "A", Address = "Минск, ул. Зелёная, 33", IsActive = true };
-            Student artemiyFedorov = new Student { FirstName = "Артемий", LastName = "Федоров", DateOfBirth = new DateTime(2009, 9, 1), StudentClass = "8", Prefix = "B", Address = "Минск, ул. Орловская, 44", IsActive = true };
-            Student polinaIvanova = new Student { FirstName = "Полина", LastName = "Иванова", DateOfBirth = new DateTime(2010, 9, 1), StudentClass = "7", Prefix = "C", Address = "Минск, ул. Щербакова, 55", IsActive = true };
-            Student egorPetrov = new Student { FirstName = "Егор", LastName = "Петров", DateOfBirth = new DateTime(2011, 9, 1), StudentClass = "6", Prefix = "A", Address = "Минск, ул. Белинского, 66", IsActive = true };
-            Student kseniaKozlova = new Student { FirstName = "Ксения", LastName = "Козлова", DateOfBirth = new DateTime(2012, 9, 1), StudentClass = "5", Prefix = "B", Address = "Минск, ул. Янки Купалы, 77", IsActive = true };
-            Student alexandraSmirnova = new Student { FirstName = "Александра", LastName = "Смирнова", DateOfBirth = new DateTime(2013, 9, 1), StudentClass = "4", Prefix = "C", Address = "Минск, ул. Тимирязева, 88", IsActive = true };
-            Student mikhailNikolaev = new Student { FirstName = "Михаил", LastName = "Николаев", DateOfBirth = new DateTime(2014, 9, 1), StudentClass = "3", Prefix = "A", Address = "Минск, ул. Гражданская, 99", IsActive = true };
-            Student elizavetaFedorova = new Student { FirstName = "Елизавета", LastName = "Федорова", DateOfBirth = new DateTime(2015, 9, 1), StudentClass = "2", Prefix = "B", Address = "Минск, ул. Гагарина, 100", IsActive = true };
-            Student ilyaIvanov = new Student { FirstName = "Илья", LastName = "Иванов", DateOfBirth = new DateTime(2016, 9, 1), StudentClass = "1", Prefix = "C", Address = "Минск, ул. Воронежская, 101", IsActive = true };
-            Student pavelKuznetsov = new Student { FirstName = "Павел", LastName = "Кузнецов", DateOfBirth = new DateTime(2008, 9, 1), StudentClass = "10", Prefix = "A", Address = "Минск, ул. Дружбы, 102", IsActive = true };
-            Student valeriaSidorova = new Student { FirstName = "Валерия", LastName = "Сидорова", DateOfBirth = new DateTime(2008, 9, 1), StudentClass = "9", Prefix = "B", Address = "Минск, ул. Калинина, 103", IsActive = true };
-            Student vladimirFedorov = new Student { FirstName = "Владимир", LastName = "Федоров", DateOfBirth = new DateTime(2009, 9, 1), StudentClass = "8", Prefix = "C", Address = "Минск, ул. Пролетарская, 104", IsActive = true };
-            Student anastasiaIvanova = new Student { FirstName = "Анастасия", LastName = "Иванова", DateOfBirth = new DateTime(2010, 9, 1), StudentClass = "7", Prefix = "A", Address = "Минск, ул. Октябрьская, 105", IsActive = true };
-            Student sergeyPetrov = new Student { FirstName = "Сергей", LastName = "Петров", DateOfBirth = new DateTime(2011, 9, 1), StudentClass = "6", Prefix = "B", Address = "Минск, ул. Белорусская, 106", IsActive = true };
-            Student daryaKozlova = new Student { FirstName = "Дарья", LastName = "Козлова", DateOfBirth = new DateTime(2012, 9, 1), StudentClass = "5", Prefix = "C", Address = "Минск, ул. Тургенева, 107", IsActive = true };
-            Student alexeySmirnov2 = new Student { FirstName = "Алексей", LastName = "Смирнов", DateOfBirth = new DateTime(2013, 9, 1), StudentClass = "4", Prefix = "A", Address = "Минск, ул. Крылова, 108", IsActive = true };
-            Student elenaNikolaeva = new Student { FirstName = "Елена", LastName = "Николаева", DateOfBirth = new DateTime(2014, 9, 1), StudentClass = "3", Prefix = "B", Address = "Минск, ул. Грибоедова, 109", IsActive = true };
-            Student pavelSidorov = new Student { FirstName = "Павел", LastName = "Сидоров", DateOfBirth = new DateTime(2015, 9, 1), StudentClass = "2", Prefix = "C", Address = "Минск, ул. Белинского, 110", IsActive = true };
-            Student nataliaFedorova = new Student { FirstName = "Наталья", LastName = "Федорова", DateOfBirth = new DateTime(2016, 9, 1), StudentClass = "1", Prefix = "A", Address = "Минск, ул. Маяковского, 111", IsActive = true };
+            Student ivanIvanov = new Student { FirstName = "Иван", LastName = "Иванов", DateOfBirth = new DateTime(2008, 9, 1), StudentClass = "10", Prefix = "A", Address = "Минск, ул. Притыцкого, 1", IsActive = true, Phone = "+375447654321" };
+            Student mariyaPetrova = new Student { FirstName = "Мария", LastName = "Петрова", DateOfBirth = new DateTime(2008, 9, 1), StudentClass = "9", Prefix = "B", Address = "Минск, ул. Ленина, 20", IsActive = true, Phone = "+375447654666" };
+            Student alexeySmirnov = new Student { FirstName = "Алексей", LastName = "Смирнов", DateOfBirth = new DateTime(2009, 9, 1), StudentClass = "8", Prefix = "C", Address = "Минск, пр. Независимости, 30", IsActive = true, Phone = "+375447657777" };
+            Student ekaterinaKozlova = new Student { FirstName = "Екатерина", LastName = "Козлова", DateOfBirth = new DateTime(2010, 9, 1), StudentClass = "7", Prefix = "A", Address = "Минск, ул. Московская, 15", IsActive = true, Phone = "+37544555543" };
+            Student artemFedorov = new Student { FirstName = "Артем", LastName = "Федоров", DateOfBirth = new DateTime(2011, 9, 1), StudentClass = "6", Prefix = "B", Address = "Минск, ул. Советская, 40", IsActive = true, Phone = "+375447654388" };
+            Student anastasiaMikhaylova = new Student { FirstName = "Анастасия", LastName = "Михайлова", DateOfBirth = new DateTime(2012, 9, 1), StudentClass = "5", Prefix = "C", Address = "Минск, ул. Романовская, 25", IsActive = true, Phone = "+375447651111" };
+            Student dmitriyNikolaev = new Student { FirstName = "Дмитрий", LastName = "Николаев", DateOfBirth = new DateTime(2013, 9, 1), StudentClass = "4", Prefix = "A", Address = "Минск, ул. Сурганова, 5", IsActive = true, Phone = "+3754476524242" };
+            Student sofiaIvanova = new Student { FirstName = "София", LastName = "Иванова", DateOfBirth = new DateTime(2014, 9, 1), StudentClass = "3", Prefix = "B", Address = "Минск, ул. Станиславского, 10", IsActive = true, Phone = "+375447654001" };
+            Student maximSmirnov = new Student { FirstName = "Максим", LastName = "Смирнов", DateOfBirth = new DateTime(2015, 9, 1), StudentClass = "2", Prefix = "C", Address = "Минск, ул. Купалы, 12", IsActive = true, Phone = "+37544761221" };
+            Student alisaPetrova = new Student { FirstName = "Алиса", LastName = "Петрова", DateOfBirth = new DateTime(2016, 9, 1), StudentClass = "1", Prefix = "A", Address = "Минск, ул. Пушкина, 8", IsActive = true, Phone = "+375447677721" };
+            Student nikitaKuznetsov = new Student { FirstName = "Никита", LastName = "Кузнецов", DateOfBirth = new DateTime(2008, 9, 1), StudentClass = "10", Prefix = "B", Address = "Минск, ул. Червякова, 22", IsActive = true, Phone = "+375295654321" };
+            Student annaSidorova = new Student { FirstName = "Анна", LastName = "Сидорова", DateOfBirth = new DateTime(2008, 9, 1), StudentClass = "9", Prefix = "A", Address = "Минск, ул. Зелёная, 33", IsActive = true, Phone = "+375257654901" };
+            Student artemiyFedorov = new Student { FirstName = "Артемий", LastName = "Федоров", DateOfBirth = new DateTime(2009, 9, 1), StudentClass = "8", Prefix = "B", Address = "Минск, ул. Орловская, 44", IsActive = true, Phone = "+3754476567821" };
+            Student polinaIvanova = new Student { FirstName = "Полина", LastName = "Иванова", DateOfBirth = new DateTime(2010, 9, 1), StudentClass = "7", Prefix = "C", Address = "Минск, ул. Щербакова, 55", IsActive = true, Phone = "+375447654441" };
+            Student egorPetrov = new Student { FirstName = "Егор", LastName = "Петров", DateOfBirth = new DateTime(2011, 9, 1), StudentClass = "6", Prefix = "A", Address = "Минск, ул. Белинского, 66", IsActive = true, Phone = "+375447609891" };
+            Student kseniaKozlova = new Student { FirstName = "Ксения", LastName = "Козлова", DateOfBirth = new DateTime(2012, 9, 1), StudentClass = "5", Prefix = "B", Address = "Минск, ул. Янки Купалы, 77", IsActive = true, Phone = "+3754476776321" };
+            Student alexandraSmirnova = new Student { FirstName = "Александра", LastName = "Смирнова", DateOfBirth = new DateTime(2013, 9, 1), StudentClass = "4", Prefix = "C", Address = "Минск, ул. Тимирязева, 88", IsActive = true, Phone = "+375299054321" };
+            Student mikhailNikolaev = new Student { FirstName = "Михаил", LastName = "Николаев", DateOfBirth = new DateTime(2014, 9, 1), StudentClass = "3", Prefix = "A", Address = "Минск, ул. Гражданская, 99", IsActive = true, Phone = "+375339870980" };
+            Student elizavetaFedorova = new Student { FirstName = "Елизавета", LastName = "Федорова", DateOfBirth = new DateTime(2015, 9, 1), StudentClass = "2", Prefix = "B", Address = "Минск, ул. Гагарина, 100", IsActive = true, Phone = "+375299283888" };
+            Student ilyaIvanov = new Student { FirstName = "Илья", LastName = "Иванов", DateOfBirth = new DateTime(2016, 9, 1), StudentClass = "1", Prefix = "C", Address = "Минск, ул. Воронежская, 101", IsActive = true, Phone = "+375297609123" };
+            Student pavelKuznetsov = new Student { FirstName = "Павел", LastName = "Кузнецов", DateOfBirth = new DateTime(2008, 9, 1), StudentClass = "10", Prefix = "A", Address = "Минск, ул. Дружбы, 102", IsActive = true, Phone = "+375447898989" };
+            Student valeriaSidorova = new Student { FirstName = "Валерия", LastName = "Сидорова", DateOfBirth = new DateTime(2008, 9, 1), StudentClass = "9", Prefix = "B", Address = "Минск, ул. Калинина, 103", IsActive = true, Phone = "+375447643431" };
+            Student vladimirFedorov = new Student { FirstName = "Владимир", LastName = "Федоров", DateOfBirth = new DateTime(2009, 9, 1), StudentClass = "8", Prefix = "C", Address = "Минск, ул. Пролетарская, 104", IsActive = true, Phone = "+375296544321" };
+            Student anastasiaIvanova = new Student { FirstName = "Анастасия", LastName = "Иванова", DateOfBirth = new DateTime(2010, 9, 1), StudentClass = "7", Prefix = "A", Address = "Минск, ул. Октябрьская, 105", IsActive = true, Phone = "+375291234321" };
+            Student sergeyPetrov = new Student { FirstName = "Сергей", LastName = "Петров", DateOfBirth = new DateTime(2011, 9, 1), StudentClass = "6", Prefix = "B", Address = "Минск, ул. Белорусская, 106", IsActive = true, Phone = "+375299394845" };
+            Student daryaKozlova = new Student { FirstName = "Дарья", LastName = "Козлова", DateOfBirth = new DateTime(2012, 9, 1), StudentClass = "5", Prefix = "C", Address = "Минск, ул. Тургенева, 107", IsActive = true, Phone = "+375293334455" };
+            Student alexeySmirnov2 = new Student { FirstName = "Алексей", LastName = "Смирнов", DateOfBirth = new DateTime(2013, 9, 1), StudentClass = "4", Prefix = "A", Address = "Минск, ул. Крылова, 108", IsActive = true, Phone = "+375337565666" };
+            Student elenaNikolaeva = new Student { FirstName = "Елена", LastName = "Николаева", DateOfBirth = new DateTime(2014, 9, 1), StudentClass = "3", Prefix = "B", Address = "Минск, ул. Грибоедова, 109", IsActive = true, Phone = "+375259056784" };
+            Student pavelSidorov = new Student { FirstName = "Павел", LastName = "Сидоров", DateOfBirth = new DateTime(2015, 9, 1), StudentClass = "2", Prefix = "C", Address = "Минск, ул. Белинского, 110", IsActive = true, Phone = "+375333454321" };
+            Student nataliaFedorova = new Student { FirstName = "Наталья", LastName = "Федорова", DateOfBirth = new DateTime(2016, 9, 1), StudentClass = "1", Prefix = "A", Address = "Минск, ул. Маяковского, 111", IsActive = true, Phone = "+375296654321" };
+            Student aleksandrEmelyanov = new Student { FirstName = "Александр", LastName = "Емельянов", DateOfBirth = new DateTime(2016, 9, 1), StudentClass = "5", Prefix = "В", Address = "Минск, ул. Нестерова, 2", IsActive = true, Phone = "+375296745327" };
 
             // Добавляем студентов в контекст
             context.Students.AddRange(new[]        {
@@ -73,7 +71,7 @@ namespace SchoolLibrary
             nikitaKuznetsov, annaSidorova, artemiyFedorov, polinaIvanova, egorPetrov,
             kseniaKozlova, alexandraSmirnova, mikhailNikolaev, elizavetaFedorova, ilyaIvanov,
             pavelKuznetsov, valeriaSidorova, vladimirFedorov, anastasiaIvanova, sergeyPetrov,
-            daryaKozlova, alexeySmirnov2, elenaNikolaeva, pavelSidorov, nataliaFedorova
+            daryaKozlova, alexeySmirnov2, elenaNikolaeva, pavelSidorov, nataliaFedorova, aleksandrEmelyanov
             });
 
             Category informatics = new Category { CategoryName = "Информатика" };
@@ -871,8 +869,7 @@ namespace SchoolLibrary
                 Quantity = 1,
                 QuantityLeft = 1,
                 Genre = educationalLiteratureGenre,
-                Subject = physics2,
-                //Category = physics,
+                Subject = physics2,               
                 InventoryBooks = new List<InventoryBook> { inventoryBookPhysicsClass7 }
             };
             Book books1Physical8Class = new Book
@@ -882,8 +879,7 @@ namespace SchoolLibrary
                 Quantity = 1,
                 QuantityLeft = 1,
                 Genre = educationalLiteratureGenre,
-                Subject = physics2,
-                //Category = physics,
+                Subject = physics2,                
                 InventoryBooks = new List<InventoryBook> { inventoryBookPhysicsClass8 }
             };
             Book books1Physical9Class = new Book
@@ -893,8 +889,7 @@ namespace SchoolLibrary
                 Quantity = 3,
                 QuantityLeft = 3,
                 Genre = educationalLiteratureGenre,
-                Subject = physics2,
-                // Category = physics,
+                Subject = physics2,                
                 InventoryBooks = new List<InventoryBook> { inventoryBookPhysicsClass9, inventoryBookPhysicsClass92, inventoryBookPhysicsClass93 }
             };
 
@@ -1011,8 +1006,7 @@ namespace SchoolLibrary
                 Quantity = 1,
                 QuantityLeft = 1,
                 Genre = educationalLiteratureGenre,
-                Subject = geography2,
-                //Category = geografy,
+                Subject = geography2,                
                 InventoryBooks = new List<InventoryBook> { inventoryBookGeografyClass6 }
             };
             Book booksGeograpfy7Class = new Book
@@ -1022,8 +1016,7 @@ namespace SchoolLibrary
                 Quantity = 3,
                 QuantityLeft = 3,
                 Genre = educationalLiteratureGenre,
-                Subject = geography2,
-                //Category = geografy,
+                Subject = geography2,                
                 InventoryBooks = new List<InventoryBook> { inventoryBookGeografyClass7, inventoryBookGeografyClass71, inventoryBookGeografyClass72 }
             };
             Book booksGeograpfy8Class = new Book
@@ -1033,8 +1026,7 @@ namespace SchoolLibrary
                 Quantity = 1,
                 QuantityLeft = 1,
                 Genre = educationalLiteratureGenre,
-                Subject = geography2,
-                //Category = geografy,
+                Subject = geography2,                
                 InventoryBooks = new List<InventoryBook> { inventoryBookGeografyClass8 }
             };
             Book booksGeograpfy9Class = new Book
@@ -1044,8 +1036,7 @@ namespace SchoolLibrary
                 Quantity = 1,
                 QuantityLeft = 1,
                 Genre = educationalLiteratureGenre,
-                Subject = geography2,
-                //Category = geografy,
+                Subject = geography2,                
                 InventoryBooks = new List<InventoryBook> { inventoryBookGeografyClass9 }
             };
             Book booksGeograpfy10Class = new Book
@@ -1055,8 +1046,7 @@ namespace SchoolLibrary
                 Quantity = 1,
                 QuantityLeft = 1,
                 Genre = educationalLiteratureGenre,
-                Subject = geography2,
-                //Category = geografy,
+                Subject = geography2,                
                 InventoryBooks = new List<InventoryBook> { inventoryBookGeografyClass10 }
             };
             Book booksGeograpfy11Class = new Book
@@ -1066,8 +1056,7 @@ namespace SchoolLibrary
                 Quantity = 1,
                 QuantityLeft = 1,
                 Genre = educationalLiteratureGenre,
-                Subject = geography2,
-                // Category = geografy,
+                Subject = geography2,                
                 InventoryBooks = new List<InventoryBook> { inventoryBookGeografyClass11 }
             };
             inventoryBookGeografyClass6.Book = booksGeograpfy6Class;
@@ -1082,68 +1071,56 @@ namespace SchoolLibrary
             context.InventoryBooks.AddRange(new InventoryBook[] { inventoryBookGeografyClass6, inventoryBookGeografyClass7, inventoryBookGeografyClass71, inventoryBookGeografyClass72, inventoryBookGeografyClass8, inventoryBookGeografyClass9, inventoryBookGeografyClass10, inventoryBookGeografyClass11 });
             context.Books.AddRange(new Book[] { booksGeograpfy6Class, booksGeograpfy7Class, booksGeograpfy8Class, booksGeograpfy9Class, booksGeograpfy10Class, booksGeograpfy11Class });
 
-            // Создание администратора
-            CreateAdminAccount(context);
 
+            InventoryBook inventoryTheLittleHouse = new InventoryBook
+            {
+                InventoryNumber = "30",
+                ISBN = "9785811257843",
+                Title = "The Little House",
+                Author = "Наумова Н.А.",
+                Publisher = "Айрис-пресс",
+                YearPublished = "2020",
+                Price = 15.5,
+                DateOfReceipt = DateTime.Now,
+                IncomingInvoice = "12345 ТЕ"
+            };
+
+           
+
+            //InventoryBook inventoryTheLittleHouse2 = new InventoryBook
+            //{
+            //    InventoryNumber = "31",
+            //    ISBN = "9785811257843",
+            //    Title = "The Little House",
+            //    Author = "Наумова Н.А.",
+            //    Publisher = "Айрис-пресс",
+            //    YearPublished = "2020",
+            //    Price = 15.5,
+            //    DateOfReceipt = DateTime.Now,
+            //    IncomingInvoice = "12345 ТЕ"
+            //};
+
+
+            Book booksTheLittleHouse = new Book
+            {
+                Class = 1,
+                Description = "Книга по английскому для детей",
+                //  Quantity = 2,
+                //  QuantityLeft = 2,
+                Quantity = 1,
+                QuantityLeft = 1,
+                Genre = educationalLiteratureGenre,
+                Subject = eng2,
+                InventoryBooks = new List<InventoryBook> { inventoryTheLittleHouse
+                //, inventoryTheLittleHouse2 
+                }
+            };
+            context.InventoryBooks.Add(inventoryTheLittleHouse);
+            context.Books.Add(booksTheLittleHouse);
+         
             // Сохраняем изменения
             context.SaveChanges();
-        }
-              
-
-        private void CreateAdminAccount(EntityContext context)
-        {
-            
-
-            if (!context.Users.Any(u => u.Username == adminUsername))
-            {
-                var (hashedPassword, salt) = HashPassword(adminPassword);
-
-                var adminUser = new User
-                {
-                    Username = adminUsername,
-                    PasswordHash = hashedPassword,
-                    Salt = salt,
-                    Role = "Администратор",
-                    IsConfirmed = true
-                };
-
-                context.Users.Add(adminUser);
-                context.SaveChanges();
-            }
-        }
-
-
-        private static byte[] GenerateSalt()
-        {
-            using (var rng = new RNGCryptoServiceProvider())
-            {
-                var salt = new byte[32];
-                rng.GetBytes(salt);
-                return salt;
-            }
-        }
-          
-
-        private (byte[] hashBytes, byte[] salt) HashPassword(string password)
-        {
-            using (var pbkdf2 = new Rfc2898DeriveBytes(password, 32, 10000, HashAlgorithmName.SHA256))
-            {
-                byte[] salt = pbkdf2.Salt;
-                byte[] hashBytes = pbkdf2.GetBytes(32);
-                return (hashBytes, salt);
-            }
-        }
-
-
-        public bool VerifyPassword(string enteredPassword, byte[] storedHash, byte[] storedSalt)
-        {
-            using (var pbkdf2 = new Rfc2898DeriveBytes(enteredPassword, storedSalt, 10000, HashAlgorithmName.SHA256))
-            {
-                byte[] hashBytes = pbkdf2.GetBytes(32);
-                return hashBytes.SequenceEqual(storedHash);
-            }
-        }
-
+        }  
     }
 }
 

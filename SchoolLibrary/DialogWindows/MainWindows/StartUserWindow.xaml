@@ -23,11 +23,7 @@
                 <MenuItem Header="Все книги" Click="btnListBooks"/>
                 <MenuItem Header="Доступные книги" Click="btnShowAvailableBooksButton_Click"/>
                 <MenuItem Header="Выход" Click="MenuExit_Click"/>               
-            </MenuItem>
-            <!--<MenuItem Header="Категории книг">
-                <MenuItem Header="Все категории"/>
-                <MenuItem Header="Поиск категории"/>
-            </MenuItem>-->
+            </MenuItem>            
             <MenuItem Header="Справка" Command="Help"/>
         </Menu>
         <Grid>
@@ -47,12 +43,18 @@
                     </Button.ToolTip>
                     <Image Source="/Resources/Find book.png" Width="40" Height="40"/>
                 </Button>
-                <Button x:Name="btnBooks" Click="btnListBooks">Книги</Button>
-                <Button x:Name="btnLogout" Click="btnLogout_Click" Content="Выйти">
+                <Button x:Name="btnBooks" Click="btnListBooks">
+                    <Button.ToolTip>
+                        <ToolTip>Все книги</ToolTip>
+                    </Button.ToolTip>
+                    <Image Source="/Resources/All books-01.png" Width="40" Height="40"/>
+                </Button>
+                <Button x:Name="btnLogout" Click="btnLogout_Click">
                     <Button.ToolTip>
                         <ToolTip>Выйти из сессии</ToolTip>
                     </Button.ToolTip>
-                </Button>
+                    <Image Width="40" Height="40" Source="/Resources/Exit-01.png" />
+                </Button>               
             </StackPanel>
             <DataGrid x:Name="dGrid" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" LoadingRow="dGrid_LoadingRow" 
               AutoGenerateColumns="False" RowHeaderWidth="0" CanUserAddRows="False" CanUserDeleteRows="False">

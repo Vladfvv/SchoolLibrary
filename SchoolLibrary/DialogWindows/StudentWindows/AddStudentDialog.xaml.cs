@@ -1,4 +1,5 @@
-﻿using SchoolLibrary.Models;
+﻿using NLog;
+using SchoolLibrary.Models;
 using System;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace SchoolLibrary.DialogWindows.StudentWindows
     {
         private readonly EntityContext context;
         private readonly Student newStudent;
-
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         public AddStudentDialog(EntityContext dbContext)
         {
             InitializeComponent();
@@ -23,7 +24,7 @@ namespace SchoolLibrary.DialogWindows.StudentWindows
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             context = dbContext;
             newStudent = new Student();
-            DataContext = newStudent;
+           // DataContext = newStudent;
         }      
 
         private void AddStudent_Click(object sender, RoutedEventArgs e)
@@ -34,18 +35,18 @@ namespace SchoolLibrary.DialogWindows.StudentWindows
 
                 // Проверка на пустые поля
                 if (string.IsNullOrWhiteSpace(txtFirstName.Text))
-                    errorMessage += "Пожалуйста, введите имя студента.\n";
+                    errorMessage += "Пожалуйста, введите имя читателя.\n";
                 if (string.IsNullOrWhiteSpace(txtLastName.Text))
-                    errorMessage += "Пожалуйста, введите фамилию студента.\n";
+                    errorMessage += "Пожалуйста, введите фамилию читателя.\n";
                 if (!DateTime.TryParse(txtDateOfBirth.Text, out DateTime dateOfBirth))
-                    errorMessage += "Пожалуйста, введите корректную дату рождения студента.\n";
+                    errorMessage += "Пожалуйста, введите корректную дату рождения читателя.\n";
                 if (!int.TryParse(txtStudentClass.Text, out int studentClass) || studentClass < 1 || studentClass > 11)
-                    errorMessage += "Пожалуйста, введите корректный класс студента (от 1 до 11).\n";
+                    errorMessage += "Пожалуйста, введите корректный класс читателя (от 1 до 11).\n";
                 if (string.IsNullOrWhiteSpace(txtPrefix.Text))
-                    errorMessage += "Пожалуйста, введите префикс студента.\n";
+                    errorMessage += "Пожалуйста, введите префикс читателя.\n";
                 if (string.IsNullOrWhiteSpace(txtAddress.Text))
-                    errorMessage += "Пожалуйста, введите адрес студента.\n";
-                if (!string.IsNullOrWhiteSpace(txtPhone.Text) && !Regex.IsMatch(txtPhone.Text, @"^\+?[0-9]{10,15}$"))
+                    errorMessage += "Пожалуйста, введите адрес читателя.\n";
+                if (string.IsNullOrWhiteSpace(txtPhone.Text) || !Regex.IsMatch(txtPhone.Text, @"^\+?[0-9]{10,15}$"))
                     errorMessage += "Пожалуйста, введите корректный телефонный номер (10-15 цифр).\n";
 
 
@@ -70,7 +71,7 @@ namespace SchoolLibrary.DialogWindows.StudentWindows
 
                 if (existingStudent != null)
                 {
-                    errorMessage = "Студент с такими данными уже существует:\n";
+                    errorMessage = "Читатель с такими данными уже существует:\n";
                     if (existingStudent.FirstName != txtFirstName.Text)
                         errorMessage += "Имя не совпадает - в базе данных: " + existingStudent.FirstName + "\n";
                     if (existingStudent.LastName != txtLastName.Text)
@@ -104,12 +105,19 @@ namespace SchoolLibrary.DialogWindows.StudentWindows
                 context.Students.Add(newStudent);
                 context.SaveChanges();
 
-                MessageBox.Show("Студент добавлен успешно!");
+                MessageBox.Show("Читатель добавлен успешно!");
+
+                // Логирование с указанием пользователя, даты и времени добавления записи
+                DateTime currentDateTime = DateTime.Now;
+                logger.Info($"[{currentDateTime:yyyy-MM-dd HH:mm:ss}] Пользователь {UserSession.Username} добавил читателя: {newStudent.FirstName} {newStudent.LastName}, ID: {newStudent.StudentID}, Дата рождения: {newStudent.DateOfBirth.ToShortDateString()}, Класс: {newStudent.StudentClass}, Префикс: {newStudent.Prefix}, Адрес: {newStudent.Address}.");
+
                 DialogResult = true; // Закрываем диалоговое окно с результатом DialogResult = true
             }
             catch (Exception ex)
             {
+                DateTime currentDateTime = DateTime.Now;
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                logger.Error(ex, $"[{currentDateTime:yyyy-MM-dd HH:mm:ss}] Ошибка при добавлении читателя. Пользователь {UserSession.Username}");
             }
         }
         private void Cancel_Click(object sender, RoutedEventArgs e)

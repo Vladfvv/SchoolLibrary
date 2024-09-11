@@ -38,7 +38,7 @@ namespace SchoolLibrary.DialogWindows.Statistic
             PrintDialog printDialog = new PrintDialog();
             if (printDialog.ShowDialog() == true)
             {
-                // Print the visual content of the window
+                // Создание визуального контента для вывода на печать
                 var visual = new DrawingVisual();
                 using (var context = visual.RenderOpen())
                 {
@@ -46,16 +46,15 @@ namespace SchoolLibrary.DialogWindows.Statistic
                     context.DrawRectangle(new VisualBrush(this), null, new Rect(new Point(0, 0), size));
                 }
 
-                // Measure and arrange the visual
+                // рассчет части для вывода
                 var printArea = new Size(printDialog.PrintableAreaWidth, printDialog.PrintableAreaHeight);
-                var visualBrush = new VisualBrush(this);
-                // var visual = new DrawingVisual();
+                var visualBrush = new VisualBrush(this);                
                 using (var context = visual.RenderOpen())
                 {
                     context.DrawRectangle(visualBrush, null, new Rect(new Point(0, 0), printArea));
                 }
 
-                // Print the visual
+                // Печать
                 printDialog.PrintVisual(visual, "Ведомость по читателю");
             }
         }

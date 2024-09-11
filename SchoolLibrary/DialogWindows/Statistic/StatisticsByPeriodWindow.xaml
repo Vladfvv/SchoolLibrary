@@ -38,26 +38,14 @@
                 <DatePicker x:Name="EndDatePicker" Grid.Column="3" Width="150" SelectedDateChanged="DatePicker_SelectedDateChanged"/>
             </StackPanel>
             <Button Content="Поиск" Width="100" Click="SearchButton_Click" Style="{StaticResource RoundedButtonStyle}"/>
-
-            <!-- Список выданных книг
-            <DataGrid x:Name="BooksDataGrid" AutoGenerateColumns="False" SelectionChanged="BooksDataGrid_SelectionChanged">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Инвентарный номер" Binding="{Binding InventoryNumber}" Width="130" ElementStyle="{StaticResource CenteredTextBlockStyle}" EditingElementStyle="{StaticResource CenteredTextBlockStyle}"/>
-                    <DataGridTextColumn Header="Название книги" Binding="{Binding Title}" Width="300" />
-                    <DataGridTextColumn Header="Автор" Binding="{Binding Author}" Width="120" />
-                    <DataGridTextColumn Header="ISBN" Binding="{Binding ISBN}" Width="120" />
-                    <DataGridTextColumn Header="Дата выдачи" Binding="{Binding LoanDate}" Width="120" ElementStyle="{StaticResource CenteredTextBlockStyle}" EditingElementStyle="{StaticResource CenteredTextBlockStyle}"/>
-                    <DataGridTextColumn Header="Дата возврата" Binding="{Binding ReturnDate}" Width="120" ElementStyle="{StaticResource CenteredTextBlockStyle}" EditingElementStyle="{StaticResource CenteredTextBlockStyle}"/>
-                </DataGrid.Columns>
-            </DataGrid> -->
+          
             <DataGrid x:Name="BooksDataGrid" AutoGenerateColumns="False" SelectionChanged="BooksDataGrid_SelectionChanged" Margin="0 10 0 0">
                 <DataGrid.Columns>
-                    <!--<DataGridTextColumn Header="Инвентарный номер" Binding="{Binding InventoryNumber}" Width="130" ElementStyle="{StaticResource CenteredTextBlockStyle}" EditingElementStyle="{StaticResource CenteredTextBlockStyle}"/>-->
-                    <DataGridTextColumn Header="Дата выдачи" Binding="{Binding LoanDate}" Width="170" ElementStyle="{StaticResource CenteredTextBlockStyle}" EditingElementStyle="{StaticResource CenteredTextBlockStyle}"/>
+                    <DataGridTextColumn Header="Дата выдачи" Binding="{Binding LoanDate, StringFormat=dd/MM/yyyy HH:mm}" Width="170" ElementStyle="{StaticResource CenteredTextBlockStyle}" EditingElementStyle="{StaticResource CenteredTextBlockStyle}"/>
                     <DataGridTextColumn Header="Название книги" Binding="{Binding Title}" Width="*" />
                     <DataGridTextColumn Header="Автор" Binding="{Binding Author}" Width="120" />
                     <DataGridTextColumn Header="ISBN" Binding="{Binding ISBN}" Width="150" />
-                    <DataGridTextColumn Header="Дата возврата" Binding="{Binding ReturnDate}" Width="170" ElementStyle="{StaticResource CenteredTextBlockStyle}" EditingElementStyle="{StaticResource CenteredTextBlockStyle}"/>
+                    <DataGridTextColumn Header="Дата возврата" Binding="{Binding ReturnDate, StringFormat=dd/MM/yyyy HH:mm}" Width="170" ElementStyle="{StaticResource CenteredTextBlockStyle}" EditingElementStyle="{StaticResource CenteredTextBlockStyle}"/>
                 </DataGrid.Columns>
             </DataGrid>
             <!-- Пагинация -->

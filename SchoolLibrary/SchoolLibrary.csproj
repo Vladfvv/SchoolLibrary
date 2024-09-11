@@ -17,6 +17,22 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>C:\222\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>3</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -27,6 +43,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -36,6 +54,24 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>0FFDC98D8A33DB01260CF86F2C8FFA9E5F2B9C87</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>SchoolLibrary_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.9.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
@@ -65,6 +101,9 @@
     <Reference Include="Microsoft.IO.RecyclableMemoryStream, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IO.RecyclableMemoryStream.3.0.0\lib\netstandard2.0\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
     </Reference>
+    <Reference Include="NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.5.3.3\lib\net46\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -78,6 +117,7 @@
     <Reference Include="System.Data.SqlClient, Version=4.6.1.6, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SqlClient.4.8.6\lib\net461\System.Data.SqlClient.dll</HintPath>
     </Reference>
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -89,6 +129,10 @@
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Security" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -110,41 +154,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AuthWindows\AuthService.cs" />
-    <Compile Include="AuthWindows\LoginWindow.xaml.cs">
+    <Compile Include="DialogWindows\AuthWindows\AuthService.cs" />
+    <Compile Include="DialogWindows\AuthWindows\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AuthWindows\MainWindowAdmin.xaml.cs">
-      <DependentUpon>MainWindowAdmin.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="AuthWindows\MainWindowLibrarian.xaml.cs">
-      <DependentUpon>MainWindowLibrarian.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="AuthWindows\MainWindowUser.xaml.cs">
-      <DependentUpon>MainWindowUser.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="AuthWindows\PasswordHelper.cs" />
-    <Compile Include="AuthWindows\RegisterWindow.xaml.cs">
+    <Compile Include="DialogWindows\AuthWindows\PasswordHelper.cs" />
+    <Compile Include="DialogWindows\AuthWindows\RegisterWindow.xaml.cs">
       <DependentUpon>RegisterWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AuthWindows\StartWindow.xaml.cs">
+    <Compile Include="DialogWindows\AuthWindows\StartWindow.xaml.cs">
       <DependentUpon>StartWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AuthWindows\WelcomeWindow.xaml.cs">
+    <Compile Include="DialogWindows\AuthWindows\WelcomeWindow.xaml.cs">
       <DependentUpon>WelcomeWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\DateToTodayComparisonConverter .cs" />
     <Compile Include="Converters\IsOverdueConverter.cs" />
     <Compile Include="Converters\PasswordUtility.cs" />
-    <Compile Include="DataLoaders\AdminDataLoader .cs" />
-    <Compile Include="DataLoaders\BooksDataLoader.cs" />
-    <Compile Include="DataLoaders\DataLoader.cs" />
-    <Compile Include="DataLoaders\IDataLoader.cs" />
-    <Compile Include="DataLoaders\InventoryBooksDataLoader.cs" />
-    <Compile Include="DataLoaders\LibrarianDataLoader .cs" />
-    <Compile Include="DataLoaders\StudentsDataLoader.cs" />
-    <Compile Include="DataLoaders\UserDataLoader.cs" />
     <Compile Include="DialogWindows\BookWindows\AddBookDialog.xaml.cs">
       <DependentUpon>AddBookDialog.xaml</DependentUpon>
     </Compile>
@@ -182,8 +209,14 @@
     <Compile Include="DialogWindows\LoanWindows\LoanDialog.xaml.cs">
       <DependentUpon>LoanDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DialogWindows\LoanWindows\LoanDialogSelectStudent.xaml.cs">
+      <DependentUpon>LoanDialogSelectStudent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DialogWindows\LoanWindows\ReturnBookDialog.xaml.cs">
       <DependentUpon>ReturnBookDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DialogWindows\LoanWindows\ReturnBookDialogSelectDate.xaml.cs">
+      <DependentUpon>ReturnBookDialogSelectDate.xaml</DependentUpon>
     </Compile>
     <Compile Include="DialogWindows\LoanWindows\SearchLoanedBooksDialog.xaml.cs">
       <DependentUpon>SearchLoanedBooksDialog.xaml</DependentUpon>
@@ -235,7 +268,6 @@
       <DependentUpon>EditSubjectDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="EntityContext.cs" />
-    <Compile Include="Models\AvailableBook.cs" />
     <Compile Include="Models\BookPhoto.cs" />
     <Compile Include="Models\Genre.cs" />
     <Compile Include="Models\IDeletable.cs" />
@@ -265,42 +297,30 @@
     <Compile Include="ViewModels\PaginatedLoanBookStudentViewModel.cs" />
     <Compile Include="ViewModels\PaginatedStudentModel.cs" />
     <Compile Include="ViewModels\StudentDetailsViewModel.cs" />
-    <Compile Include="Views\BaseSettings.cs" />
-    <Compile Include="Views\BaseWindow.cs" />
-    <Compile Include="Views\StartAdminWindow.xaml.cs">
+    <Compile Include="DialogWindows\MainWindows\BaseSettings.cs" />
+    <Compile Include="DialogWindows\MainWindows\BaseWindow.cs" />
+    <Compile Include="DialogWindows\MainWindows\StartAdminWindow.xaml.cs">
       <DependentUpon>StartAdminWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StartLibrarianWindow.xaml.cs">
+    <Compile Include="DialogWindows\MainWindows\StartLibrarianWindow.xaml.cs">
       <DependentUpon>StartLibrarianWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StartUserWindow.xaml.cs">
+    <Compile Include="DialogWindows\MainWindows\StartUserWindow.xaml.cs">
       <DependentUpon>StartUserWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="AuthWindows\LoginWindow.xaml">
+    <Page Include="DialogWindows\AuthWindows\LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AuthWindows\MainWindowAdmin.xaml">
+    <Page Include="DialogWindows\AuthWindows\RegisterWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AuthWindows\MainWindowLibrarian.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="AuthWindows\MainWindowUser.xaml">
+    <Page Include="DialogWindows\AuthWindows\StartWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AuthWindows\RegisterWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="AuthWindows\StartWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="AuthWindows\WelcomeWindow.xaml">
+    <Page Include="DialogWindows\AuthWindows\WelcomeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -352,7 +372,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="DialogWindows\LoanWindows\LoanDialogSelectStudent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DialogWindows\LoanWindows\ReturnBookDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindows\LoanWindows\ReturnBookDialogSelectDate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -420,32 +448,24 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataBaseInitializer.cs" />
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Page Include="SplashScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StartAdminWindow.xaml">
+    <Page Include="DialogWindows\MainWindows\StartAdminWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StartLibrarianWindow.xaml">
+    <Page Include="DialogWindows\MainWindows\StartLibrarianWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StartUserWindow.xaml">
+    <Page Include="DialogWindows\MainWindows\StartUserWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -472,19 +492,21 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="SchoolLibrary_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <DesignData Include="gif2.gif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </DesignData>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Book in-01.png" />
@@ -548,6 +570,45 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\user.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 и x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.NetCore.DesktopRuntime.8.0.x64">
+      <Visible>False</Visible>
+      <ProductName>Среда выполнения .NET для классических приложений 8.0.5 %28x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="SchoolLibrary.pdb">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="WpfAnimatedGif.pdb">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

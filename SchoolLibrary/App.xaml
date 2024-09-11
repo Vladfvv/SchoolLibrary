@@ -1,35 +1,9 @@
-﻿<!--<Application x:Class="SchoolLibrary.App"
+﻿<Application x:Class="SchoolLibrary.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:SchoolLibrary"
-            
-           
-             Startup="Application_Startup">
-    <Application.Resources>
-         
-    </Application.Resources>
-</Application>-->
-
-<!--<Application x:Class="SchoolLibrary.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:SchoolLibrary"
-             StartupUri="MainWindow.xaml">-->
-
-
-
-
-
-<Application x:Class="SchoolLibrary.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:SchoolLibrary"
-                 StartupUri="AuthWindows/StartWindow.xaml">
-    <Application.Resources>
-        <!-- <Style TargetType="ToolTip">
-            <Setter Property="ToolTipService.InitialShowDelay" Value="1"/> //для ускорения отображения ToolTip
-            <Setter Property="ToolTipService.ShowDuration" Value="5000"/>
-        </Style>-->
+                 StartupUri="DialogWindows/AuthWindows/StartWindow.xaml">
+    <Application.Resources>        
         <Style TargetType="Window">
             <Setter Property="Background" Value="LightBlue"/>
             <Setter Property="FontSize" Value="16"/>

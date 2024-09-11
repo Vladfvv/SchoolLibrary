@@ -14,11 +14,7 @@ namespace SchoolLibrary.Models
         private int _subjectID;
         private string _subjectName;
         private int _genreID;
-        private Genre _genre;
-        //public int SubjectID { get; set; }
-        //public string SubjectName { get; set; }
-        //public int GenreID { get; set; }  // Внешний ключ к Genre
-        //public virtual Genre Genre { get; set; }
+        private Genre _genre;        
         public int SubjectID
         {
             get { return _subjectID; }

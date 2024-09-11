@@ -44,29 +44,16 @@ namespace SchoolLibrary.DialogWindows.StudentWindows
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             DataContext = this;
             _context = context;
-            this.student = student;
-           // Loaded += Window_Loaded; // Добавление обработчика события Loaded
+            this.student = student;           
         }
-
-        //private void SaveStudent_Click(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        _context.SaveChanges();
-        //        DialogResult = true;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show($"Ошибка сохранения читателя: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-        //    }
-        //}
+                
 
         private void SaveStudent_Click(object sender, RoutedEventArgs e)
         {
             try
             {
 
-                // Validate the student's age
+                // Валидация возраста
                 var age = student.Age;
                 if (age < 3 || age > 110)
                 {
@@ -74,7 +61,7 @@ namespace SchoolLibrary.DialogWindows.StudentWindows
                     return;
                 }
 
-                // Validate the student's class
+                // Валидация класса
                 if (!int.TryParse(student.StudentClass, out int studentClass) || studentClass < 1 || studentClass > 11)
                 {
                     MessageBox.Show("Введите корректный класс. Класс читателя должен быть от 1 до 11.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -83,15 +70,15 @@ namespace SchoolLibrary.DialogWindows.StudentWindows
                 
                 // Получаем текст из текстового поля телефона
                 string phoneNumber = txtPhone.Text;
-                if (!string.IsNullOrWhiteSpace(phoneNumber) && !Regex.IsMatch(phoneNumber, @"^\+?[0-9]{10,15}$"))
+                if (string.IsNullOrWhiteSpace(phoneNumber) || !Regex.IsMatch(phoneNumber, @"^\+?[0-9]{10,15}$"))
                 {
-                    MessageBox.Show("Пожалуйста, введите корректный телефонный номер (10-15 цифр).", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Телефон должен начинаться с +. Пожалуйста, введите корректный телефонный номер (10-15 цифр).", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
 
                 var existingStudent = _context.Students.SingleOrDefault(s => s.StudentID == student.StudentID);
-               // var existingStudent = _context.Students.Find(student);
+               
                 if (existingStudent != null)
                 {
                     existingStudent.FirstName = student.FirstName;

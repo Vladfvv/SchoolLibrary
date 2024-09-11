@@ -25,7 +25,7 @@
                 <TextBlock Foreground="Red" FontSize="24">Неверный формат записи</TextBlock>
             </StackPanel>
         </ControlTemplate>
-        <!-- DataTemplate for displaying images in ListBox -->
+       
         <DataTemplate x:Key="ImageItemTemplate">
             <Image Source="{Binding}" Width="70" Height="70" Margin="5"/>
         </DataTemplate>
@@ -102,8 +102,7 @@
         <Button Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" x:Name="btnSelectPhoto" Height="60" Width="90" Margin="5" Click="SelectPhotos_Click" Style="{StaticResource RoundedButtonStyle}">
             <TextBlock Text="Выбрать фото" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" />
         </Button>
-        <!-- <Image Grid.Row="7" Grid.Column="3" x:Name="imgBookPhoto" Width="70" Height="70" Margin="5"/>
--->
+        
         <ListBox  Grid.Row="8" Grid.Column="3" Grid.ColumnSpan="3" x:Name="lbBookPhotos" Height="100" Margin="5" ItemTemplate="{StaticResource ImageItemTemplate}" Background="LightBlue">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>

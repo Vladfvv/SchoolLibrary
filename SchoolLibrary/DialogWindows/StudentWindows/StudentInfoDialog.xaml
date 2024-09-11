@@ -45,22 +45,6 @@
         <StackPanel Grid.Row="6" Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="0">
             <Button Content="Закрыть" Margin="5" Click="Cancel_Click" Style="{StaticResource RoundedButtonStyle}" Width="100"/>
         </StackPanel>
-
-        <!--<StackPanel Margin="10">-->
-        <!--<TextBlock Text="Имя:"/>
-            <TextBlock Name="FirstNameTextBlock"/>-->
-
-        <!--<TextBlock Text="Фамилия:" />
-            <TextBlock Name="LastNameTextBlock"/>-->
-
-        <!--<TextBlock Text="Дата рождения:"/>
-            <TextBlock Name="DateOfBirthTextBlock"/>-->
-
-        <!--<TextBlock Text="Класс:" />
-            <TextBlock Name="StudentClassTextBlock"/>-->
-
-        <!--<TextBlock Text="Телефон:"/>
-            <TextBlock Name="PhoneTextBlock"/>-->
-        <!--</StackPanel>-->
+       
     </Grid>
 </Window>

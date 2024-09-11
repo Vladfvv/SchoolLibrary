@@ -10,7 +10,7 @@ namespace SchoolLibrary.AuthWindows
     //Валидация логина и пароля
     public class AuthService
     {
-        private string connectionString = "SchoolLibraryConnectionString";
+        private readonly string connectionString = "SchoolLibraryConnectionString";
 
         public bool ValidateUser(string username, string password, out string role)
         {

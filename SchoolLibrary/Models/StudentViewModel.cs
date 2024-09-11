@@ -15,9 +15,7 @@ namespace SchoolLibrary.Models
         public string StudentClass { get; set; }
         public string Prefix { get; set; }
         public string Address { get; set; }
-        private string Phone { get; set; }
-
-        // Поле для для отображения порядкового номера
+        private string Phone { get; set; }       
         public int Index { get; set; } 
     }
 }

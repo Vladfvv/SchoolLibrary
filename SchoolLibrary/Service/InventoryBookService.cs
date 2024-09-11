@@ -32,22 +32,7 @@ namespace SchoolLibrary.Service
                     .Include(b => b.InventoryBooks.Select(ib => ib.Loans))
                     .ToList();
 
-                // Создание списка инвентарных книг
-                //bookList = allBooks
-                //    .SelectMany(b => b.InventoryBooks, (b, ib) => new PaginatedBookInventoryModel
-                //    {
-                //        BookID = b.BookID,
-                //        Title = ib.Title,
-                //        Author = ib.Author,
-                //        Publisher = ib.Publisher,
-                //        YearPublished = ib.YearPublished,
-                //        ISBN = ib.ISBN,
-                //        Quantity = 1, // Количество по умолчанию 1, если не требуется агрегация
-                //        QuantityLeft = 1 - ib.Loans.Count(loan => !loan.Returned), // Количество доступных книг
-                //        GenreName = b.Genre != null ? b.Genre.GenreName : "Неизвестно",
-                //        SubjectName = b.Genre != null ? b.Genre.GenreName : "Неизвестно"
-                //    })
-                //    .ToList();
+                // Создание списка инвентарных книг               
                 bookList = allBooks
             .SelectMany(b => b.InventoryBooks, (b, ib) => new PaginatedBookInventoryModel
             {
@@ -58,7 +43,7 @@ namespace SchoolLibrary.Service
                 Publisher = ib.Publisher,
                 YearPublished = ib.YearPublished,
                 ISBN = ib.ISBN,
-                Quantity = 1, // Количество по умолчанию 1, если не требуется агрегация
+                Quantity = 1, // Количество по умолчанию 1 
                 QuantityLeft = 1 - ib.Loans.Count(loan => !loan.Returned), // Количество доступных книг
                 GenreName = b.Genre != null ? b.Genre.GenreName : "Неизвестно",
                 SubjectName = b.Genre != null ? b.Subject.SubjectName : "Неизвестно"
@@ -84,12 +69,7 @@ namespace SchoolLibrary.Service
             List<PaginatedBookInventoryModel> bookList = new List<PaginatedBookInventoryModel>();
 
             try
-            {
-                // Загружаем книги и связанные данные
-                //context.Books
-                //    .Include(b => b.Genre)
-                //    .Include(b => b.InventoryBooks.Select(ib => ib.Loans))
-                //    .Load();
+            {                
                 var allBooks = context.Books
             .Include(b => b.Genre)
             .Include(b => b.InventoryBooks.Select(ib => ib.Loans))
